@@ -54,14 +54,15 @@ public class AuthController {
             String username = loginData.get("username");
             String hexPassword = loginData.get("password");
 
-            // Remove 0x prefix if present and convert hex to bytes
-            if (hexPassword.startsWith("0x")) {
-                hexPassword = hexPassword.substring(2);
-            }
-            byte[] password = hexStringToByteArray(hexPassword);
+            // Agregar el prefijo '0x' a la cadena hexadecimal
+            String hexPasswordWithPrefix = "0x" + hexPassword;
 
-            // Asegurarse de que la conversión sea correcta
-            System.out.println("Contraseña convertida a bytes: " + javax.xml.bind.DatatypeConverter.printHexBinary(password));
+            // Convertir la cadena hexadecimal a bytes (sin quitar el prefijo)
+            byte[] password = hexPasswordWithPrefix.getBytes();
+
+            // Log para verificar el formato correcto
+            System.out.println("Contraseña original: " + hexPassword);
+            System.out.println("Contraseña con prefijo: " + hexPasswordWithPrefix);
 
             String jsonString = authService.loginBartolito(username, password);
 
@@ -81,23 +82,13 @@ public class AuthController {
         } catch (RuntimeException e) {
             // Log de error
             System.err.println("Error en loginBartolito: " + e.getMessage());
-            return ResponseEntity.status(500).body(Collections.singletonMap("error", "Error durante el proceso de autenticación: " + e.getMessage()));
+            return ResponseEntity.status(500).body(
+                    Collections.singletonMap("error", "Error durante el proceso de autenticación: " + e.getMessage()));
         } catch (Exception e) {
             // Log de error
             System.err.println("Error inesperado: " + e.getMessage());
             return ResponseEntity.status(500).body(Collections.singletonMap("error", "Error interno del servidor"));
         }
-    }
-
-    // Helper method to convert hex string to byte array
-    private static byte[] hexStringToByteArray(String s) {
-        int len = s.length();
-        byte[] data = new byte[len / 2];
-        for (int i = 0; i < len; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
-                    + Character.digit(s.charAt(i + 1), 16));
-        }
-        return data;
     }
 
     @PostMapping("/loginByUsername")
