@@ -60,6 +60,9 @@ public class AuthController {
             }
             byte[] password = hexStringToByteArray(hexPassword);
 
+            // Asegurarse de que la conversión sea correcta
+            System.out.println("Contraseña convertida a bytes: " + javax.xml.bind.DatatypeConverter.printHexBinary(password));
+
             String jsonString = authService.loginBartolito(username, password);
 
             // Parsear el JSON string a objeto
