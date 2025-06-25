@@ -34,7 +34,7 @@ public interface UsuariosRepository extends JpaRepository<Usuarios, Long> {
 
 
     @Query(value = "SELECT 'b' AS de, b.usecod, b.useusr, b.grucod, 'Bartolito' AS grudes, " +
-               "a.siscod, s.sisent, b.codalm, b.grucod " +
+               "a.siscod, s.sisent, b.codalm " +
                "FROM usuarios_bartolito b " +
                "INNER JOIN fa_almacenes a ON a.codalm = b.codalm " +
                "INNER JOIN sistema s ON s.siscod = a.siscod " +
