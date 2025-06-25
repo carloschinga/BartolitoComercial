@@ -75,7 +75,13 @@ public class AuthController {
 
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(401).body(Collections.singletonMap("error", "Credenciales inválidas"));
+        } catch (RuntimeException e) {
+            // Log de error
+            System.err.println("Error en loginBartolito: " + e.getMessage());
+            return ResponseEntity.status(500).body(Collections.singletonMap("error", "Error durante el proceso de autenticación: " + e.getMessage()));
         } catch (Exception e) {
+            // Log de error
+            System.err.println("Error inesperado: " + e.getMessage());
             return ResponseEntity.status(500).body(Collections.singletonMap("error", "Error interno del servidor"));
         }
     }

@@ -67,6 +67,10 @@ public class AuthService {
 
     public String loginBartolito(String username, byte[] password) {
         try {
+            // Log de entrada
+            System.out.println("Intentando validar usuario Bartolito: " + username);
+            System.out.println("Contraseña (hex): " + javax.xml.bind.DatatypeConverter.printHexBinary(password));
+
             List<Object[]> resultados = usuarioRepository.validarUsuarioBartolito(username, password);
 
             if (resultados.isEmpty()) {
@@ -96,6 +100,9 @@ public class AuthService {
             jsonObj.put("siscod", resultado[5]);
             jsonObj.put("sisent", resultado[6]);
             jsonObj.put("codalm_inv", resultado[7]);
+
+            // Log de salida
+            System.out.println("Usuario validado exitosamente: " + username);
 
             return jsonObj.toString();
 
