@@ -54,15 +54,15 @@ public class AuthController {
             String username = loginData.get("username");
             String hexPassword = loginData.get("password");
 
-            // Agregar el prefijo '0x' a la cadena hexadecimal
-            String hexPasswordWithPrefix = "0x" + hexPassword;
+            // Convertir el password a representación hexadecimal y agregar prefijo 0x
+            String hexEncodedPassword = stringToHexWithPrefix(hexPassword);
 
-            // Convertir la cadena hexadecimal a bytes (sin quitar el prefijo)
-            byte[] password = hexPasswordWithPrefix.getBytes();
+            // Convertir a bytes
+            byte[] password = hexEncodedPassword.getBytes();
 
             // Log para verificar el formato correcto
             System.out.println("Contraseña original: " + hexPassword);
-            System.out.println("Contraseña con prefijo: " + hexPasswordWithPrefix);
+            System.out.println("Contraseña convertida: " + hexEncodedPassword);
 
             String jsonString = authService.loginBartolito(username, password);
 
@@ -89,6 +89,18 @@ public class AuthController {
             System.err.println("Error inesperado: " + e.getMessage());
             return ResponseEntity.status(500).body(Collections.singletonMap("error", "Error interno del servidor"));
         }
+    }
+
+    // Método para convertir string a representación hexadecimal con prefijo 0x
+    private static String stringToHexWithPrefix(String input) {
+        StringBuilder hexString = new StringBuilder("0x");
+        byte[] bytes = input.getBytes();
+
+        for (byte b : bytes) {
+            hexString.append(String.format("%02x", b));
+        }
+
+        return hexString.toString();
     }
 
     @PostMapping("/loginByUsername")
