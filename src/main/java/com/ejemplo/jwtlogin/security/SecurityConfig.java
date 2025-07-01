@@ -20,7 +20,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/auth/login", "/auth/loginByUsername", "/auth/loginBartolito").permitAll()
+                .antMatchers("/auth/login", "/auth/loginByUsername", "/auth/loginBartolito",
+                        "/auth/loginBartolitoByUsername",
+                        "/auth/loginInventarioByUsername", "/auth/loginInventario")
+                .permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

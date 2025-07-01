@@ -57,6 +57,11 @@ public class AuthController {
             // Convertir el password a representación hexadecimal y agregar prefijo 0x
             String hexEncodedPassword = stringToHexWithPrefix(hexPassword);
 
+            // Remove 0x prefix if present and convert hex to bytes
+            if (hexEncodedPassword.startsWith("0x")) {
+                hexEncodedPassword = hexEncodedPassword.substring(2);
+            }
+
             // Convertir a bytes
             byte[] password = hexStringToByteArray(hexEncodedPassword);
 
@@ -114,6 +119,56 @@ public class AuthController {
         return data;
     }
 
+    @PostMapping("/loginBartolitoByUsername")
+    public ResponseEntity<?> loginBartolitoByUsername(@RequestBody Map<String, String> loginData) {
+        try {
+            String username = loginData.get("username");
+
+            String jsonString = authService.loginBartolitoByUser(username);
+
+            // Parsear el JSON string a objeto
+            JSONObject jsonData = new JSONObject(jsonString);
+
+            // Convertir a Map para que Spring lo serialice correctamente
+            Map<String, Object> response = new HashMap<>();
+            for (String key : jsonData.keySet()) {
+                response.put(key, jsonData.get(key));
+            }
+
+            return ResponseEntity.ok(response);
+
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(401).body(Collections.singletonMap("error", "Credenciales inválidas"));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Collections.singletonMap("error", "Error interno del servidor"));
+        }
+    }
+
+    @PostMapping("/loginInventarioByUsername")
+    public ResponseEntity<?> loginInventarioByUsername(@RequestBody Map<String, String> loginData) {
+        try {
+            String username = loginData.get("username");
+
+            String jsonString = authService.loginInventarioByUser(username);
+
+            // Parsear el JSON string a objeto
+            JSONObject jsonData = new JSONObject(jsonString);
+
+            // Convertir a Map para que Spring lo serialice correctamente
+            Map<String, Object> response = new HashMap<>();
+            for (String key : jsonData.keySet()) {
+                response.put(key, jsonData.get(key));
+            }
+
+            return ResponseEntity.ok(response);
+
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(401).body(Collections.singletonMap("error", "Credenciales inválidas"));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Collections.singletonMap("error", "Error interno del servidor"));
+        }
+    }
+
     @PostMapping("/loginByUsername")
     public ResponseEntity<?> loginByUsername(@RequestBody Map<String, String> loginData) {
         try {
@@ -135,6 +190,54 @@ public class AuthController {
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(401).body(Collections.singletonMap("error", "Credenciales inválidas"));
         } catch (Exception e) {
+            return ResponseEntity.status(500).body(Collections.singletonMap("error", "Error interno del servidor"));
+        }
+    }
+
+     @PostMapping("/loginInventario")
+    public ResponseEntity<?> loginInventario(@RequestBody Map<String, String> loginData) {
+        try {
+            String username = loginData.get("username");
+            String hexPassword = loginData.get("password");
+
+            // Convertir el password a representación hexadecimal y agregar prefijo 0x
+            String hexEncodedPassword = stringToHexWithPrefix(hexPassword);
+
+            // Remove 0x prefix if present and convert hex to bytes
+            if (hexEncodedPassword.startsWith("0x")) {
+                hexEncodedPassword = hexEncodedPassword.substring(2);
+            }
+
+            // Convertir a bytes
+            byte[] password = hexStringToByteArray(hexEncodedPassword);
+
+            // Log para verificar el formato correcto
+            System.out.println("Contraseña original: " + hexPassword);
+            System.out.println("Contraseña convertida: " + hexEncodedPassword);
+
+            String jsonString = authService.loginInventario(username, password);
+
+            // Parsear el JSON string a objeto
+            JSONObject jsonData = new JSONObject(jsonString);
+
+            // Convertir a Map para que Spring lo serialice correctamente
+            Map<String, Object> response = new HashMap<>();
+            for (String key : jsonData.keySet()) {
+                response.put(key, jsonData.get(key));
+            }
+
+            return ResponseEntity.ok(response);
+
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(401).body(Collections.singletonMap("error", "Credenciales inválidas"));
+        } catch (RuntimeException e) {
+            // Log de error
+            System.err.println("Error en loginBartolito: " + e.getMessage());
+            return ResponseEntity.status(500).body(
+                    Collections.singletonMap("error", "Error durante el proceso de autenticación: " + e.getMessage()));
+        } catch (Exception e) {
+            // Log de error
+            System.err.println("Error inesperado: " + e.getMessage());
             return ResponseEntity.status(500).body(Collections.singletonMap("error", "Error interno del servidor"));
         }
     }

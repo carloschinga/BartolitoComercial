@@ -31,11 +31,6 @@ public class AuthService {
 
             Object[] resultado = resultados.get(0); // Tomar el primer resultado
 
-            // Debug: imprimir cada elemento
-            for (int i = 0; i < resultado.length; i++) {
-                System.out.println("Índice " + i + ": " + resultado[i]);
-            }
-
             // Si llegamos aquí, las credenciales son correctas
             // Generar token JWT con el username
             String token = jwtUtil.generateToken(username);
@@ -67,10 +62,6 @@ public class AuthService {
 
     public String loginBartolito(String username, byte[] password) {
         try {
-            // Log de entrada
-            System.out.println("Intentando validar usuario Bartolito: " + username);
-            System.out.println("Contraseña (hex): " + javax.xml.bind.DatatypeConverter.printHexBinary(password));
-
             List<Object[]> resultados = usuarioRepository.validarUsuarioBartolito(username, password);
 
             if (resultados.isEmpty()) {
@@ -78,11 +69,6 @@ public class AuthService {
             }
 
             Object[] resultado = resultados.get(0); // Tomar el primer resultado
-
-            // Debug: imprimir cada elemento
-            for (int i = 0; i < resultado.length; i++) {
-                System.out.println("Índice " + i + ": " + resultado[i]);
-            }
 
             // Si llegamos aquí, las credenciales son correctas
             // Generar token JWT con el username
@@ -101,8 +87,42 @@ public class AuthService {
             jsonObj.put("sisent", resultado[6]);
             jsonObj.put("codalm_inv", resultado[7]);
 
-            // Log de salida
-            System.out.println("Usuario validado exitosamente: " + username);
+            return jsonObj.toString();
+
+        } catch (NoResultException e) {
+            // Usuario no encontrado o credenciales incorrectas
+            throw new BadCredentialsException("Credenciales inválidas");
+        } catch (Exception e) {
+            throw new RuntimeException("Error durante el login: " + e.getMessage());
+        }
+    }
+
+    public String loginBartolitoByUser(String username) {
+        try {
+            List<Object[]> resultados = usuarioRepository.validarUsuarioBartolitoByUsername(username);
+
+            if (resultados.isEmpty()) {
+                throw new BadCredentialsException("Credenciales inválidas");
+            }
+
+            Object[] resultado = resultados.get(0); // Tomar el primer resultado
+
+            // Si llegamos aquí, las credenciales son correctas
+            // Generar token JWT con el username
+            String token = jwtUtil.generateToken(username);
+
+            // Crear JSON response con token y datos del usuario
+            JSONObject jsonObj = new JSONObject();
+            jsonObj.put("resultado", "OK");
+            jsonObj.put("token", token);
+            jsonObj.put("de", resultado[0]);
+            jsonObj.put("usecod", resultado[1]);
+            jsonObj.put("useusr", resultado[2]);
+            jsonObj.put("grucod", resultado[3]);
+            jsonObj.put("grudes", resultado[4]);
+            jsonObj.put("siscod", resultado[5]);
+            jsonObj.put("sisent", resultado[6]);
+            jsonObj.put("codalm_inv", resultado[7]);
 
             return jsonObj.toString();
 
@@ -124,11 +144,6 @@ public class AuthService {
 
             Object[] resultado = resultados.get(0); // Tomar el primer resultado
 
-            // Debug: imprimir cada elemento
-            for (int i = 0; i < resultado.length; i++) {
-                System.out.println("Índice " + i + ": " + resultado[i]);
-            }
-
             // Si llegamos aquí, las credenciales son correctas
             // Generar token JWT con el username
             String token = jwtUtil.generateToken(username);
@@ -147,6 +162,80 @@ public class AuthService {
             jsonObj.put("codalm_inv", resultado[7]);
             jsonObj.put("central", resultado[8]);
             jsonObj.put("nombre", resultado[9]);
+
+            return jsonObj.toString();
+
+        } catch (NoResultException e) {
+            // Usuario no encontrado o credenciales incorrectas
+            throw new BadCredentialsException("Credenciales inválidas");
+        } catch (Exception e) {
+            throw new RuntimeException("Error durante el login: " + e.getMessage());
+        }
+    }
+
+    public String loginInventarioByUser(String username) {
+        try {
+            List<Object[]> resultados = usuarioRepository.validarUsuariosInventarioByUsername(username);
+
+            if (resultados.isEmpty()) {
+                throw new BadCredentialsException("Credenciales inválidas");
+            }
+
+            Object[] resultado = resultados.get(0); // Tomar el primer resultado
+
+            // Si llegamos aquí, las credenciales son correctas
+            // Generar token JWT con el username
+            String token = jwtUtil.generateToken(username);
+
+            // Crear JSON response con token y datos del usuario
+            JSONObject jsonObj = new JSONObject();
+            jsonObj.put("resultado", "OK");
+            jsonObj.put("token", token);
+            jsonObj.put("de", resultado[0]);
+            jsonObj.put("usecod", resultado[1]);
+            jsonObj.put("useusr", resultado[2]);
+            jsonObj.put("grucod", resultado[3]);
+            jsonObj.put("grudes", resultado[4]);
+            jsonObj.put("siscod", resultado[5]);
+            jsonObj.put("sisent", resultado[6]);
+            jsonObj.put("codalm_inv", resultado[7]);
+
+            return jsonObj.toString();
+
+        } catch (NoResultException e) {
+            // Usuario no encontrado o credenciales incorrectas
+            throw new BadCredentialsException("Credenciales inválidas");
+        } catch (Exception e) {
+            throw new RuntimeException("Error durante el login: " + e.getMessage());
+        }
+    }
+
+    public String loginInventario(String username, byte[] password) {
+        try {
+            List<Object[]> resultados = usuarioRepository.validarUsuariosInventario(username, password);
+
+            if (resultados.isEmpty()) {
+                throw new BadCredentialsException("Credenciales inválidas");
+            }
+
+            Object[] resultado = resultados.get(0); // Tomar el primer resultado
+
+            // Si llegamos aquí, las credenciales son correctas
+            // Generar token JWT con el username
+            String token = jwtUtil.generateToken(username);
+
+            // Crear JSON response con token y datos del usuario
+            JSONObject jsonObj = new JSONObject();
+            jsonObj.put("resultado", "OK");
+            jsonObj.put("token", token);
+            jsonObj.put("de", resultado[0]);
+            jsonObj.put("usecod", resultado[1]);
+            jsonObj.put("useusr", resultado[2]);
+            jsonObj.put("grucod", resultado[3]);
+            jsonObj.put("grudes", resultado[4]);
+            jsonObj.put("siscod", resultado[5]);
+            jsonObj.put("sisent", resultado[6]);
+            jsonObj.put("codalm_inv", resultado[7]);
 
             return jsonObj.toString();
 
