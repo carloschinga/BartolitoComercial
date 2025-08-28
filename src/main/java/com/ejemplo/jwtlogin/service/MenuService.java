@@ -42,8 +42,10 @@ public class MenuService {
 
         // Ahora llamas a tu repo de menú
         return menuRepository.getPaginasPorGrupo(grucod);
-        } catch (JwtException | IllegalArgumentException e) {
-            return "Token no válido";
+        } catch (JwtException | IllegalArgumentException | BadCredentialsException e) {
+            JSONObject error = new JSONObject();
+            error.put("error", "Token no válido");
+            return error.toString();
         }
     }
 

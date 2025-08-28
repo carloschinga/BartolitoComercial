@@ -30,7 +30,4 @@ public class MenuController {
         return menuService.obtenerPaginasPorGrupo(tipo, token);
 
     }
-
-
-
 }
