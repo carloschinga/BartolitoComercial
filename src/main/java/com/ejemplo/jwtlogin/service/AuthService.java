@@ -1,250 +1,209 @@
 package com.ejemplo.jwtlogin.service;
 
-import java.util.List;
+import java.nio.charset.StandardCharsets;
 
-import javax.persistence.NoResultException;
-
+import com.ejemplo.jwtlogin.repository.AuthRepository;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
-import com.ejemplo.jwtlogin.repository.UsuariosRepository;
-import com.ejemplo.jwtlogin.security.JwtUtil;
-
+import com.ejemplo.jwtlogin.util.JwtUtil;
 @Service
 public class AuthService {
 
     @Autowired
-    private UsuariosRepository usuarioRepository;
+    private AuthRepository authRepository;
 
     @Autowired
     private JwtUtil jwtUtil;
 
+    // ===========================
+    // LOGIN NORMAL
+    // ===========================
     public String login(String username, String password) {
-        try {
-            List<Object[]> resultados = usuarioRepository.validarUsuario(username, password);
+        String response = authRepository.loginUsuario("N", username, password);
 
-            if (resultados.isEmpty()) {
-                throw new BadCredentialsException("Credenciales inválidas");
-            }
-
-            Object[] resultado = resultados.get(0); // Tomar el primer resultado
-
-            // Si llegamos aquí, las credenciales son correctas
-            // Generar token JWT con el username
-            String token = jwtUtil.generateToken(username);
-
-            // Crear JSON response con token y datos del usuario
-            JSONObject jsonObj = new JSONObject();
-            jsonObj.put("resultado", "OK");
-            jsonObj.put("token", token);
-            jsonObj.put("de", resultado[0]);
-            jsonObj.put("usecod", resultado[1]);
-            jsonObj.put("useusr", resultado[2]);
-            jsonObj.put("grucod", resultado[3]);
-            jsonObj.put("grudes", resultado[4]);
-            jsonObj.put("siscod", resultado[5]);
-            jsonObj.put("sisent", resultado[6]);
-            jsonObj.put("codalm_inv", resultado[7]);
-            jsonObj.put("central", resultado[8]);
-            jsonObj.put("nombre", resultado[9]);
-
-            return jsonObj.toString();
-
-        } catch (NoResultException e) {
-            // Usuario no encontrado o credenciales incorrectas
+        JSONObject result = new JSONObject(response);
+        if (result.isEmpty() || !result.has("usecod")) {
             throw new BadCredentialsException("Credenciales inválidas");
-        } catch (Exception e) {
-            throw new RuntimeException("Error durante el login: " + e.getMessage());
         }
+
+        // Generar access token
+        String token = jwtUtil.generateToken(username);
+
+        // Generar refresh token
+       // String refreshToken = jwtUtil.generateRefreshToken(username);
+
+        result.put("resultado", "OK");
+        result.put("token", token);
+       // result.put("refreshToken", refreshToken);
+
+        return result.toString();
     }
 
-    public String loginBartolito(String username, byte[] password) {
-        try {
-            List<Object[]> resultados = usuarioRepository.validarUsuarioBartolito(username, password);
+    public String loginByUser(String username) {
+        String response = authRepository.loginUsuarioByUsername("N", username);
 
-            if (resultados.isEmpty()) {
+        JSONObject result = new JSONObject(response);
+        if (result.isEmpty() || !result.has("usecod")) {
+            throw new BadCredentialsException("Usuario no encontrado");
+        }
+
+        String token = jwtUtil.generateToken(username);
+        result.put("resultado", "OK");
+        result.put("token", token);
+
+        return result.toString();
+    }
+
+    // ===========================
+    // LOGIN BARTOLITO
+    // ===========================
+    public String loginBartolito(String username, String passwordTexto) {
+        try {
+            // Convertir la contraseña a bytes tal como espera el procedimiento
+            String hexEncoded = stringToHexWithPrefix(passwordTexto);
+            if (hexEncoded.startsWith("0x")) {
+                hexEncoded = hexEncoded.substring(2);
+            }
+            byte[] password = hexStringToByteArray(hexEncoded);
+
+            String response = authRepository.loginUsuario2("B", username, password);
+
+            JSONObject result = new JSONObject(response);
+            if (result.isEmpty() || !result.has("usecod")) {
                 throw new BadCredentialsException("Credenciales inválidas");
             }
 
-            Object[] resultado = resultados.get(0); // Tomar el primer resultado
-
-            // Si llegamos aquí, las credenciales son correctas
-            // Generar token JWT con el username
             String token = jwtUtil.generateToken(username);
+            result.put("resultado", "OK");
+            result.put("token", token);
 
-            // Crear JSON response con token y datos del usuario
-            JSONObject jsonObj = new JSONObject();
-            jsonObj.put("resultado", "OK");
-            jsonObj.put("token", token);
-            jsonObj.put("de", resultado[0]);
-            jsonObj.put("usecod", resultado[1]);
-            jsonObj.put("useusr", resultado[2]);
-            jsonObj.put("grucod", resultado[3]);
-            jsonObj.put("grudes", resultado[4]);
-            jsonObj.put("siscod", resultado[5]);
-            jsonObj.put("sisent", resultado[6]);
-            jsonObj.put("codalm_inv", resultado[7]);
+            return result.toString();
 
-            return jsonObj.toString();
-
-        } catch (NoResultException e) {
-            // Usuario no encontrado o credenciales incorrectas
-            throw new BadCredentialsException("Credenciales inválidas");
         } catch (Exception e) {
-            throw new RuntimeException("Error durante el login: " + e.getMessage());
+            throw new RuntimeException("Error en loginBartolito: " + e.getMessage());
         }
     }
 
     public String loginBartolitoByUser(String username) {
-        try {
-            List<Object[]> resultados = usuarioRepository.validarUsuarioBartolitoByUsername(username);
+        String response = authRepository.loginUsuarioByUsername("B", username);
 
-            if (resultados.isEmpty()) {
-                throw new BadCredentialsException("Credenciales inválidas");
-            }
-
-            Object[] resultado = resultados.get(0); // Tomar el primer resultado
-
-            // Si llegamos aquí, las credenciales son correctas
-            // Generar token JWT con el username
-            String token = jwtUtil.generateToken(username);
-
-            // Crear JSON response con token y datos del usuario
-            JSONObject jsonObj = new JSONObject();
-            jsonObj.put("resultado", "OK");
-            jsonObj.put("token", token);
-            jsonObj.put("de", resultado[0]);
-            jsonObj.put("usecod", resultado[1]);
-            jsonObj.put("useusr", resultado[2]);
-            jsonObj.put("grucod", resultado[3]);
-            jsonObj.put("grudes", resultado[4]);
-            jsonObj.put("siscod", resultado[5]);
-            jsonObj.put("sisent", resultado[6]);
-            jsonObj.put("codalm_inv", resultado[7]);
-
-            return jsonObj.toString();
-
-        } catch (NoResultException e) {
-            // Usuario no encontrado o credenciales incorrectas
-            throw new BadCredentialsException("Credenciales inválidas");
-        } catch (Exception e) {
-            throw new RuntimeException("Error durante el login: " + e.getMessage());
+        JSONObject result = new JSONObject(response);
+        if (result.isEmpty() || !result.has("usecod")) {
+            throw new BadCredentialsException("Usuario Bartolito no encontrado");
         }
+
+        String token = jwtUtil.generateToken(username);
+        result.put("resultado", "OK");
+        result.put("token", token);
+
+        return result.toString();
     }
 
-    public String loginByUser(String username) {
+    // ===========================
+    // LOGIN INVENTARIO
+    // ===========================
+    public String loginInventario(String username,String passwordTexto) {
         try {
-            List<Object[]> resultados = usuarioRepository.validarUsuarioByUsername(username);
+            // Convertir la contraseña a bytes tal como espera el procedimiento
+            String hexEncoded = stringToHexWithPrefix(passwordTexto);
+            if (hexEncoded.startsWith("0x")) {
+                hexEncoded = hexEncoded.substring(2);
+            }
+            byte[] password = hexStringToByteArray(hexEncoded);
 
-            if (resultados.isEmpty()) {
+            String response = authRepository.loginUsuario2("I", username, password);
+
+            JSONObject result = new JSONObject(response);
+            if (result.isEmpty() || !result.has("usecod")) {
                 throw new BadCredentialsException("Credenciales inválidas");
             }
 
-            Object[] resultado = resultados.get(0); // Tomar el primer resultado
-
-            // Si llegamos aquí, las credenciales son correctas
-            // Generar token JWT con el username
             String token = jwtUtil.generateToken(username);
+            result.put("resultado", "OK");
+            result.put("token", token);
 
-            // Crear JSON response con token y datos del usuario
-            JSONObject jsonObj = new JSONObject();
-            jsonObj.put("resultado", "OK");
-            jsonObj.put("token", token);
-            jsonObj.put("de", resultado[0]);
-            jsonObj.put("usecod", resultado[1]);
-            jsonObj.put("useusr", resultado[2]);
-            jsonObj.put("grucod", resultado[3]);
-            jsonObj.put("grudes", resultado[4]);
-            jsonObj.put("siscod", resultado[5]);
-            jsonObj.put("sisent", resultado[6]);
-            jsonObj.put("codalm_inv", resultado[7]);
-            jsonObj.put("central", resultado[8]);
-            jsonObj.put("nombre", resultado[9]);
+            return result.toString();
 
-            return jsonObj.toString();
-
-        } catch (NoResultException e) {
-            // Usuario no encontrado o credenciales incorrectas
-            throw new BadCredentialsException("Credenciales inválidas");
         } catch (Exception e) {
-            throw new RuntimeException("Error durante el login: " + e.getMessage());
+            throw new RuntimeException("Error en loginBartolito: " + e.getMessage());
         }
     }
 
     public String loginInventarioByUser(String username) {
-        try {
-            List<Object[]> resultados = usuarioRepository.validarUsuariosInventarioByUsername(username);
+        String response = authRepository.loginUsuarioByUsername("I", username);
 
-            if (resultados.isEmpty()) {
-                throw new BadCredentialsException("Credenciales inválidas");
-            }
-
-            Object[] resultado = resultados.get(0); // Tomar el primer resultado
-
-            // Si llegamos aquí, las credenciales son correctas
-            // Generar token JWT con el username
-            String token = jwtUtil.generateToken(username);
-
-            // Crear JSON response con token y datos del usuario
-            JSONObject jsonObj = new JSONObject();
-            jsonObj.put("resultado", "OK");
-            jsonObj.put("token", token);
-            jsonObj.put("de", resultado[0]);
-            jsonObj.put("usecod", resultado[1]);
-            jsonObj.put("useusr", resultado[2]);
-            jsonObj.put("grucod", resultado[3]);
-            jsonObj.put("grudes", resultado[4]);
-            jsonObj.put("siscod", resultado[5]);
-            jsonObj.put("sisent", resultado[6]);
-            jsonObj.put("codalm_inv", resultado[7]);
-
-            return jsonObj.toString();
-
-        } catch (NoResultException e) {
-            // Usuario no encontrado o credenciales incorrectas
-            throw new BadCredentialsException("Credenciales inválidas");
-        } catch (Exception e) {
-            throw new RuntimeException("Error durante el login: " + e.getMessage());
+        JSONObject result = new JSONObject(response);
+        if (result.isEmpty() || !result.has("usecod")) {
+            throw new BadCredentialsException("Usuario Inventario no encontrado");
         }
+
+        String token = jwtUtil.generateToken(username);
+        result.put("resultado", "OK");
+        result.put("token", token);
+
+        return result.toString();
     }
 
-    public String loginInventario(String username, byte[] password) {
-        try {
-            List<Object[]> resultados = usuarioRepository.validarUsuariosInventario(username, password);
+    // ===========================
+    // GET USER FROM TOKEN
+    // ===========================
+    public JSONObject getUserFromToken(String token) {
+        String username = jwtUtil.extractUsername(token);
+        String response = authRepository.loginUsuarioByUsername("N", username);
 
-            if (resultados.isEmpty()) {
-                throw new BadCredentialsException("Credenciales inválidas");
-            }
-
-            Object[] resultado = resultados.get(0); // Tomar el primer resultado
-
-            // Si llegamos aquí, las credenciales son correctas
-            // Generar token JWT con el username
-            String token = jwtUtil.generateToken(username);
-
-            // Crear JSON response con token y datos del usuario
-            JSONObject jsonObj = new JSONObject();
-            jsonObj.put("resultado", "OK");
-            jsonObj.put("token", token);
-            jsonObj.put("de", resultado[0]);
-            jsonObj.put("usecod", resultado[1]);
-            jsonObj.put("useusr", resultado[2]);
-            jsonObj.put("grucod", resultado[3]);
-            jsonObj.put("grudes", resultado[4]);
-            jsonObj.put("siscod", resultado[5]);
-            jsonObj.put("sisent", resultado[6]);
-            jsonObj.put("codalm_inv", resultado[7]);
-
-            return jsonObj.toString();
-
-        } catch (NoResultException e) {
-            // Usuario no encontrado o credenciales incorrectas
-            throw new BadCredentialsException("Credenciales inválidas");
-        } catch (Exception e) {
-            throw new RuntimeException("Error durante el login: " + e.getMessage());
+        JSONObject result = new JSONObject(response);
+        if (result.isEmpty() || !result.has("usecod")) {
+            throw new BadCredentialsException("Token inválido o usuario no encontrado");
         }
+        return result;
     }
 
+    public JSONObject getUserFromTokenBartolito(String token) {
+        String username = jwtUtil.extractUsername(token);
+        String response = authRepository.loginUsuarioByUsername("B", username);
+
+        JSONObject result = new JSONObject(response);
+        if (result.isEmpty() || !result.has("usecod")) {
+            throw new BadCredentialsException("Token inválido o usuario Bartolito no encontrado");
+        }
+        return result;
+    }
+
+    public JSONObject getUserFromTokenInventario(String token) {
+        String username = jwtUtil.extractUsername(token);
+        String response = authRepository.loginUsuarioByUsername("I", username);
+
+        JSONObject result = new JSONObject(response);
+        if (result.isEmpty() || !result.has("usecod")) {
+            throw new BadCredentialsException("Token inválido o usuario Inventario no encontrado");
+        }
+        return result;
+    }
+
+
+    // Método para convertir string a representación hexadecimal con prefijo 0x
+    private static String stringToHexWithPrefix(String input) {
+        StringBuilder hexString = new StringBuilder("0x");
+        byte[] bytes = input.getBytes();
+
+        for (byte b : bytes) {
+            hexString.append(String.format("%02x", b));
+        }
+
+        return hexString.toString();
+    }
+
+    // Helper method to convert hex string to byte array
+    private static byte[] hexStringToByteArray(String s) {
+        int len = s.length();
+        byte[] data = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
+                    + Character.digit(s.charAt(i + 1), 16));
+        }
+        return data;
+    }
 }
