@@ -6,11 +6,11 @@
 
     <groupId>com.bartolito</groupId>
     <artifactId>comercial</artifactId>
-    <versionc>0.0.1-SNAPSHOT</versionc>
-    <packaging>war</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <name>Comercial</name>
-    <description>Modulo Comercial</description>
+    <description>Módulo Comercial</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -24,21 +24,7 @@
     </properties>
 
     <dependencies>
-        <!-- Servlet API y Tomcat -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>4.0.1</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>compile</scope>
-        </dependency>
-
-        <!-- Web (REST Controllers) -->
+        <!-- Web (incluye Tomcat embebido y Servlet API) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -92,7 +78,7 @@
 
     <build>
         <plugins>
-            <!-- Plugin Spring Boot -->
+            <!-- Plugin Spring Boot (ejecutable) -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
