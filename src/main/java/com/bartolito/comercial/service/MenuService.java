@@ -1,15 +1,13 @@
-package com.ejemplo.jwtlogin.service;
+package com.bartolito.comercial.service;
 
-import com.ejemplo.jwtlogin.repository.AuthRepository;
-import com.ejemplo.jwtlogin.repository.MenuRepository;
-import com.ejemplo.jwtlogin.util.JwtUtil;
+import com.bartolito.comercial.repository.AuthRepository;
+import com.bartolito.comercial.repository.MenuRepository;
+import com.bartolito.comercial.util.JwtUtil;
 import io.jsonwebtoken.JwtException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class MenuService {

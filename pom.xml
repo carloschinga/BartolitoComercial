@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.bartolito</groupId>
-    <artifactId>autenticacion</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>comercial</artifactId>
+    <versionc>0.0.1-SNAPSHOT</versionc>
     <packaging>war</packaging>
 
-    <name>Autenticacion</name>
-    <description>Modulo de Autenticacion</description>
+    <name>Comercial</name>
+    <description>Modulo Comercial</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

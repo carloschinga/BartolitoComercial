@@ -1,22 +1,16 @@
-package com.ejemplo.jwtlogin.controller;
+package com.bartolito.comercial.controller;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.ejemplo.jwtlogin.util.JwtUtil;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
-import com.ejemplo.jwtlogin.service.AuthService;
+import com.bartolito.comercial.service.AuthService;
 
 
 @RestController

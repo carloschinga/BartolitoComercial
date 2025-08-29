@@ -1,4 +1,4 @@
-package com.ejemplo.jwtlogin.util;
+package com.bartolito.comercial.util;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,11 +8,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.ejemplo.jwtlogin.repository.AuthRepository;
+import com.bartolito.comercial.repository.AuthRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 

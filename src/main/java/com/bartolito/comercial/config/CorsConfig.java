@@ -1,4 +1,4 @@
-package com.ejemplo.jwtlogin.config;
+package com.bartolito.comercial.config;
 
 
 import org.springframework.context.annotation.Bean;

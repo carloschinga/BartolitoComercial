@@ -1,11 +1,9 @@
-package com.ejemplo.jwtlogin.controller;
+package com.bartolito.comercial.controller;
 
-import com.ejemplo.jwtlogin.service.MenuService;
+import com.bartolito.comercial.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController

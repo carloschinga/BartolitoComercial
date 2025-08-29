@@ -1,4 +1,4 @@
-package com.ejemplo.jwtlogin;
+package com.bartolito.comercial;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

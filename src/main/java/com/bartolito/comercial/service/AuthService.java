@@ -1,14 +1,12 @@
-package com.ejemplo.jwtlogin.service;
+package com.bartolito.comercial.service;
 
-import java.nio.charset.StandardCharsets;
-
-import com.ejemplo.jwtlogin.repository.AuthRepository;
+import com.bartolito.comercial.repository.AuthRepository;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
-import com.ejemplo.jwtlogin.util.JwtUtil;
+import com.bartolito.comercial.util.JwtUtil;
 @Service
 public class AuthService {
 
