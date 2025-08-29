@@ -6,14 +6,14 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class JwtloginApplication extends SpringBootServletInitializer {
+public class ComerApplication extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(JwtloginApplication.class);
+        return application.sources(ComerApplication.class);
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(JwtloginApplication.class, args);
+        SpringApplication.run(ComerApplication.class, args);
     }
 }
