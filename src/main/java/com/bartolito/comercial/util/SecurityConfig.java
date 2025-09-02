@@ -1,8 +1,9 @@
 package com.bartolito.comercial.util;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -11,29 +12,31 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private JwtRequestFilter jwtRequestFilter;
+    private final JwtComercialFilter jwtComercialFilter;
+
+    public SecurityConfig(JwtComercialFilter jwtComercialFilter) {
+        this.jwtComercialFilter = jwtComercialFilter;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors().and()
-                .csrf().disable() // importante para POST sin CSRF token
+        http
+                .cors() // ✅ habilita CORS usando configurationSource
+                .and()
+                .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/auth/login", "/auth/loginByUsername", "/auth/loginBartolito",
-                        "/auth/loginBartolitoByUsername",
-                        "/auth/loginInventarioByUsername", "/auth/loginInventario",
-                        "/auth/getUser",
-                        "/auth/getUserBartolito",
-                        "/auth/getUserInventario",
-                        "/menu/paginasxgrupo")
-                .permitAll()
+                .antMatchers().permitAll()
+                // todos los endpoints requieren autenticación
                 .anyRequest().authenticated()
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .addFilterBefore(jwtComercialFilter, UsernamePasswordAuthenticationFilter.class);
 
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }

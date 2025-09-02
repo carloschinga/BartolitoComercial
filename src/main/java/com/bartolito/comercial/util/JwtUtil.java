@@ -19,16 +19,6 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
     }
 
-    // Generar token con username
-    public String generateToken(String username) {
-        return Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
-                .compact();
-    }
-
     // Extraer username de token
     public String extractUsername(String token) {
         return Jwts.parserBuilder()
@@ -51,6 +41,4 @@ public class JwtUtil {
             return false;
         }
     }
-
-
 }
