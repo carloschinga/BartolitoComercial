@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.bartolito.comercial.service.AuthService;
 
-
+//aaaa
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
