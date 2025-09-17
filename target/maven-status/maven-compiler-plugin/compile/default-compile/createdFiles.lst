@@ -1,12 +1,8 @@
-com\bartolito\comercial\service\MenuService.class
+com\bartolito\comercial\repository\ComerRepository.class
+com\bartolito\comercial\controller\ComerController.class
+com\bartolito\comercial\util\JwtComercialFilter.class
 com\bartolito\comercial\util\JwtUtil.class
-com\bartolito\comercial\controller\MenuController.class
 com\bartolito\comercial\util\SecurityConfig.class
-com\bartolito\comercial\util\JwtRequestFilter.class
-com\bartolito\comercial\config\CorsConfig$1.class
+com\bartolito\comercial\service\ComerService.class
 com\bartolito\comercial\ComerApplication.class
-com\bartolito\comercial\repository\MenuRepository.class
-com\bartolito\comercial\controller\AuthController.class
-com\bartolito\comercial\repository\AuthRepository.class
 com\bartolito\comercial\config\CorsConfig.class
-com\bartolito\comercial\service\AuthService.class

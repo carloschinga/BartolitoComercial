@@ -28,7 +28,8 @@ public class SecurityConfig {
                 .and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers().permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
                 // todos los endpoints requieren autenticación
                 .anyRequest().authenticated()
                 .and()

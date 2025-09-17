@@ -17,21 +17,16 @@ public class ComerRepository {
     private JdbcTemplate jdbcTemplate;
 
     // METODO PARA EJECUTAR EL SP QUE AGREGA UN DESEMPEÑO DE VENTAS
-    public String agregarDesempenioJson(String desobj, int usecod, String mesano,
-                                        String tipo, String estado, int hecAct) {
-        String sql = "EXEC sp_bart_desempenio_meta_venta_agregar " +
-                "@desobj = ?, @usecod = ?, @mesano = ?, @estado = ?, @tipo = ?, @hecAct = ?";
+    public String agregarDesempenioJson(String desobj, int usecod, String mesano, String tipo, String estado, int hecAct) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_agregar " + "@desobj = ?, @usecod = ?, @mesano = ?, @estado = ?, @tipo = ?, @hecAct = ?";
 
         return jdbcTemplate.queryForObject(sql, String.class, desobj, usecod, mesano, tipo, estado, hecAct);
     }
 
     // METODO PARA EJECUTAR EL SP QUE MODIFICA UN DESEMPEÑO DE VENTAS
-    public String modificarDesempenioJson(int cuotVtaId, String desobj, int usecod, String mesano,
-                                          String estado, String tipo, int hecAct) {
+    public String modificarDesempenioJson(int cuotVtaId, String desobj, int usecod, String mesano, String estado, String tipo, int hecAct) {
 
-        String sql = "EXEC sp_bart_desempenio_meta_venta_modificar " +
-                "@CuotVtaId = ?, @desobj = ?, @usecod = ?, " +
-                "@mesano = ?, @estado = ?, @tipo = ?, @hecAct = ?";
+        String sql = "EXEC sp_bart_desempenio_meta_venta_modificar " + "@CuotVtaId = ?, @desobj = ?, @usecod = ?, " + "@mesano = ?, @estado = ?, @tipo = ?, @hecAct = ?";
 
         // Ejecutamos la consulta y devolvemos el resultado
         return jdbcTemplate.queryForObject(sql, String.class, cuotVtaId, desobj, usecod, mesano, estado, tipo, hecAct);
@@ -92,8 +87,7 @@ public class ComerRepository {
     public String modificarMetaFarmaciaJson(int cuotVtaId, int siscod, BigDecimal cantidad, BigDecimal porc_estra, int usecod) {
         try {
             String sql = "EXEC sp_bart_desempenio_meta_venta_farmacia_modificar ?, ?, ?, ?, ?";
-            List<String> result = jdbcTemplate.queryForList(sql, String.class,
-                    cuotVtaId, siscod, cantidad, porc_estra, usecod);
+            List<String> result = jdbcTemplate.queryForList(sql, String.class, cuotVtaId, siscod, cantidad, porc_estra, usecod);
 
             // concatenamos en caso de que haya más de una fila
             return String.join("", result);
@@ -113,6 +107,7 @@ public class ComerRepository {
             String sql = "EXEC sp_bart_desempenio_meta_venta_dashboard";
             List<String> result = jdbcTemplate.queryForList(sql, String.class);
             return String.join("", result); // concatenar filas si hubiera más de una
+
         } catch (DataAccessException dae) {
             System.err.println("Error al ejecutar SP dashboard: " + dae.getMessage());
             return "{\"resultado\":\"error\",\"mensaje\":\"Error en la base de datos\",\"data\":[]}";
@@ -123,8 +118,196 @@ public class ComerRepository {
     }
 
 
+    /*================================MÉTODOS PARA ROLES===================================*/
+    public String listarRolesJson() {
+        try {
+            String sql = "EXEC sp_bart_desempenio_vendedor_rol_listar";
+
+            List<String> result = jdbcTemplate.queryForList(sql, String.class);
+
+            return String.join("", result);
+
+        } catch (DataAccessException dae) {
+            return "{ \"resultado\": \"error\", \"mensaje\": \"Error de acceso a la base de datos\", \"data\": [] }";
+        } catch (Exception e) {
+            return "{ \"resultado\": \"error\", \"mensaje\": \"Ocurrió un error inesperado\", \"data\": [] }";
+        }
+    }
+
+    public String listarSucursalesMonto(int cuotVtaId) {
+        try {
+            String sql = "EXEC sp_bart_desempenio_meta_venta_farmacia_listar ?";
+
+            List<String> result = jdbcTemplate.queryForList(sql, String.class, cuotVtaId);
+
+            return String.join("", result);
+
+        } catch (DataAccessException dae) {
+            return "{ \"resultado\": \"error\", \"mensaje\": \"Error de acceso a la base de datos\", \"data\": [] }";
+        } catch (Exception e) {
+            return "{ \"resultado\": \"error\", \"mensaje\": \"Ocurrió un error inesperado\", \"data\": [] }";
+        }
+    }
+
+    public String listarRolesporFarmacia(int CuotVtaMesId) {
+        try {
+            String sql = "EXEC sp_bart_desempenio_vendedor_rol_farmacia_listar ?";
+
+            List<String> result = jdbcTemplate.queryForList(sql, String.class, CuotVtaMesId);
+
+            return String.join("", result);
+
+        } catch (DataAccessException dae) {
+            return "{ \"resultado\": \"error\", \"mensaje\": \"Error de acceso a la base de datos\", \"data\": [] }";
+        } catch (Exception e) {
+            return "{ \"resultado\": \"error\", \"mensaje\": \"Ocurrió un error inesperado\", \"data\": [] }";
+        }
+    }
+
+    public String modificarRolesXml(String xml) {
+        try {
+            String sql = "EXEC sp_bart_desempenio_vendedor_rol_modificar @xml = ?";
+            String result = jdbcTemplate.queryForObject(sql, new Object[]{xml}, String.class);
+            return (result == null || result.isEmpty()) ? "{\"resultado\":\"error\",\"mensaje\":\"No se obtuvo respuesta\"}" : result;
+
+        } catch (DataAccessException dae) {
+            return "{ \"resultado\": \"error\", \"mensaje\": \"Error de acceso a la base de datos\", \"data\": [] }";
+        } catch (Exception e) {
+            return "{ \"resultado\": \"error\", \"mensaje\": \"Ocurrió un error inesperado\", \"data\": [] }";
+        }
+    }
+
+    public String listarVendedores() {
+        try {
+            // SQL Server SP
+            String sql = "EXEC sp_bart_desempenio_vendedor_listar";
+
+            List<String> result = jdbcTemplate.queryForList(sql, String.class);
+
+            return String.join("", result);
+
+        } catch (DataAccessException dae) {
+            return "{ \"resultado\": \"error\", \"mensaje\": \"Error de acceso a SQL Server\", \"data\": [] }";
+        } catch (Exception e) {
+            return "{ \"resultado\": \"error\", \"mensaje\": \"Error inesperado en la API\", \"data\": [] }";
+        }
+    }
 
 
+    public String listarVendedoresAsignados(Integer cuotVtaRolId) {
+        try {
+            String sql = "EXEC sp_bart_desempenio_vendedor_rol_vendedor_listar @CuotVtaRolId = ?";
+            List<String> result = jdbcTemplate.queryForList(sql, String.class, cuotVtaRolId);
+
+//            if (result.isEmpty()) {
+//                return "{ \"resultado\": \"ok\", \"vendedores\": [] }";
+//            }
+
+            return String.join("", result);
+
+        } catch (DataAccessException dae) {
+            return "{ \"resultado\": \"error\", \"mensaje\": \"Error de acceso a SQL Server\", \"vendedores\": [] }";
+        } catch (Exception e) {
+            return "{ \"resultado\": \"error\", \"mensaje\": \"Error inesperado en la API\", \"vendedores\": [] }";
+        }
+    }
+
+
+    public String modificarVendedoresXml(String xml) {
+        try {
+            String sql = "EXEC sp_bart_desempenio_vendedor_rol_vendedor_modificar @xml = ?";
+            String result = jdbcTemplate.queryForObject(sql, new Object[]{xml}, String.class);
+
+            if (result == null || result.isEmpty()) {
+                return "{\"resultado\":\"error\",\"mensaje\":\"No se obtuvo respuesta del SP\"}";
+            }
+
+            return result;
+
+        } catch (DataAccessException dae) {
+            return "{ \"resultado\": \"error\", \"mensaje\": \"Error de acceso a SQL Server\" }";
+        } catch (Exception e) {
+            return "{ \"resultado\": \"error\", \"mensaje\": \"Error inesperado en la API\" }";
+        }
+    }
+
+
+
+    /*==================Codido para el Dashboard Vendedores===============*/
+
+    public String listarFarmaciasJson() {
+        String sql = "EXEC sp_bart_desempenio_farmacias_listar";
+        try {
+            List<String> result = jdbcTemplate.queryForList(sql, String.class);
+
+            if (result.isEmpty()) {
+                return "{\"resultado\":\"error\",\"farmacias\":[]}";
+            }
+            return String.join("", result);
+
+        } catch (DataAccessException dae) {
+            return "{ \"resultado\": \"error\", \"mensaje\": \"Error de acceso a SQL Server\" }";
+        } catch (Exception e) {
+            return "{ \"resultado\": \"error\", \"mensaje\": \"Error inesperado en la API\" }";
+        }
+    }
+
+
+    public String listarVendedoresLocalJson(int siscod) {
+        String sql = "EXEC sp_bart_desempenio_vendedor_farmacia_listar @siscod = ?";
+
+        try {
+            List<String> result = jdbcTemplate.queryForList(sql, String.class, siscod);
+            if (result.isEmpty()) {
+                return "{ \"resultado\": \"error\", \"vendedores\": [] }";
+            }
+            return String.join("", result);
+
+        } catch (DataAccessException dae) {
+            return "{ \"resultado\": \"error\", \"mensaje\": \"Error de acceso a SQL Server\" }";
+        } catch (Exception e) {
+            return "{ \"resultado\": \"error\", \"mensaje\": \"Error inesperado en la API\" }";
+        }
+    }
+
+
+    public String obtenerMetaVentaVendedorJson(int usecod) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_dashboard_vendedor @usecod = ?";
+
+        try {
+            List<String> result = jdbcTemplate.queryForList(sql, String.class, usecod);
+
+            if (result.isEmpty()) {
+                return "{\"resultado\":\"error\",\"mensaje\":\"datos\",\"data\":[]}";
+            }
+            return String.join("", result);
+
+        } catch (DataAccessException dae) {
+            return "{ \"resultado\": \"error\", \"mensaje\": \"Error de acceso a SQL Server\" }";
+        } catch (Exception e) {
+            return "{ \"resultado\": \"error\", \"mensaje\": \"Error inesperado en la API\" }";
+        }
+    }
+
+
+    public String listarVendedoresPorFarmaciaJson(int siscod) {
+
+        String sql = "EXEC sp_bart_desempenio_meta_venta_dashboard_farmacia @siscod = ?";
+        try {
+            List<String> result = jdbcTemplate.queryForList(sql, String.class, siscod);
+
+            if (result.isEmpty()) {
+                // Si no hay datos, devuelvo un JSON con data vacío
+                return "{ \"resultado\": \"ok\", \"mensaje\": \"sin datos\", \"data\": [] }";
+            }
+            return String.join("", result);
+
+        } catch (DataAccessException dae) {
+            return "{ \"resultado\": \"error\", \"mensaje\": \"Error de acceso a SQL Server\" }";
+        } catch (Exception e) {
+            return "{ \"resultado\": \"error\", \"mensaje\": \"Error inesperado en la API\" }";
+        }
+    }
 
 
 }
