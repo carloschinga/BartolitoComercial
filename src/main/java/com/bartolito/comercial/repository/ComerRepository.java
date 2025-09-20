@@ -252,7 +252,6 @@ public class ComerRepository {
         }
     }
 
-
     public String listarVendedoresLocalJson(int siscod) {
         String sql = "EXEC sp_bart_desempenio_vendedor_farmacia_listar @siscod = ?";
 
@@ -269,7 +268,6 @@ public class ComerRepository {
             return "{ \"resultado\": \"error\", \"mensaje\": \"Error inesperado en la API\" }";
         }
     }
-
 
     public String obtenerMetaVentaVendedorJson(int usecod) {
         String sql = "EXEC sp_bart_desempenio_meta_venta_dashboard_vendedor @usecod = ?";
@@ -289,7 +287,6 @@ public class ComerRepository {
         }
     }
 
-
     public String listarVendedoresPorFarmaciaJson(int siscod) {
 
         String sql = "EXEC sp_bart_desempenio_meta_venta_dashboard_farmacia @siscod = ?";
@@ -301,6 +298,43 @@ public class ComerRepository {
                 return "{ \"resultado\": \"ok\", \"mensaje\": \"sin datos\", \"data\": [] }";
             }
             return String.join("", result);
+
+        } catch (DataAccessException dae) {
+            return "{ \"resultado\": \"error\", \"mensaje\": \"Error de acceso a SQL Server\" }";
+        } catch (Exception e) {
+            return "{ \"resultado\": \"error\", \"mensaje\": \"Error inesperado en la API\" }";
+        }
+    }
+
+
+    /*==================================GESTIÓN DE UMBRALES========================================*/
+
+    public String listarUmbralesJson() {
+        String sql = "EXEC sp_bart_desempenio_umbrales_listar";
+        try {
+            List<String> result = jdbcTemplate.queryForList(sql, String.class);
+
+            if (result.isEmpty()) {
+                return "{ \"resultado\": \"ok\", \"mensaje\": \"sin datos\", \"umbrales\": [] }";
+            }
+            return String.join("", result);
+
+        } catch (DataAccessException dae) {
+            return "{ \"resultado\": \"error\", \"mensaje\": \"Error de acceso a SQL Server\" }";
+        } catch (Exception e) {
+            return "{ \"resultado\": \"error\", \"mensaje\": \"Error inesperado en la API\" }";
+        }
+    }
+
+
+    public String modificarUmbralesJson(int codumb, String nomumb, BigDecimal minpor, BigDecimal maxpor) {
+        String sql = "EXEC sp_bart_desempenio_umbrales_modificar ?, ?, ?, ?";
+
+        try {
+            List<String> result = jdbcTemplate.queryForList(sql, String.class, codumb, nomumb, minpor, maxpor);
+
+            // Devuelve el JSON que vino del SP
+            return result.isEmpty() ? "{}" : result.get(0);
 
         } catch (DataAccessException dae) {
             return "{ \"resultado\": \"error\", \"mensaje\": \"Error de acceso a SQL Server\" }";

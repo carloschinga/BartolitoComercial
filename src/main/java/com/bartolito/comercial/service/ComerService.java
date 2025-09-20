@@ -144,4 +144,14 @@ public class ComerService {
     public String obtenerVendedoresPorFarmacia(int siscod){
         return repository.listarVendedoresPorFarmaciaJson(siscod);
     }
+
+    /*==================================GESTIÓN DE UMBRALES========================================*/
+
+    public String obtenerUmbrales(){
+        return repository.listarUmbralesJson();
+    }
+
+    public String modificarUmbrales(int codumb, String nomumb, BigDecimal minpor, BigDecimal maxpor){
+        return repository.modificarUmbralesJson(codumb, nomumb, minpor, maxpor);
+    }
 }

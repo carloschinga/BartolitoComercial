@@ -346,8 +346,6 @@ public class ComerController {
         }
     }
 
-
-
     @PostMapping("/vendedores-por-farmacia")
     public ResponseEntity<String> listarVendedoresPorFarmacia(@RequestBody Map<String, Integer> request) {
         try {
@@ -362,4 +360,43 @@ public class ComerController {
                     .body("{\"resultado\":\"error\",\"vendedores\":[]}");
         }
     }
+
+    /*==================================GESTIÓN DE UMBRALES========================================*/
+
+    @GetMapping("/listarumbrales")
+    public ResponseEntity<String> listarUmbrales() {
+        try {
+            String result = service.obtenerUmbrales();
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(result);
+        } catch (Exception e) {
+            // Si algo falla en Service o Repository
+            System.err.println("Error en listarUmbrales: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("{\"resultado\":\"error\",\"umbrales\":[]}");
+        }
+    }
+
+    @PostMapping("/modificarumbrales")
+    public ResponseEntity<String> modificaarUmbrales(@RequestBody Map<String, Object> request) {
+        try {
+            int codumb = Integer.parseInt(request.get("codumb").toString());
+            String nomumb = request.get("nomumb").toString();
+            BigDecimal minpor = new BigDecimal(request.get("minpor").toString());
+            BigDecimal maxpor = new BigDecimal(request.get("maxpor").toString());
+
+            String result = service.modificarUmbrales(codumb, nomumb, minpor, maxpor);
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body("{\"resultado\":\"error\",\"mensaje\":\"Error interno en el servidor\",\"data\":[]}");
+        }
+    }
+
 }
