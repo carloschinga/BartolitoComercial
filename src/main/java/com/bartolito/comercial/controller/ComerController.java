@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.print.attribute.standard.Media;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/comercial")
@@ -66,7 +65,7 @@ public class ComerController {
                     .body(result);
 
         } catch (Exception e) {
-            e.printStackTrace(); // 👈 imprime en logs el error real
+            e.printStackTrace();
             return ResponseEntity.status(500)
                     .contentType(MediaType.APPLICATION_JSON)
                     .body("{\"resultado\":\"error\",\"mensaje\":\"Ocurrió un error al modificar: " + e.getMessage() + "\"}");
@@ -397,6 +396,188 @@ public class ComerController {
                     .contentType(MediaType.APPLICATION_JSON)
                     .body("{\"resultado\":\"error\",\"mensaje\":\"Error interno en el servidor\",\"data\":[]}");
         }
+    }
+
+
+    /*=========================== OBJETIVO COMERCIAL DE PRODUCTOS ==============================*/
+
+    @GetMapping("/listarproductos")
+    public ResponseEntity<Map<String, Object>> listarProductos() {
+        try {
+            List<Map<String, Object>> result = service.obtenerProductos();
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("resultado", "ok");
+            response.put("productos", result);
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            System.err.println("Error en listar Productos: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("resultado", "error"));
+        }
+    }
+
+
+    @PostMapping("/agregarproducto")
+    public ResponseEntity<String> agregarProducto(@RequestBody Map<String, Object> request) {
+
+        String codpro = request.get("codpro").toString();
+        String tipo = request.get("tipo").toString();
+
+        // Pueden venir como null si el frontend no envía el valor
+        BigDecimal unidades = request.get("unidades") != null ? new BigDecimal(request.get("unidades").toString()) : null;
+        BigDecimal monto = request.get("monto") != null ? new BigDecimal(request.get("monto").toString()) : null;
+
+        int cuotVtaId = Integer.parseInt(request.get("cuotVtaId").toString());
+        int useId = Integer.parseInt(request.get("useId").toString());
+
+        String result = service.agregarMetaVentaProducto(codpro, tipo, unidades, monto, cuotVtaId, useId);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(result);
+    }
+
+    @PostMapping("/listar-venta-productos")
+    public ResponseEntity<String> listarMetaVentaProductos(@RequestBody Map<String, Integer> request) {
+
+        int cuotVtaId = request.get("cuotVtaId");
+        String result = service.listarMetaVentaProductos(cuotVtaId);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(result);
+    }
+
+    @PostMapping("/eliminar-meta-producto")
+    public ResponseEntity<String> eliminarMetaVentaProducto(@RequestBody Map<String, Object> request) {
+        String codpro = request.get("codpro").toString();
+        int cuotVtaId = Integer.parseInt(request.get("cuotVtaId").toString());
+
+        String result = service.eliminarMetaVentaProducto(codpro, cuotVtaId);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(result);
+
+    }
+
+    @PostMapping("/agregar-producto-permanente")
+    public ResponseEntity<String> agregarProductoPermanente(@RequestBody Map<String, Object> request) {
+        String codpro = request.get("codpro").toString();
+        int cantpro = Integer.parseInt(request.get("cantpro").toString());
+        int cuotVtaId = Integer.parseInt(request.get("cuotVtaId").toString()); // Nuevo parámetro
+
+        String result = service.agregarPermanente(codpro, cantpro, cuotVtaId);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(result);
+    }
+
+    @PostMapping("/eliminar-producto-permanente")
+    public ResponseEntity<String> eliminarProductoPermanente(@RequestBody Map<String, Object> request) {
+        String codpro = request.get("codpro").toString();
+        int cuotVtaId = Integer.parseInt(request.get("cuotVtaId").toString()); // Nuevo parámetro
+
+        String result = service.eliminarPermanente(codpro, cuotVtaId);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(result);
+    }
+
+    /*=========================== OBJETIVO DE VENTA DE PRODUCTOS ==============================*/
+
+    @GetMapping("/listar-sucursales-productos-detalle")
+    public ResponseEntity<String> listarSucursalesProductosDetalle() {
+        String result = service.listarSucursalesProductosDetalle();
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(result);
+
+    }
+
+    @PostMapping("/listar-objetivo-productos-detalle")
+    public ResponseEntity<String> listarObjetivoProductosDetalle(@RequestBody Map<String, Object> request) {
+
+        int cuotVtaId = Integer.parseInt(request.get("cuotVtaId").toString());
+        String codpro = request.get("codpro").toString();
+
+        String result = service.listarObjetivoProductosDetalle(cuotVtaId, codpro);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(result);
+    }
+
+
+    @PostMapping("/agregar-objetivo-productos-detalle")
+    public ResponseEntity<String> agregarObjetivoProductosDetalle(@RequestBody Map<String, Object> request) {
+        int cuotVtaId = Integer.parseInt(request.get("cuotVtaId").toString());
+        String codpro = request.get("codpro").toString();
+        int sucurId = Integer.parseInt(request.get("sucurId").toString());
+
+        String result = service.agregarObjetivoProductosDetalle(cuotVtaId, codpro, sucurId);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(result);
+
+    }
+
+    @DeleteMapping("/eliminar-objetivo-productos-detalle")
+    public ResponseEntity<String> eliminarObjetivoProductosDetalle(@RequestBody Map<String, Object> request) {
+        int cuotVtaId = Integer.parseInt(request.get("cuotVtaId").toString());
+        String codpro = request.get("codpro").toString();
+        int sucurId = Integer.parseInt(request.get("sucurId").toString());
+
+        String result = service.eliminarObjetivoProductosDetalle(cuotVtaId, codpro, sucurId);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(result);
+    }
+
+    @PutMapping("/modificar-unidades")
+    public ResponseEntity<String> modificarUnidadesProductos(@RequestBody Map<String, Object> request) {
+
+        try {
+            int cuotVtaId = Integer.parseInt(request.get("cuotVtaId").toString());
+            String codpro = request.get("codpro").toString();
+
+            // Recibir directamente unidades y monto (pueden ser null)
+            BigDecimal unidades = request.get("unidades") != null
+                    ? new BigDecimal(request.get("unidades").toString())
+                    : null;
+
+            BigDecimal monto = request.get("monto") != null
+                    ? new BigDecimal(request.get("monto").toString())
+                    : null;
+
+            // Llamar al servicio con ambos valores
+            String result = service.modificarUnidades(cuotVtaId, codpro, unidades, monto);
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(result);
+
+        } catch (Exception e) {
+            String m = "";
+            m = e.getMessage();
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @PostMapping("/dashboard-producto")
+    public ResponseEntity<String> obtenerDashboardProducto(@RequestBody Map<String, Object> request) {
+
+        int siscod = Integer.parseInt(request.get("siscod").toString());
+        String result = service.obtenerDashboardProducto(siscod);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(result);
     }
 
 }

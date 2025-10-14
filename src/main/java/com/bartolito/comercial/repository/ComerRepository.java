@@ -8,13 +8,16 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.sql.Clob;
 import java.sql.Timestamp;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class ComerRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    private String string;
 
     // METODO PARA EJECUTAR EL SP QUE AGREGA UN DESEMPEÑO DE VENTAS
     public String agregarDesempenioJson(String desobj, int usecod, String mesano, String tipo, String estado, int hecAct) {
@@ -231,9 +234,7 @@ public class ComerRepository {
         }
     }
 
-
-
-    /*==================Codido para el Dashboard Vendedores===============*/
+    /*==================Código para el Dashboard Vendedores===============*/
 
     public String listarFarmaciasJson() {
         String sql = "EXEC sp_bart_desempenio_farmacias_listar";
@@ -326,7 +327,6 @@ public class ComerRepository {
         }
     }
 
-
     public String modificarUmbralesJson(int codumb, String nomumb, BigDecimal minpor, BigDecimal maxpor) {
         String sql = "EXEC sp_bart_desempenio_umbrales_modificar ?, ?, ?, ?";
 
@@ -337,11 +337,89 @@ public class ComerRepository {
             return result.isEmpty() ? "{}" : result.get(0);
 
         } catch (DataAccessException dae) {
-            return "{ \"resultado\": \"error\", \"mensaje\": \"Error de acceso a SQL Server\" }";
+            return "{ \"resultado\": \"error\", " + "\"mensaje\": \"Error de acceso a SQL Server\" }";
         } catch (Exception e) {
             return "{ \"resultado\": \"error\", \"mensaje\": \"Error inesperado en la API\" }";
         }
     }
 
+    /*=========================== OBJETIVO COMERCIAL DE PRODUCTOS ==============================*/
+
+    public List<Map<String, Object>> obtenerProductos() {
+        String sql = "EXEC sp_bart_desempenio_productos_listar";
+        try {
+            return jdbcTemplate.queryForList(sql);
+        } catch (DataAccessException dae) {
+            System.err.println("Error de acceso a datos: " + dae.getMessage());
+            return Collections.emptyList();
+        }
+    }
+
+    public String agregarMetaVentaProducto(String codpro, String tipo, BigDecimal unidades, BigDecimal monto, int cuotVtaId, int useId) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_producto_agregar ?, ?, ?, ?, ?, ?";
+        return jdbcTemplate.queryForObject(sql, String.class, codpro, tipo, unidades, monto, cuotVtaId, useId);
+    }
+
+
+
+    public String obtenerMetaVentaProductos(int cuotVtaId) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_producto_listar ?";
+
+        List<String> result = jdbcTemplate.queryForList(sql, String.class, cuotVtaId);
+
+        if (result.isEmpty()) {
+            return "{ \"resultado\": \"ok\", \"data\": [] }";
+        }
+
+        // El SP ya devuelve JSON, así que unimos las filas
+        return String.join("", result);
+    }
+
+
+    public String eliminarMetaVentaProducto(String codpro, int cuotVtaId) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_producto_eliminar ?, ?";
+        return jdbcTemplate.queryForObject(sql, String.class, codpro, cuotVtaId);
+    }
+
+    public String agregarProductoPermanente(String codpro, int cantpro, int cuotVtaId) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_producto_perm_agregar @codpro = ?, @cantpro = ?, @cuotVtaId = ?";
+        return jdbcTemplate.queryForObject(sql, String.class, codpro, cantpro, cuotVtaId);
+    }
+
+    public String eliminarProductoPermanente(String codpro, int cuotVtaId) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_producto_perm_eliminar @codpro = ?, @cuotVtaId = ?";
+        return jdbcTemplate.queryForObject(sql, String.class, codpro, cuotVtaId);
+    }
+
+    public String obtenerSucursalesProductosDetalle() {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_producto_sucursal";
+        return jdbcTemplate.queryForObject(sql, String.class);
+    }
+
+    public String obtenerObjetivoProductosDetalle(int cuotVtaId, String codpro) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_producto_detalle_listar ?, ?";
+        return jdbcTemplate.queryForObject(sql, String.class, cuotVtaId, codpro);
+    }
+
+
+    public String agregarObjetivoProductosDetalle(int cuotVtaId, String codpro, int sucurId) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_producto_detalle_agregar ?, ?, ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{cuotVtaId, codpro, sucurId}, String.class);
+    }
+
+    public String eliminarObjetivoProductosDetalle(int cuotVtaId, String codpro, int sucurId) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_producto_detalle_eliminar ?, ?, ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{cuotVtaId, codpro, sucurId}, String.class);
+    }
+
+    public String modificarUnidades(int cuotVtaId, String codpro, BigDecimal unidades, BigDecimal monto) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_producto_actualizar_unidades ?, ?, ?, ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{cuotVtaId, codpro, unidades, monto}, String.class);
+    }
+
+    public String obtenerDashboardProducto(int siscod) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_dashboard_producto ?";
+        return jdbcTemplate.queryForObject(sql, String.class, siscod);
+    }
 
 }

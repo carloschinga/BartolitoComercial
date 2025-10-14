@@ -11,6 +11,8 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ComerService {
@@ -44,7 +46,7 @@ public class ComerService {
         return repository.listarDesempenioJson();
     }
 
-    public String seleccionar(int cuotVtaId){
+    public String seleccionar(int cuotVtaId) {
         return repository.seleccionarJson(cuotVtaId);
     }
 
@@ -74,15 +76,15 @@ public class ComerService {
 
     /*================================MÉTODOS PARA ROLES===================================*/
 
-    public String listarRoles(){
+    public String listarRoles() {
         return repository.listarRolesJson();
     }
 
-    public String listarSucursalesMonto(int cuotVtaId){
+    public String listarSucursalesMonto(int cuotVtaId) {
         return repository.listarSucursalesMonto(cuotVtaId);
     }
 
-    public String listarRolesporFarmacia(int CuotVtaMesId){
+    public String listarRolesporFarmacia(int CuotVtaMesId) {
         return repository.listarRolesporFarmacia(CuotVtaMesId);
     }
 
@@ -141,17 +143,68 @@ public class ComerService {
         return repository.obtenerMetaVentaVendedorJson(usecod);
     }
 
-    public String obtenerVendedoresPorFarmacia(int siscod){
+    public String obtenerVendedoresPorFarmacia(int siscod) {
         return repository.listarVendedoresPorFarmaciaJson(siscod);
     }
 
     /*==================================GESTIÓN DE UMBRALES========================================*/
 
-    public String obtenerUmbrales(){
+    public String obtenerUmbrales() {
         return repository.listarUmbralesJson();
     }
 
-    public String modificarUmbrales(int codumb, String nomumb, BigDecimal minpor, BigDecimal maxpor){
+    public String modificarUmbrales(int codumb, String nomumb, BigDecimal minpor, BigDecimal maxpor) {
         return repository.modificarUmbralesJson(codumb, nomumb, minpor, maxpor);
+    }
+
+    /*=========================== OBJETIVO COMERCIAL DE PRODUCTOS ==============================*/
+    public List<Map<String, Object>> obtenerProductos() {
+        return repository.obtenerProductos();
+    }
+
+    public String agregarMetaVentaProducto(String codpro, String tipo, BigDecimal unidades, BigDecimal monto, int cuotVtaId, int useId) {
+        return repository.agregarMetaVentaProducto(codpro, tipo, unidades,monto, cuotVtaId, useId);
+    }
+
+    public String listarMetaVentaProductos(int cuotVtaId) {
+        return repository.obtenerMetaVentaProductos(cuotVtaId);
+    }
+
+    public String eliminarMetaVentaProducto(String codpro, int cuotVtaId) {
+        return repository.eliminarMetaVentaProducto(codpro, cuotVtaId);
+    }
+
+    public String agregarPermanente(String codpro, int cantpro, int cuotVtaId) {
+        return repository.agregarProductoPermanente(codpro, cantpro, cuotVtaId);
+    }
+
+    public String eliminarPermanente(String codpro, int cuotVtaId) {
+        return repository.eliminarProductoPermanente(codpro, cuotVtaId);
+    }
+
+
+    public String listarSucursalesProductosDetalle() {
+        return repository.obtenerSucursalesProductosDetalle();
+    }
+
+    public String listarObjetivoProductosDetalle(int cuotVtaId, String codpro) {
+        return repository.obtenerObjetivoProductosDetalle(cuotVtaId, codpro);
+    }
+
+
+    public String agregarObjetivoProductosDetalle(int cuotVtaId, String codpro, int sucurId) {
+        return repository.agregarObjetivoProductosDetalle(cuotVtaId, codpro, sucurId);
+    }
+
+    public String eliminarObjetivoProductosDetalle(int cuotVtaId, String codpro, int sucurId) {
+        return repository.eliminarObjetivoProductosDetalle(cuotVtaId, codpro, sucurId);
+    }
+
+    public String modificarUnidades(int cuotVtaId, String codpro, BigDecimal unidades, BigDecimal monto) {
+        return repository.modificarUnidades(cuotVtaId, codpro, unidades, monto);
+    }
+
+    public String obtenerDashboardProducto(int siscod) {
+        return repository.obtenerDashboardProducto(siscod);
     }
 }

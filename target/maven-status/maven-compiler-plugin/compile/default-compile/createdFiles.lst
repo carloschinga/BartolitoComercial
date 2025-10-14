@@ -1,8 +1,0 @@
-com\bartolito\comercial\repository\ComerRepository.class
-com\bartolito\comercial\controller\ComerController.class
-com\bartolito\comercial\util\JwtComercialFilter.class
-com\bartolito\comercial\util\JwtUtil.class
-com\bartolito\comercial\util\SecurityConfig.class
-com\bartolito\comercial\service\ComerService.class
-com\bartolito\comercial\ComerApplication.class
-com\bartolito\comercial\config\CorsConfig.class
