@@ -1,17 +1,15 @@
 package com.bartolito.comercial.controller;
 
 import com.bartolito.comercial.service.ComerService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.attribute.standard.Media;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.*;
+import java.sql.Date;
 
 @RestController
 @RequestMapping("/comercial")
@@ -299,7 +297,7 @@ public class ComerController {
     /*==================Codido para el Dashboard Vendedores===============*/
 
     @GetMapping("/listarfarmacias")
-    public ResponseEntity<String> getFarmacias() {
+    public ResponseEntity<String> obtenerFarmacias() {
         try {
             String result = service.obtenerFarmacias();
             return ResponseEntity.ok()
@@ -568,16 +566,79 @@ public class ComerController {
         }
     }
 
-
-    @PostMapping("/dashboard-producto")
-    public ResponseEntity<String> obtenerDashboardProducto(@RequestBody Map<String, Object> request) {
-
+    @PostMapping("/dashboard-producto-por-producto")
+    public ResponseEntity<Map<String, Object>> obtenerDashboardProducto(@RequestBody Map<String, Object> request) {
         int siscod = Integer.parseInt(request.get("siscod").toString());
-        String result = service.obtenerDashboardProducto(siscod);
+        int usecod = Integer.parseInt(request.get("usecod").toString()); // Nuevo parámetro
 
-        return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(result);
+        List<Map<String, Object>> dashboard = service.obtenerDashboardProductoporProducto(siscod, usecod);
+
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("resultado", "ok");
+        response.put("dashboardProducto", dashboard);
+
+        return ResponseEntity.ok(response);
+    }
+
+
+    @PostMapping("/dashboard-producto-por-vendedor")
+    public ResponseEntity<Map<String, Object>> obtenerDashboardProductoporVendedor(@RequestBody Map<String, Object> request) {
+        int siscod = Integer.parseInt(request.get("siscod").toString());
+
+        List<Map<String, Object>> dashboard = service.obtenerDashboardProductoporVendedor(siscod);
+
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("resultado", "ok");
+        response.put("dashboardProducto", dashboard);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/dashboard-producto")
+    public ResponseEntity<Map<String, Object>> obtenerDashboardProducto() {
+
+        List<Map<String, Object>> dashboard = service.obtenerDashboardProducto();
+
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("resultado", "ok");
+        response.put("dashboardProducto", dashboard);
+
+        return ResponseEntity.ok(response);
+    }
+
+
+
+    /*=========================== LISTADO DE CAJJAS CERRADAS ==============================*/
+
+    @PostMapping("/listar-cajas-cerradas")
+    public ResponseEntity<Map<String, Object>> obtenerCajasCerradas(@RequestBody Map<String, Object> request) {
+        Date fecha1 = Date.valueOf(request.get("fecha1").toString());
+        Date fecha2 = Date.valueOf(request.get("fecha2").toString());
+        int siscod = Integer.parseInt(request.get("siscod").toString());
+        int usecod1 = Integer.parseInt(request.get("usecod1").toString());
+
+        List<Map<String, Object>> result = service.obtenerCajasCerradas(fecha1, fecha2, siscod, usecod1);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("resultado", "ok");
+        response.put("cajas", result);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/listar-usuarios-cajas-cerradas")
+    public ResponseEntity<Map<String, Object>> obtenerUsuariosCajasCerradas(@RequestBody Map<String, Object> request) {
+        String fecha1 = request.get("fecha1").toString();
+        String fecha2 = request.get("fecha2").toString();
+        int siscod = Integer.parseInt(request.get("siscod").toString());
+
+        List<Map<String, Object>> usuarios = service.obtenerUsuariosCajasCerradas(fecha1, fecha2, siscod);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("resultado", "ok");
+        response.put("usuarios", usuarios);
+
+        return ResponseEntity.ok(response);
     }
 
 }

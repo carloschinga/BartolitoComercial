@@ -1,13 +1,13 @@
 package com.bartolito.comercial.repository;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
-import java.sql.Clob;
-import java.sql.Timestamp;
+import java.sql.Date;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -236,7 +236,7 @@ public class ComerRepository {
 
     /*==================Código para el Dashboard Vendedores===============*/
 
-    public String listarFarmaciasJson() {
+    public String obtenerFarmacias() {
         String sql = "EXEC sp_bart_desempenio_farmacias_listar";
         try {
             List<String> result = jdbcTemplate.queryForList(sql, String.class);
@@ -360,8 +360,6 @@ public class ComerRepository {
         return jdbcTemplate.queryForObject(sql, String.class, codpro, tipo, unidades, monto, cuotVtaId, useId);
     }
 
-
-
     public String obtenerMetaVentaProductos(int cuotVtaId) {
         String sql = "EXEC sp_bart_desempenio_meta_venta_producto_listar ?";
 
@@ -374,7 +372,6 @@ public class ComerRepository {
         // El SP ya devuelve JSON, así que unimos las filas
         return String.join("", result);
     }
-
 
     public String eliminarMetaVentaProducto(String codpro, int cuotVtaId) {
         String sql = "EXEC sp_bart_desempenio_meta_venta_producto_eliminar ?, ?";
@@ -417,9 +414,30 @@ public class ComerRepository {
         return jdbcTemplate.queryForObject(sql, new Object[]{cuotVtaId, codpro, unidades, monto}, String.class);
     }
 
-    public String obtenerDashboardProducto(int siscod) {
-        String sql = "EXEC sp_bart_desempenio_meta_venta_dashboard_producto ?";
-        return jdbcTemplate.queryForObject(sql, String.class, siscod);
+    public List<Map<String, Object>> obtenerDashboardProductoporProducto(int siscod, int usecod) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_dashboard_producto_x_producto @siscod = ?, @usecod = ?";
+        return jdbcTemplate.queryForList(sql, siscod, usecod);
     }
 
+    public List<Map<String, Object>> obtenerDashboardProductoporVendedor(int siscod) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_dashboard_producto_x_vendedor @siscod = ?";
+        return jdbcTemplate.queryForList(sql, siscod);
+    }
+
+    public List<Map<String, Object>> obtenerDashboardProducto() {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_dashboard_producto";
+        return jdbcTemplate.queryForList(sql);
+    }
+
+    /*=========================== LISTADO DE CAJJAS CERRADAS ==============================*/
+
+    public List<Map<String, Object>> obtenerCajasCerradas(Date fecha1, Date fecha2, int siscod, int usecod1) {
+        String sql = "EXEC sp_bart_caja_cajas_cerradas_listar ?, ?, ?, ?";
+        return jdbcTemplate.queryForList(sql, fecha1, fecha2, siscod, usecod1);
+    }
+
+    public List<Map<String, Object>> obtenerUsuariosCajasCerradas(String fecha1, String fecha2, int siscod) {
+        String sql = "EXEC sp_bart_caja_cajas_cerradas_usuario_listar @fecha1 = ?, @fecha2 = ?, @siscod = ?";
+        return jdbcTemplate.queryForList(sql, fecha1, fecha2, siscod);
+    }
 }

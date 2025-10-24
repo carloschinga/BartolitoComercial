@@ -1,18 +1,14 @@
 package com.bartolito.comercial.service;
 
 import com.bartolito.comercial.repository.ComerRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.json.XML;
 import org.springframework.stereotype.Service;
-
-
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ComerService {
@@ -132,7 +128,7 @@ public class ComerService {
     /*==================Codido para el Dashboard Vendedores===============*/
 
     public String obtenerFarmacias() {
-        return repository.listarFarmaciasJson();
+        return repository.obtenerFarmacias();
     }
 
     public String obtenerVendedoresLocal(int siscod) {
@@ -191,7 +187,6 @@ public class ComerService {
         return repository.obtenerObjetivoProductosDetalle(cuotVtaId, codpro);
     }
 
-
     public String agregarObjetivoProductosDetalle(int cuotVtaId, String codpro, int sucurId) {
         return repository.agregarObjetivoProductosDetalle(cuotVtaId, codpro, sucurId);
     }
@@ -204,7 +199,25 @@ public class ComerService {
         return repository.modificarUnidades(cuotVtaId, codpro, unidades, monto);
     }
 
-    public String obtenerDashboardProducto(int siscod) {
-        return repository.obtenerDashboardProducto(siscod);
+    public List<Map<String, Object>> obtenerDashboardProductoporProducto(int siscod, int usecod) {
+        return repository.obtenerDashboardProductoporProducto(siscod, usecod);
+    }
+
+    public List<Map<String, Object>> obtenerDashboardProductoporVendedor(int siscod) {
+        return repository.obtenerDashboardProductoporVendedor(siscod);
+    }
+
+    public List<Map<String, Object>> obtenerDashboardProducto() {
+        return repository.obtenerDashboardProducto();
+    }
+
+    /*=========================== LISTADO DE CAJJAS CERRADAS ==============================*/
+
+    public List<Map<String, Object>> obtenerCajasCerradas(Date fecha1, Date fecha2, int siscod, int usecod1) {
+        return repository.obtenerCajasCerradas(fecha1, fecha2, siscod, usecod1);
+    }
+
+    public List<Map<String, Object>> obtenerUsuariosCajasCerradas(String fecha1, String fecha2, int siscod) {
+        return repository.obtenerUsuariosCajasCerradas(fecha1, fecha2, siscod);
     }
 }
