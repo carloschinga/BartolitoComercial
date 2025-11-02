@@ -429,6 +429,12 @@ public class ComerRepository {
         return jdbcTemplate.queryForList(sql);
     }
 
+    public List<Map<String, Object>> obtenerVendedoresConMetaProducto(int siscod) {
+        String sql = "EXEC sp_bart_desempenio_vendedor_meta_producto @siscod = ?";
+        return jdbcTemplate.queryForList(sql, siscod);
+    }
+
+
     /*=========================== LISTADO DE CAJJAS CERRADAS ==============================*/
 
     public List<Map<String, Object>> obtenerCajasCerradas(Date fecha1, Date fecha2, int siscod, int usecod1) {
@@ -439,5 +445,12 @@ public class ComerRepository {
     public List<Map<String, Object>> obtenerUsuariosCajasCerradas(String fecha1, String fecha2, int siscod) {
         String sql = "EXEC sp_bart_caja_cajas_cerradas_usuario_listar @fecha1 = ?, @fecha2 = ?, @siscod = ?";
         return jdbcTemplate.queryForList(sql, fecha1, fecha2, siscod);
+    }
+
+    /*=========================== DASHBOARD RESUMEN ==============================*/
+
+    public List<Map<String, Object>> obtenerdDashnoardResumen(int cuotVtaId) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_dashboard_resumen ?";
+        return jdbcTemplate.queryForList(sql, cuotVtaId);
     }
 }

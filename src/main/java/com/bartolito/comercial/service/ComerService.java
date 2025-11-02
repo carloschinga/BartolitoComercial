@@ -211,6 +211,11 @@ public class ComerService {
         return repository.obtenerDashboardProducto();
     }
 
+    public List<Map<String, Object>> obtenerVendedoresConMetaProducto(int siscod) {
+        return repository.obtenerVendedoresConMetaProducto(siscod);
+    }
+
+
     /*=========================== LISTADO DE CAJJAS CERRADAS ==============================*/
 
     public List<Map<String, Object>> obtenerCajasCerradas(Date fecha1, Date fecha2, int siscod, int usecod1) {
@@ -219,5 +224,11 @@ public class ComerService {
 
     public List<Map<String, Object>> obtenerUsuariosCajasCerradas(String fecha1, String fecha2, int siscod) {
         return repository.obtenerUsuariosCajasCerradas(fecha1, fecha2, siscod);
+    }
+
+    /*=========================== DASHBOARD RESUMEN ==============================*/
+
+    public List<Map<String, Object>> obtenerdDashnoardResumen(int cuotVtaId) {
+        return repository.obtenerdDashnoardResumen(cuotVtaId);
     }
 }

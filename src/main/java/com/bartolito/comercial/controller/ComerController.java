@@ -606,6 +606,24 @@ public class ComerController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/vendedores/meta-producto")
+    public ResponseEntity<Map<String, Object>> obtenerVendedoresConMetaProducto(@RequestBody Map<String, Object> request) {
+
+        // Tomar el parámetro del body
+        int siscod = Integer.parseInt(request.get("siscod").toString());
+
+        // Llamar al servicio
+        List<Map<String, Object>> result = service.obtenerVendedoresConMetaProducto(siscod);
+
+        // Armar la respuesta
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("resultado", "ok");
+        response.put("vendedoresConMetaProducto", result);
+
+        return ResponseEntity.ok(response);
+    }
+
+
 
 
     /*=========================== LISTADO DE CAJJAS CERRADAS ==============================*/
@@ -641,4 +659,19 @@ public class ComerController {
         return ResponseEntity.ok(response);
     }
 
+    /*=========================== DASHBOARD RESUMEN ==============================*/
+
+    @PostMapping("/dashboard/resumen")
+    public ResponseEntity<Map<String, Object>> obtenerdDashnoardResumen(@RequestBody Map<String, Object> request) {
+
+        int cuotVtaId = Integer.parseInt(request.get("cuotVtaId").toString());
+
+        List<Map<String, Object>> result = service.obtenerdDashnoardResumen(cuotVtaId);
+
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("resultado", "ok");
+        response.put("dashhboard_resumen", result);
+
+        return ResponseEntity.ok(response);
+    }
 }
