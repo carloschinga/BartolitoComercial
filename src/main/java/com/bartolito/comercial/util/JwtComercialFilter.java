@@ -1,4 +1,4 @@
-package com.bartolito.rrhh.util;
+package com.bartolito.comercial.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,11 +14,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 @Component
-public class JwtRRHHFilter extends OncePerRequestFilter {
+public class JwtComercialFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
 
     @Autowired
-    public JwtRRHHFilter(JwtUtil jwtUtil) {
+    public JwtComercialFilter(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
     }
 

@@ -1,4 +1,4 @@
-package com.bartolito.rrhh.util;
+package com.bartolito.comercial.util;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,10 +15,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final JwtRRHHFilter jwtRRHHFilter;
+    private final JwtComercialFilter jwtComercialFilter;
 
-    public SecurityConfig(JwtRRHHFilter jwtRRHHFilter) {
-        this.jwtRRHHFilter = jwtRRHHFilter;
+    public SecurityConfig(JwtComercialFilter jwtComercialFilter) {
+        this.jwtComercialFilter = jwtComercialFilter;
     }
 
     @Bean
@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(jwtRRHHFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtComercialFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
