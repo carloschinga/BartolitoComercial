@@ -1,4 +1,4 @@
-package com.bartolito.comercial.exception;
+package com.bartolito.rrhh.exception;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -10,6 +10,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
+
+import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -67,5 +69,13 @@ public class GlobalExceptionHandler {
                 .status(status)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(body);
+    }
+
+    // Código para agregar en tu clase com.bartolito.rrhh.exception.GlobalExceptionHandler
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<String> handleNoSuchElement(NoSuchElementException ex) {
+        // 404 Not Found
+        String json = "{ \"resultado\": \"error\", \"mensaje\": \"" + ex.getMessage() + "\" }";
+        return buildResponse(HttpStatus.NOT_FOUND, json);
     }
 }

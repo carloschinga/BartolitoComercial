@@ -1,4 +1,4 @@
-package com.bartolito.comercial;
+package com.bartolito.rrhh;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,14 +6,14 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class ComerApplication extends SpringBootServletInitializer {
+public class RRHHApplication extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(ComerApplication.class);
+        return application.sources(RRHHApplication.class);
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(ComerApplication.class, args);
+        SpringApplication.run(RRHHApplication.class, args);
     }
 }

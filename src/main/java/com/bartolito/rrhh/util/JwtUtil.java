@@ -1,4 +1,4 @@
-package com.bartolito.comercial.util;
+package com.bartolito.rrhh.util;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
