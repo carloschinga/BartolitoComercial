@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.bartolito</groupId>
-    <artifactId>comercial</artifactId>
+    <artifactId>rrhh</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>Comercial</name>
-    <description>Módulo Comercial</description>
+    <name>RRHH</name>
+    <description>Módulo RRHH</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -90,7 +90,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
-                    <mainClass>com.bartolito.comercial.ComerApplication</mainClass>
+                    <mainClass>com.bartolito.rrhh.RRHHApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>
