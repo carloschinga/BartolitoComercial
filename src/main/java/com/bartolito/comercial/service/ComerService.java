@@ -72,6 +72,16 @@ public class ComerService {
         return repository.listarDashboardJson();
     }
 
+    /****************************METODOS PARA LA META FARMACIA PRODUCTO******************/
+
+    public String getMetaVentaProducto(int cuotVtaId) {
+        return repository.listarMetaVentaFarmaciaProducto(cuotVtaId);
+    }
+
+    public String modificarMetaFarmaciaProducto(int cuotVtaId, int siscod, BigDecimal cantidad, BigDecimal porc_estra, int usecod) {
+        return repository.modificarMetaFarmaciaProductoJson(cuotVtaId, siscod, cantidad, porc_estra, usecod);
+    }
+
     /*================================MÉTODOS PARA ROLES===================================*/
 
     public String listarRoles(){

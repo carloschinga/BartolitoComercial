@@ -117,6 +117,34 @@ public class ComerRepository {
         }
     }
 
+    /****************************METODOS PARA LA META FARMACIA PRODUCTO******************/
+    public String listarMetaVentaFarmaciaProducto(int cuotVtaId) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_farmacia_producto_listar @CuotVtaId = ?";
+        // devuelve todas las filas de la primera columna como List<String>
+        List<String> result = jdbcTemplate.queryForList(sql, String.class, cuotVtaId);
+
+        // concatenamos en caso de que haya más de una fila
+        return String.join("", result);
+    }
+
+    public String modificarMetaFarmaciaProductoJson(int cuotVtaId, int siscod, BigDecimal cantidad, BigDecimal porc_estra, int usecod) {
+        try {
+            String sql = "EXEC sp_bart_desempenio_meta_venta_farmacia_producto_modificar ?, ?, ?, ?, ?";
+            List<String> result = jdbcTemplate.queryForList(sql, String.class, cuotVtaId, siscod, cantidad, porc_estra, usecod);
+
+            // concatenamos en caso de que haya más de una fila
+            return String.join("", result);
+
+        } catch (DataAccessException dae) {
+            System.err.println("Error al ejecutar el SP: " + dae.getMessage());
+            return "{\"resultado\":\"error\",\"mensaje\":\"Error en la base de datos\",\"data\":[]}";
+        } catch (Exception e) {
+            System.err.println("Error inesperado: " + e.getMessage());
+            return "{\"resultado\":\"error\",\"mensaje\":\"Error inesperado\",\"data\":[]}";
+        }
+    }
+
+
 
     /*================================MÉTODOS PARA ROLES===================================*/
     public String listarRolesJson() {

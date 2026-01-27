@@ -176,6 +176,38 @@ public class ComerController {
         }
     }
 
+    /****************************METODOS PARA LA META FARMACIA PRODUCTOS******************/
+    @PostMapping("/listarFarmaciaProductos")
+    public ResponseEntity<String> listarFarmaciaProductos(@RequestBody Map<String, Integer> request) {
+        int cuotVtaId = request.get("cuotVtaId");
+        String result = service.getMetaVentaProducto(cuotVtaId);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON) // 👈 asegura JSON real
+                .body(result);
+    }
+
+    @PostMapping("/modificarFarmaciaProducto")
+    public ResponseEntity<String> modificarFarmaciaProducto(@RequestBody Map<String, Object> request) {
+        try {
+            int cuotVtaId = Integer.parseInt(request.get("cuotVtaId").toString());
+            int siscod = Integer.parseInt(request.get("siscod").toString());
+            BigDecimal cantidad = new BigDecimal(request.get("cantidad").toString());
+            BigDecimal porc_estra = new BigDecimal(request.get("porc_estra").toString());
+            int usecod = Integer.parseInt(request.get("usecod").toString());
+
+            String result = service.modificarMetaFarmaciaProducto(cuotVtaId, siscod, cantidad, porc_estra, usecod);
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body("{\"resultado\":\"error\",\"mensaje\":\"Error interno en el servidor\",\"data\":[]}");
+        }
+    }
+
     /*================================ENDPOINTS PARA ROLES===================================*/
 
     @GetMapping("/listarroles")
