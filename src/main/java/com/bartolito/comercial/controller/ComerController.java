@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.print.attribute.standard.Media;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
+import java.sql.Date;
 
 @RestController
 @RequestMapping("/comercial")
@@ -161,19 +161,108 @@ public class ComerController {
         }
     }
 
-    @PostMapping("/dashboard")
-    public ResponseEntity<String> listarDashboard() {
+    @GetMapping("/dashboard")
+    public ResponseEntity<Map<String, Object>> listarDashboard() {
+
+        List<Map<String, Object>> desempenio = service.listarDashboard();
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("desempenio", desempenio);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("resultado", "ok");
+        response.put("data", data);
+
+        return ResponseEntity.ok(response);
+    }
+
+    /*=========================== OBJETIVO COMERCIAL DE PRODUCTOS ==============================*/
+
+    @GetMapping("/listarproductos")
+    public ResponseEntity<Map<String, Object>> listarProductos() {
         try {
-            String result = service.listarDashboard();
-            return ResponseEntity.ok()
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(result);
+            List<Map<String, Object>> result = service.obtenerProductos();
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("resultado", "ok");
+            response.put("productos", result);
+
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body("{\"resultado\":\"error\",\"mensaje\":\"Error interno en el servidor\",\"data\":[]}");
+            System.err.println("Error en listar Productos: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("resultado", "error"));
         }
+    }
+
+
+    @PostMapping("/agregarproducto")
+    public ResponseEntity<String> agregarProducto(@RequestBody Map<String, Object> request) {
+
+        String codpro = request.get("codpro").toString();
+        String tipo = request.get("tipo").toString();
+
+        // Pueden venir como null si el frontend no envía el valor
+        BigDecimal unidades = request.get("unidades") != null ? new BigDecimal(request.get("unidades").toString()) : null;
+        BigDecimal monto = request.get("monto") != null ? new BigDecimal(request.get("monto").toString()) : null;
+
+        int cuotVtaId = Integer.parseInt(request.get("cuotVtaId").toString());
+        int useId = Integer.parseInt(request.get("useId").toString());
+
+        String result = service.agregarMetaVentaProducto(codpro, tipo, unidades, monto, cuotVtaId, useId);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(result);
+    }
+
+    @PostMapping("/listar-venta-productos")
+    public ResponseEntity<String> listarMetaVentaProductos(@RequestBody Map<String, Integer> request) {
+
+        int cuotVtaId = request.get("cuotVtaId");
+        String result = service.listarMetaVentaProductos(cuotVtaId);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(result);
+    }
+
+    @PostMapping("/eliminar-meta-producto")
+    public ResponseEntity<String> eliminarMetaVentaProducto(@RequestBody Map<String, Object> request) {
+        String codpro = request.get("codpro").toString();
+        int cuotVtaId = Integer.parseInt(request.get("cuotVtaId").toString());
+
+        String result = service.eliminarMetaVentaProducto(codpro, cuotVtaId);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(result);
+
+    }
+
+    @PostMapping("/agregar-producto-permanente")
+    public ResponseEntity<String> agregarProductoPermanente(@RequestBody Map<String, Object> request) {
+        String codpro = request.get("codpro").toString();
+        int cantpro = Integer.parseInt(request.get("cantpro").toString());
+        int cuotVtaId = Integer.parseInt(request.get("cuotVtaId").toString()); // Nuevo parámetro
+
+        String result = service.agregarPermanente(codpro, cantpro, cuotVtaId);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(result);
+    }
+
+    @PostMapping("/eliminar-producto-permanente")
+    public ResponseEntity<String> eliminarProductoPermanente(@RequestBody Map<String, Object> request) {
+        String codpro = request.get("codpro").toString();
+        int cuotVtaId = Integer.parseInt(request.get("cuotVtaId").toString()); // Nuevo parámetro
+
+        String result = service.eliminarPermanente(codpro, cuotVtaId);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(result);
     }
 
     /****************************METODOS PARA LA META FARMACIA PRODUCTOS******************/
@@ -210,6 +299,84 @@ public class ComerController {
 
     /*================================ENDPOINTS PARA ROLES===================================*/
 
+    @GetMapping("/rol/listar")
+    public ResponseEntity<?> listarRol() {
+        try {
+            List<Map<String, Object>> result = service.listarRol();
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("roles", result);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("resultado", "ok");
+            response.put("data", data);
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("roles", List.of());
+
+            Map<String, Object> error = new HashMap<>();
+            error.put("resultado", "error");
+            error.put("mensaje", "Error interno en el servidor");
+            error.put("data", data);
+
+            return ResponseEntity.status(500).body(error);
+        }
+    }
+
+    @PutMapping("/rol/actualizar")
+    public ResponseEntity<?> actualizarRoles(@RequestBody Map<String, Object> request) {
+        try {
+
+            int rolId = Integer.parseInt(request.get("rolid").toString());
+            String rolDes = request.get("roldes").toString();
+
+            int result = service.actualizarRol(rolId, rolDes);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("resultado", "ok");
+            response.put("registrosModificados", result);
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            Map<String, Object> error = new HashMap<>();
+            error.put("resultado", "error");
+            error.put("mensaje", "Error interno en el servidor");
+
+            return ResponseEntity.status(500).body(error);
+        }
+    }
+
+    @PostMapping("/rol/agregar")
+    public ResponseEntity<?> agregarRoles(@RequestBody Map<String, Object> request) {
+        try {
+            String rolDes = request.get("roldes").toString();
+
+            int result = service.insertarRoles(rolDes);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("resultado", "ok");
+            response.put("registrosAgregados", result);
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            Map<String, Object> error = new HashMap<>();
+            error.put("resultado", "error");
+            error.put("mensaje", "Error interno en el servidor");
+
+            return ResponseEntity.status(500).body(error);
+        }
+    }
+
     @GetMapping("/listarroles")
     public ResponseEntity<String> listarRoles() {
         try {
@@ -223,7 +390,6 @@ public class ComerController {
                     .body("{\"resultado\":\"error\",\"mensaje\":\"Error interno en el servidor\",\"data\":[]}");
         }
     }
-
 
     @PostMapping("/listarsucursalesmonto")
     public ResponseEntity<String> listarSucursalesMonto(@RequestBody Map<String, Integer> request) {
@@ -361,6 +527,22 @@ public class ComerController {
         }
     }
 
+    @PostMapping("/vendedores/meta-producto")
+    public ResponseEntity<Map<String, Object>> obtenerVendedoresConMetaProducto(@RequestBody Map<String, Object> request) {
+
+        // Tomar el parámetro del body
+        int siscod = Integer.parseInt(request.get("siscod").toString());
+
+        // Llamar al servicio
+        List<Map<String, Object>> result = service.obtenerVendedoresConMetaProducto(siscod);
+
+        // Armar la respuesta
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("resultado", "ok");
+        response.put("vendedoresConMetaProducto", result);
+
+        return ResponseEntity.ok(response);
+    }
 
     @PostMapping("/dashboarvendedor")
     public ResponseEntity<String> obtenerMetaVentaVendedor(@RequestBody Map<String, Integer> request) {
@@ -391,6 +573,45 @@ public class ComerController {
                     .contentType(MediaType.APPLICATION_JSON)
                     .body("{\"resultado\":\"error\",\"vendedores\":[]}");
         }
+    }
+
+    @GetMapping("/dashboard-producto")
+    public ResponseEntity<Map<String, Object>> obtenerDashboardProducto() {
+
+        List<Map<String, Object>> dashboard = service.obtenerDashboardProducto();
+
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("resultado", "ok");
+        response.put("dashboardProducto", dashboard);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/dashboard-producto-por-producto")
+    public ResponseEntity<Map<String, Object>> obtenerDashboardProducto(@RequestBody Map<String, Object> request) {
+        int siscod = Integer.parseInt(request.get("siscod").toString());
+        int usecod = Integer.parseInt(request.get("usecod").toString()); // Nuevo parámetro
+
+        List<Map<String, Object>> dashboard = service.obtenerDashboardProductoporProducto(siscod, usecod);
+
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("resultado", "ok");
+        response.put("dashboardProducto", dashboard);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/dashboard-producto-por-vendedor")
+    public ResponseEntity<Map<String, Object>> obtenerDashboardProductoporVendedor(@RequestBody Map<String, Object> request) {
+        int siscod = Integer.parseInt(request.get("siscod").toString());
+
+        List<Map<String, Object>> dashboard = service.obtenerDashboardProductoporVendedor(siscod);
+
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("resultado", "ok");
+        response.put("dashboardProducto", dashboard);
+
+        return ResponseEntity.ok(response);
     }
 
     /*==================================GESTIÓN DE UMBRALES========================================*/
@@ -429,6 +650,229 @@ public class ComerController {
                     .contentType(MediaType.APPLICATION_JSON)
                     .body("{\"resultado\":\"error\",\"mensaje\":\"Error interno en el servidor\",\"data\":[]}");
         }
+    }
+
+    /*=========================== LISTADO DE CAJJAS CERRADAS ==============================*/
+
+    @PostMapping("/listar-cajas-cerradas")
+    public ResponseEntity<Map<String, Object>> obtenerCajasCerradas(@RequestBody Map<String, Object> request) {
+        Date fecha1 = Date.valueOf(request.get("fecha1").toString());
+        Date fecha2 = Date.valueOf(request.get("fecha2").toString());
+        int siscod = Integer.parseInt(request.get("siscod").toString());
+        int usecod1 = Integer.parseInt(request.get("usecod1").toString());
+
+        List<Map<String, Object>> result = service.obtenerCajasCerradas(fecha1, fecha2, siscod, usecod1);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("resultado", "ok");
+        response.put("cajas", result);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/listar-usuarios-cajas-cerradas")
+    public ResponseEntity<Map<String, Object>> obtenerUsuariosCajasCerradas(@RequestBody Map<String, Object> request) {
+        String fecha1 = request.get("fecha1").toString();
+        String fecha2 = request.get("fecha2").toString();
+        int siscod = Integer.parseInt(request.get("siscod").toString());
+
+        List<Map<String, Object>> usuarios = service.obtenerUsuariosCajasCerradas(fecha1, fecha2, siscod);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("resultado", "ok");
+        response.put("usuarios", usuarios);
+
+        return ResponseEntity.ok(response);
+    }
+
+
+    /*=========================== DASHBOARD RESUMEN ==============================*/
+
+    @PostMapping("/dashboard/resumen")
+    public ResponseEntity<Map<String, Object>> obtenerdDashnoardResumen(@RequestBody Map<String, Object> request) {
+
+        int cuotVtaId = Integer.parseInt(request.get("cuotVtaId").toString());
+
+        List<Map<String, Object>> result = service.obtenerdDashnoardResumen(cuotVtaId);
+
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("resultado", "ok");
+        response.put("dashhboard_resumen", result);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/resumen/vendedores")
+    public ResponseEntity<?> obtenerResumenVendedores(
+            @RequestParam("cuotvtaid") int cuotVtaId) {
+
+        List<Map<String, Object>> result = service.obtenerResumenVendedores(cuotVtaId);
+
+        Map<String, Object> data = new LinkedHashMap<>();
+        data.put("vendedores", result);
+
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("resultado", "ok");
+        response.put("data", data);
+
+        return ResponseEntity.ok(response);
+    }
+
+    /*=========================== OBJETIVO DE VENTA DE PRODUCTOS ==============================*/
+
+    @GetMapping("/listar-sucursales-productos-detalle")
+    public ResponseEntity<String> listarSucursalesProductosDetalle() {
+        String result = service.listarSucursalesProductosDetalle();
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(result);
+
+    }
+
+    @PostMapping("/listar-objetivo-productos-detalle")
+    public ResponseEntity<String> listarObjetivoProductosDetalle(@RequestBody Map<String, Object> request) {
+
+        int cuotVtaId = Integer.parseInt(request.get("cuotVtaId").toString());
+        String codpro = request.get("codpro").toString();
+
+        String result = service.listarObjetivoProductosDetalle(cuotVtaId, codpro);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(result);
+    }
+
+
+    @PostMapping("/agregar-objetivo-productos-detalle")
+    public ResponseEntity<String> agregarObjetivoProductosDetalle(@RequestBody Map<String, Object> request) {
+        int cuotVtaId = Integer.parseInt(request.get("cuotVtaId").toString());
+        String codpro = request.get("codpro").toString();
+        int sucurId = Integer.parseInt(request.get("sucurId").toString());
+
+        String result = service.agregarObjetivoProductosDetalle(cuotVtaId, codpro, sucurId);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(result);
+
+    }
+
+    @DeleteMapping("/eliminar-objetivo-productos-detalle")
+    public ResponseEntity<String> eliminarObjetivoProductosDetalle(@RequestBody Map<String, Object> request) {
+        int cuotVtaId = Integer.parseInt(request.get("cuotVtaId").toString());
+        String codpro = request.get("codpro").toString();
+        int sucurId = Integer.parseInt(request.get("sucurId").toString());
+
+        String result = service.eliminarObjetivoProductosDetalle(cuotVtaId, codpro, sucurId);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(result);
+    }
+
+    @PutMapping("/modificar-unidades")
+    public ResponseEntity<String> modificarUnidadesProductos(@RequestBody Map<String, Object> request) {
+
+        try {
+            int cuotVtaId = Integer.parseInt(request.get("cuotVtaId").toString());
+            String codpro = request.get("codpro").toString();
+
+            // Recibir directamente unidades y monto (pueden ser null)
+            BigDecimal unidades = request.get("unidades") != null
+                    ? new BigDecimal(request.get("unidades").toString())
+                    : null;
+
+            BigDecimal monto = request.get("monto") != null
+                    ? new BigDecimal(request.get("monto").toString())
+                    : null;
+
+            // Llamar al servicio con ambos valores
+            String result = service.modificarUnidades(cuotVtaId, codpro, unidades, monto);
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(result);
+
+        } catch (Exception e) {
+            String m = "";
+            m = e.getMessage();
+            throw new RuntimeException(e);
+        }
+    }
+
+    @PostMapping("/dashboard")
+    public ResponseEntity<String> listarDashboard2() {
+        try {
+            String result = service.listarDashboard2();
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body("{\"resultado\":\"error\",\"mensaje\":\"Error interno en el servidor\",\"data\":[]}");
+        }
+    }
+
+    @PostMapping("/listar-farmacia-producto-detalle")
+    public ResponseEntity<?> listarFarmaciaProductoDetalle(@RequestBody Map<String, Object> request) {
+
+        int cuotVtaId = Integer.parseInt(request.get("cuotVtaId").toString());
+        String codpro = request.get("codpro").toString();
+
+        List<Map<String, Object>> result = service.listarFarmaciaProductoDetalle(cuotVtaId, codpro);
+
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/listar-farmacia-producto-detalle-porcentaje")
+    public ResponseEntity<?> listarFarmaciaProductoDetallePorcentaje(@RequestBody Map<String, Object> request) {
+
+        int cuotVtaId = Integer.parseInt(request.get("cuotVtaId").toString());
+
+        List<Map<String, Object>> result = service.listarFarmaciaProductoDetallePorcentaje(cuotVtaId);
+
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/seleccionar-farmacia-producto-detalle")
+    public ResponseEntity<?> seleccionarFarmaciaProductoDetalle(@RequestBody Map<String, Object> request) {
+
+        int cuotVtaId = Integer.parseInt(request.get("cuotVtaId").toString());
+        String codpro = request.get("codpro").toString();
+
+        List<Map<String, Object>> result = service.seleccionarFarmaciaProductoDetalle(cuotVtaId, codpro);
+
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/guardar-farmacia-producto-detalle")
+    public ResponseEntity<String> guardarFarmaciaProductoDetalle(@RequestBody Map<String, Object> request) {
+
+        int cuotVtaId = Integer.parseInt(request.get("cuotVtaId").toString());
+        int sucurId = Integer.parseInt(request.get("sucurId").toString());
+        String codpro = request.get("codpro").toString();
+
+        BigDecimal cuotVtaMeta = null;
+        if (request.get("cuotVtaMeta") != null) {
+            cuotVtaMeta = new BigDecimal(request.get("cuotVtaMeta").toString());
+        }
+
+        BigDecimal porcOrig = new BigDecimal(request.get("porc_orig").toString());
+
+        int usecod = Integer.parseInt(request.get("usecod").toString());
+
+        String result = service.guardarFarmaciaProductoDetalle(
+                cuotVtaId,
+                sucurId,
+                codpro,
+                cuotVtaMeta,
+                porcOrig,
+                usecod
+        );
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(result);
     }
 
 }

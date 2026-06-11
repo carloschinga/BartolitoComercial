@@ -7,8 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.sql.Clob;
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class ComerRepository {
@@ -102,7 +105,22 @@ public class ComerRepository {
     }
 
 
-    public String listarDashboardJson() {
+    public List<Map<String, Object>> listarDashboardJson() {
+        //try {
+            String sql = "EXEC sp_bart_desempenio_meta_venta_dashboard";
+            //List<String> result = jdbcTemplate.queryForList(sql, String.class);
+            return jdbcTemplate.queryForList(sql); // concatenar filas si hubiera más de una
+
+        /*} catch (DataAccessException dae) {
+            System.err.println("Error al ejecutar SP dashboard: " + dae.getMessage());
+            return "{\"resultado\":\"error\",\"mensaje\":\"Error en la base de datos\",\"data\":[]}";
+        } catch (Exception e) {
+            System.err.println("Error inesperado: " + e.getMessage());
+            return "{\"resultado\":\"error\",\"mensaje\":\"Error inesperado\",\"data\":[]}";
+        }*/
+    }
+
+    public String listarDashboardJson2() {
         try {
             String sql = "EXEC sp_bart_desempenio_meta_venta_dashboard";
             List<String> result = jdbcTemplate.queryForList(sql, String.class);
@@ -334,6 +352,10 @@ public class ComerRepository {
         }
     }
 
+    public List<Map<String, Object>> obtenerDashboardProducto() {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_dashboard_producto";
+        return jdbcTemplate.queryForList(sql);
+    }
 
     /*==================================GESTIÓN DE UMBRALES========================================*/
 
@@ -369,6 +391,185 @@ public class ComerRepository {
         } catch (Exception e) {
             return "{ \"resultado\": \"error\", \"mensaje\": \"Error inesperado en la API\" }";
         }
+    }
+
+    public List<Map<String, Object>> obtenerDashboardProductoporProducto(int siscod, int usecod) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_dashboard_producto_x_producto @siscod = ?, @usecod = ?";
+        return jdbcTemplate.queryForList(sql, siscod, usecod);
+    }
+
+    /*=========================== OBJETIVO COMERCIAL DE PRODUCTOS ==============================*/
+
+    public List<Map<String, Object>> obtenerVendedoresConMetaProducto(int siscod) {
+        String sql = "EXEC sp_bart_desempenio_vendedor_meta_producto @siscod = ?";
+        return jdbcTemplate.queryForList(sql, siscod);
+    }
+
+    public List<Map<String, Object>> obtenerDashboardProductoporVendedor(int siscod) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_dashboard_producto_x_vendedor @siscod = ?";
+        return jdbcTemplate.queryForList(sql, siscod);
+    }
+
+    /*=========================== LISTADO DE CAJJAS CERRADAS ==============================*/
+
+    public List<Map<String, Object>> obtenerCajasCerradas(Date fecha1, Date fecha2, int siscod, int usecod1) {
+        String sql = "EXEC sp_bart_caja_cajas_cerradas_listar ?, ?, ?, ?";
+        return jdbcTemplate.queryForList(sql, fecha1, fecha2, siscod, usecod1);
+    }
+
+    public List<Map<String, Object>> obtenerUsuariosCajasCerradas(String fecha1, String fecha2, int siscod) {
+        String sql = "EXEC sp_bart_caja_cajas_cerradas_usuario_listar @fecha1 = ?, @fecha2 = ?, @siscod = ?";
+        return jdbcTemplate.queryForList(sql, fecha1, fecha2, siscod);
+    }
+
+    /*=========================== OBJETIVO COMERCIAL DE PRODUCTOS ==============================*/
+
+    public List<Map<String, Object>> obtenerProductos() {
+        String sql = "EXEC sp_bart_desempenio_productos_listar";
+        try {
+            return jdbcTemplate.queryForList(sql);
+        } catch (DataAccessException dae) {
+            System.err.println("Error de acceso a datos: " + dae.getMessage());
+            return Collections.emptyList();
+        }
+    }
+
+    public String agregarMetaVentaProducto(String codpro, String tipo, BigDecimal unidades, BigDecimal monto, int cuotVtaId, int useId) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_producto_agregar ?, ?, ?, ?, ?, ?";
+        return jdbcTemplate.queryForObject(sql, String.class, codpro, tipo, unidades, monto, cuotVtaId, useId);
+    }
+
+    public String obtenerMetaVentaProductos(int cuotVtaId) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_producto_listar ?";
+
+        List<String> result = jdbcTemplate.queryForList(sql, String.class, cuotVtaId);
+
+        if (result.isEmpty()) {
+            return "{ \"resultado\": \"ok\", \"data\": [] }";
+        }
+
+        // El SP ya devuelve JSON, así que unimos las filas
+        return String.join("", result);
+    }
+
+    public String eliminarMetaVentaProducto(String codpro, int cuotVtaId) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_producto_eliminar ?, ?";
+        return jdbcTemplate.queryForObject(sql, String.class, codpro, cuotVtaId);
+    }
+
+    public String agregarProductoPermanente(String codpro, int cantpro, int cuotVtaId) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_producto_perm_agregar @codpro = ?, @cantpro = ?, @cuotVtaId = ?";
+        return jdbcTemplate.queryForObject(sql, String.class, codpro, cantpro, cuotVtaId);
+    }
+
+    public String eliminarProductoPermanente(String codpro, int cuotVtaId) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_producto_perm_eliminar @codpro = ?, @cuotVtaId = ?";
+        return jdbcTemplate.queryForObject(sql, String.class, codpro, cuotVtaId);
+    }
+
+    public String obtenerSucursalesProductosDetalle() {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_producto_sucursal";
+        return jdbcTemplate.queryForObject(sql, String.class);
+    }
+
+    public String obtenerObjetivoProductosDetalle(int cuotVtaId, String codpro) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_producto_detalle_listar ?, ?";
+        return jdbcTemplate.queryForObject(sql, String.class, cuotVtaId, codpro);
+    }
+
+
+    public String agregarObjetivoProductosDetalle(int cuotVtaId, String codpro, int sucurId) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_producto_detalle_agregar ?, ?, ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{cuotVtaId, codpro, sucurId}, String.class);
+    }
+
+    public String eliminarObjetivoProductosDetalle(int cuotVtaId, String codpro, int sucurId) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_producto_detalle_eliminar ?, ?, ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{cuotVtaId, codpro, sucurId}, String.class);
+    }
+
+    public String modificarUnidades(int cuotVtaId, String codpro, BigDecimal unidades, BigDecimal monto) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_producto_actualizar_unidades ?, ?, ?, ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{cuotVtaId, codpro, unidades, monto}, String.class);
+    }
+
+    /*=========================== DASHBOARD RESUMEN ==============================*/
+
+    public List<Map<String, Object>> obtenerdDashnoardResumen(int cuotVtaId) {
+        String sql = "EXEC sp_bart_desempenio_meta_venta_dashboard_resumen ?";
+        return jdbcTemplate.queryForList(sql, cuotVtaId);
+    }
+
+    public List<Map<String, Object>> obtenerResumenVendedores(int cuotVtaId) {
+        String sql = "EXEC sp_bart_desempenio_vendedor_rol_farmacia_dias_listar ?";
+        return jdbcTemplate.queryForList(sql, cuotVtaId);
+    }
+
+    /*=========================== ROLES ==============================*/
+
+    public Integer actualizarRol(int rolId, String rolDes) {
+        String sql = "EXEC sp_bart_desempenio_rol_actualizar ?,?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, rolId, rolDes);
+    }
+
+    public Integer insertarRol(String rolDes) {
+        String sql = "EXEC sp_bart_desempenio_rol_insertar ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, rolDes);
+    }
+
+    public List<Map<String, Object>> listarRol() {
+        String sql = "EXEC sp_bart_desempenio_rol_listar";
+        return jdbcTemplate.queryForList(sql);
+    }
+
+
+    public String guardarFarmaciaProductoDetalle(int cuotVtaId, int sucurId, String codpro,
+                                                 BigDecimal cuotVtaMeta, BigDecimal porcOrig, int usecod) {
+
+        String sql = "EXEC sp_bart_desempenio_meta_venta_farmacia_producto_detalle_guardar ?, ?, ?, ?, ?, ?";
+
+        return jdbcTemplate.queryForObject(
+                sql,
+                String.class,
+                cuotVtaId,
+                sucurId,
+                codpro,
+                cuotVtaMeta,
+                porcOrig,
+                usecod
+        );
+    }
+
+    public List<Map<String, Object>> listarFarmaciaProductoDetalle(int cuotVtaId, String codpro) {
+
+        String sql = "EXEC sp_bart_desempenio_meta_venta_farmacia_producto_detalle_listar ?, ?";
+
+        return jdbcTemplate.queryForList(
+                sql,
+                cuotVtaId,
+                codpro
+        );
+    }
+
+    public List<Map<String, Object>> listarFarmaciaProductoDetallePorcentaje(int cuotVtaId) {
+
+        String sql = "EXEC sp_bart_desempenio_meta_venta_farmacia_producto_detalle_listar_porcentaje ?";
+
+        return jdbcTemplate.queryForList(
+                sql,
+                cuotVtaId
+        );
+    }
+
+    public List<Map<String, Object>> seleccionarFarmaciaProductoDetalle(int cuotVtaId, String codpro) {
+
+        String sql = "EXEC sp_bart_desempenio_meta_venta_farmacia_producto_detalle_seleccionar ?, ?";
+
+        return jdbcTemplate.queryForList(
+                sql,
+                cuotVtaId,
+                codpro
+        );
     }
 
 

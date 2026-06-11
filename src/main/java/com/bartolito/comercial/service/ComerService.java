@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.sql.Date;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ComerService {
@@ -68,7 +70,7 @@ public class ComerService {
     }
 
 
-    public String listarDashboard() {
+    public List<Map<String, Object>> listarDashboard() {
         return repository.listarDashboardJson();
     }
 
@@ -80,6 +82,55 @@ public class ComerService {
 
     public String modificarMetaFarmaciaProducto(int cuotVtaId, int siscod, BigDecimal cantidad, BigDecimal porc_estra, int usecod) {
         return repository.modificarMetaFarmaciaProductoJson(cuotVtaId, siscod, cantidad, porc_estra, usecod);
+    }
+
+    /*=========================== OBJETIVO COMERCIAL DE PRODUCTOS ==============================*/
+    public List<Map<String, Object>> obtenerProductos() {
+        return repository.obtenerProductos();
+    }
+
+    public String agregarMetaVentaProducto(String codpro, String tipo, BigDecimal unidades, BigDecimal monto, int cuotVtaId, int useId) {
+        return repository.agregarMetaVentaProducto(codpro, tipo, unidades,monto, cuotVtaId, useId);
+    }
+
+    public String listarMetaVentaProductos(int cuotVtaId) {
+        return repository.obtenerMetaVentaProductos(cuotVtaId);
+    }
+
+    public String eliminarMetaVentaProducto(String codpro, int cuotVtaId) {
+        return repository.eliminarMetaVentaProducto(codpro, cuotVtaId);
+    }
+
+    public String agregarPermanente(String codpro, int cantpro, int cuotVtaId) {
+        return repository.agregarProductoPermanente(codpro, cantpro, cuotVtaId);
+    }
+
+    public String eliminarPermanente(String codpro, int cuotVtaId) {
+        return repository.eliminarProductoPermanente(codpro, cuotVtaId);
+    }
+
+    public String listarSucursalesProductosDetalle() {
+        return repository.obtenerSucursalesProductosDetalle();
+    }
+
+    public String listarObjetivoProductosDetalle(int cuotVtaId, String codpro) {
+        return repository.obtenerObjetivoProductosDetalle(cuotVtaId, codpro);
+    }
+
+    public String agregarObjetivoProductosDetalle(int cuotVtaId, String codpro, int sucurId) {
+        return repository.agregarObjetivoProductosDetalle(cuotVtaId, codpro, sucurId);
+    }
+
+    public String eliminarObjetivoProductosDetalle(int cuotVtaId, String codpro, int sucurId) {
+        return repository.eliminarObjetivoProductosDetalle(cuotVtaId, codpro, sucurId);
+    }
+
+    public String modificarUnidades(int cuotVtaId, String codpro, BigDecimal unidades, BigDecimal monto) {
+        return repository.modificarUnidades(cuotVtaId, codpro, unidades, monto);
+    }
+
+    public String listarDashboard2() {
+        return repository.listarDashboardJson2();
     }
 
     /*================================MÉTODOS PARA ROLES===================================*/
@@ -155,6 +206,22 @@ public class ComerService {
         return repository.listarVendedoresPorFarmaciaJson(siscod);
     }
 
+    public List<Map<String, Object>> obtenerVendedoresConMetaProducto(int siscod) {
+        return repository.obtenerVendedoresConMetaProducto(siscod);
+    }
+
+    public List<Map<String, Object>> obtenerDashboardProductoporVendedor(int siscod) {
+        return repository.obtenerDashboardProductoporVendedor(siscod);
+    }
+
+    public List<Map<String, Object>> obtenerDashboardProductoporProducto(int siscod, int usecod) {
+        return repository.obtenerDashboardProductoporProducto(siscod, usecod);
+    }
+
+    public List<Map<String, Object>> obtenerDashboardProducto() {
+        return repository.obtenerDashboardProducto();
+    }
+
     /*==================================GESTIÓN DE UMBRALES========================================*/
 
     public String obtenerUmbrales(){
@@ -164,4 +231,64 @@ public class ComerService {
     public String modificarUmbrales(int codumb, String nomumb, BigDecimal minpor, BigDecimal maxpor){
         return repository.modificarUmbralesJson(codumb, nomumb, minpor, maxpor);
     }
+
+    /*=========================== LISTADO DE CAJJAS CERRADAS ==============================*/
+
+    public List<Map<String, Object>> obtenerCajasCerradas(Date fecha1, Date fecha2, int siscod, int usecod1) {
+        return repository.obtenerCajasCerradas(fecha1, fecha2, siscod, usecod1);
+    }
+
+    public List<Map<String, Object>> obtenerUsuariosCajasCerradas(String fecha1, String fecha2, int siscod) {
+        return repository.obtenerUsuariosCajasCerradas(fecha1, fecha2, siscod);
+    }
+
+    /*=========================== DASHBOARD RESUMEN ==============================*/
+
+    public List<Map<String, Object>> obtenerdDashnoardResumen(int cuotVtaId) {
+        return repository.obtenerdDashnoardResumen(cuotVtaId);
+    }
+
+    public List<Map<String, Object>> obtenerResumenVendedores(int cuotVtaId) {
+        return repository.obtenerResumenVendedores(cuotVtaId);
+    }
+
+    /*=========================== ROLES ==============================*/
+
+    public Integer actualizarRol(int rolId, String rolDes) {
+        return repository.actualizarRol(rolId, rolDes);
+    }
+
+    public Integer insertarRoles(String rolDes) {
+        return repository.insertarRol(rolDes);
+    }
+
+    public List<Map<String, Object>> listarRol() {
+        return repository.listarRol();
+    }
+
+    public List<Map<String, Object>> listarFarmaciaProductoDetalle(int cuotVtaId, String codpro) {
+        return repository.listarFarmaciaProductoDetalle(cuotVtaId, codpro);
+    }
+
+    public List<Map<String, Object>> listarFarmaciaProductoDetallePorcentaje(int cuotVtaId) {
+        return repository.listarFarmaciaProductoDetallePorcentaje(cuotVtaId);
+    }
+
+    public List<Map<String, Object>> seleccionarFarmaciaProductoDetalle(int cuotVtaId, String codpro) {
+        return repository.seleccionarFarmaciaProductoDetalle(cuotVtaId, codpro);
+    }
+
+    public String guardarFarmaciaProductoDetalle(int cuotVtaId, int sucurId, String codpro,
+                                                 BigDecimal cuotVtaMeta, BigDecimal porcOrig, int usecod) {
+
+        return repository.guardarFarmaciaProductoDetalle(
+                cuotVtaId,
+                sucurId,
+                codpro,
+                cuotVtaMeta,
+                porcOrig,
+                usecod
+        );
+    }
+
 }
