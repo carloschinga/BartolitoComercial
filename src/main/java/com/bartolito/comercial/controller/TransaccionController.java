@@ -95,7 +95,6 @@ public class TransaccionController {
         return ResponseEntity.ok(result);
     }
 
-
     // =========================================
     // LISTAR METODOS DE PAGO
     // =========================================
