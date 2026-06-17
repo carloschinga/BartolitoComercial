@@ -134,6 +134,27 @@ public class TransaccionRepository {
     }
 
     // =========================================
+    // LISTAR PINPADS ANULADOS
+    // =========================================
+    public List<Map<String, Object>> listarPinpadAnulado(
+            String fechaInicio,
+            String fechaFin,
+            Integer invnumAper,
+            Integer siscod
+    ) {
+
+        String sql = "EXEC sp_bart_comer_listar_anulaciones_pinpad ?, ?, ?, ?";
+
+        return jdbcTemplate.queryForList(
+                sql,
+                fechaInicio,
+                fechaFin,
+                invnumAper,
+                siscod
+        );
+    }
+
+    // =========================================
     // OBTENER CABECERA NOTA CREDITO
     // =========================================
     public List<Map<String, Object>> obtenerCabeceraNotaCredito(

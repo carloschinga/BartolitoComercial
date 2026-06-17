@@ -95,7 +95,6 @@ public class TransaccionController {
         return ResponseEntity.ok(result);
     }
 
-
     // =========================================
     // LISTAR METODOS DE PAGO
     // =========================================
@@ -164,6 +163,35 @@ public class TransaccionController {
                 : null;
 
         List<Map<String, Object>> result = service.listarNotaCredito(
+                fechaInicio,
+                fechaFin,
+                invnumAper,
+                siscod
+        );
+
+        return ResponseEntity.ok(result);
+    }
+
+    // =========================================
+    // LISTAR PINPAD ANULADO
+    // =========================================
+    @PostMapping("/listarPinpadAnulado")
+    public ResponseEntity<?> listarPinpadAnulado(
+            @RequestBody Map<String, Object> request
+    ) {
+
+        String fechaInicio = request.get("fechaInicio").toString();
+        String fechaFin = request.get("fechaFin").toString();
+
+        Integer invnumAper = request.get("invnumAper") != null
+                ? Integer.parseInt(request.get("invnumAper").toString())
+                : null;
+
+        Integer siscod = request.get("siscod") != null
+                ? Integer.parseInt(request.get("siscod").toString())
+                : null;
+
+        List<Map<String, Object>> result = service.listarPinpadAnulado(
                 fechaInicio,
                 fechaFin,
                 invnumAper,
