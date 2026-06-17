@@ -116,6 +116,24 @@ public class TransaccionService {
     }
 
     // =========================================
+    // LISTAR PINPAD ANULADOS
+    // =========================================
+    public List<Map<String, Object>> listarPinpadAnulado(
+            String fechaInicio,
+            String fechaFin,
+            Integer invnumAper,
+            Integer siscod
+    ) {
+
+        return repository.listarPinpadAnulado(
+                fechaInicio,
+                fechaFin,
+                invnumAper,
+                siscod
+        );
+    }
+
+    // =========================================
     // OBTENER CABECERA NOTA CREDITO
     // =========================================
     public List<Map<String, Object>> obtenerCabeceraNotaCredito(
