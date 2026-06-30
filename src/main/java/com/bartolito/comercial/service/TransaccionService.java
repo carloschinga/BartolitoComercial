@@ -134,6 +134,24 @@ public class TransaccionService {
     }
 
     // =========================================
+    // LISTAR EMERGENCIAS PINPAD
+    // =========================================
+    public List<Map<String, Object>> listarEmergenciasPinpad(
+            String fechaInicio,
+            String fechaFin,
+            Integer invnumAper,
+            Integer siscod
+    ) {
+
+        return repository.listarEmergenciasPinpad(
+                fechaInicio,
+                fechaFin,
+                invnumAper,
+                siscod
+        );
+    }
+
+    // =========================================
     // OBTENER CABECERA NOTA CREDITO
     // =========================================
     public List<Map<String, Object>> obtenerCabeceraNotaCredito(
