@@ -176,6 +176,30 @@ public class TransaccionService {
     }
 
     // =========================================
+    // OBTENER DETALLE PRODUCTOS VENTA CREDITO
+    // =========================================
+    public List<Map<String, Object>> obtenerDetalleProductosVentaCredito(
+            Integer invnum
+    ) {
+
+        return repository.obtenerDetalleProductosVentaCredito(
+                invnum
+        );
+    }
+
+    // =========================================
+    // OBTENER DETALLE FORMAS PAGO PRODUCTOS
+    // =========================================
+    public List<Map<String, Object>> obtenerDetalleFormasPagoProductos(
+            Integer invnum
+    ) {
+
+        return repository.obtenerDetalleFormasPagoProductos(
+                invnum
+        );
+    }
+
+    // =========================================
     //  OBTENER DETALLE APLICADO
     // =========================================
     public List<Map<String, Object>> obtenerDetalleAplicado(
@@ -202,6 +226,48 @@ public class TransaccionService {
                 fechaFin,
                 invnumAper,
                 siscod
+        );
+    }
+
+    // =========================================
+    // LISTAR NOTAS DE CREDITO APLICADAS
+    // =========================================
+    public List<Map<String, Object>> listarNotaCreditoAplicadas(
+            String fechaInicio,
+            String fechaFin,
+            Integer invnumAper,
+            Integer siscod
+    ) {
+
+        return repository.listarNotaCreditoAplicadas(
+                fechaInicio,
+                fechaFin,
+                invnumAper,
+                siscod
+        );
+    }
+
+    // =========================================
+    // OBTENER CABECERA PINPAD ANULADO
+    // =========================================
+    public List<Map<String, Object>> obtenerCabeceraPinpadAnulado(
+            String referencia
+    ) {
+
+        return repository.obtenerCabeceraPinpadAnulado(
+                referencia
+        );
+    }
+
+    // =========================================
+    //  OBTENER DETALLE PINPAD ANULADO
+    // =========================================
+    public List<Map<String, Object>> obtenerDetallePinpadAnulado(
+            String referencia
+    ) {
+
+        return repository.obtenerDetallePinpadAnulado(
+                referencia
         );
     }
 

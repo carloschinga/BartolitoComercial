@@ -267,6 +267,42 @@ public class TransaccionController {
     }
 
     // =========================================
+    // OBTENER DETALLE PRODUCTOS VENTA CREDITO
+    // =========================================
+    @PostMapping("/obtenerDetalleProductosVentaCredito")
+    public ResponseEntity<?> obtenerDetalleProductosVentaCredito(
+            @RequestBody Map<String, Object> request
+    ) {
+
+        Integer invnum = Integer.parseInt(
+                request.get("invnum").toString()
+        );
+
+        List<Map<String, Object>> result =
+                service.obtenerDetalleProductosVentaCredito(invnum);
+
+        return ResponseEntity.ok(result);
+    }
+
+    // =========================================
+    // OBTENER DETALLE PRODUCTOS VENTA CREDITO
+    // =========================================
+    @PostMapping("/obtenerDetalleProductosFormaPago")
+    public ResponseEntity<?> obtenerDetalleFormasPagoProductos(
+            @RequestBody Map<String, Object> request
+    ) {
+
+        Integer invnum = Integer.parseInt(
+                request.get("invnum").toString()
+        );
+
+        List<Map<String, Object>> result =
+                service.obtenerDetalleFormasPagoProductos(invnum);
+
+        return ResponseEntity.ok(result);
+    }
+
+    // =========================================
     //  OBTENER DETALLE APLICADO
     // =========================================
     @PostMapping("/obtenerDetalleAplicado")
@@ -312,4 +348,66 @@ public class TransaccionController {
 
         return ResponseEntity.ok(result);
     }
+
+    // =========================================
+    // LISTAR NOTAS DE CREDITO APLICADAS
+    // =========================================
+    @PostMapping("/listarNotaCreditoAplicadas")
+    public ResponseEntity<?> listarNotaCreditoAplicadas(
+            @RequestBody Map<String, Object> request
+    ) {
+
+        String fechaInicio = request.get("fechaInicio").toString();
+        String fechaFin = request.get("fechaFin").toString();
+
+        Integer invnumAper = request.get("invnumAper") != null
+                ? Integer.parseInt(request.get("invnumAper").toString())
+                : null;
+
+        Integer siscod = request.get("siscod") != null
+                ? Integer.parseInt(request.get("siscod").toString())
+                : null;
+
+        List<Map<String, Object>> result = service.listarNotaCreditoAplicadas(
+                fechaInicio,
+                fechaFin,
+                invnumAper,
+                siscod
+        );
+
+        return ResponseEntity.ok(result);
+    }
+
+    // =========================================
+    // OBTENER CABECERA PINPAD ANULADO
+    // =========================================
+    @PostMapping("/obtenerCabeceraPinpadAnulado")
+    public ResponseEntity<?> obtenerCabeceraPinpadAnulado(
+            @RequestBody Map<String, Object> request
+    ) {
+
+        String referencia = request.get("referencia").toString();
+
+        List<Map<String, Object>> result =
+                service.obtenerCabeceraPinpadAnulado(referencia);
+
+        return ResponseEntity.ok(result);
+    }
+
+    // =========================================
+    //  OBTENER DETALLE PINPAD ANULADO
+    // =========================================
+    @PostMapping("/obtenerDetallePinpadAnulado")
+    public ResponseEntity<?> obtenerDetallePinpadAnulado(
+            @RequestBody Map<String, Object> request
+    ) {
+
+        String referencia = request.get("referencia").toString();
+
+        List<Map<String, Object>> result =
+                service.obtenerDetallePinpadAnulado(referencia);
+
+        return ResponseEntity.ok(result);
+    }
+
 }
