@@ -55,13 +55,15 @@ public class TransaccionService {
     public List<Map<String, Object>> listarAperturasCaja(
             String fechaInicio,
             String fechaFin,
-            Integer siscod
+            Integer siscod,
+            Integer usecod
     ) {
 
         return repository.listarAperturasCaja(
                 fechaInicio,
                 fechaFin,
-                siscod
+                siscod,
+                usecod
         );
     }
 
@@ -134,6 +136,24 @@ public class TransaccionService {
     }
 
     // =========================================
+    // LISTAR EMERGENCIAS PINPAD
+    // =========================================
+    public List<Map<String, Object>> listarEmergenciasPinpad(
+            String fechaInicio,
+            String fechaFin,
+            Integer invnumAper,
+            Integer siscod
+    ) {
+
+        return repository.listarEmergenciasPinpad(
+                fechaInicio,
+                fechaFin,
+                invnumAper,
+                siscod
+        );
+    }
+
+    // =========================================
     // OBTENER CABECERA NOTA CREDITO
     // =========================================
     public List<Map<String, Object>> obtenerCabeceraNotaCredito(
@@ -153,6 +173,30 @@ public class TransaccionService {
     ) {
 
         return repository.obtenerDetalleProductosNotaCredito(
+                invnum
+        );
+    }
+
+    // =========================================
+    // OBTENER DETALLE PRODUCTOS VENTA CREDITO
+    // =========================================
+    public List<Map<String, Object>> obtenerDetalleProductosVentaCredito(
+            Integer invnum
+    ) {
+
+        return repository.obtenerDetalleProductosVentaCredito(
+                invnum
+        );
+    }
+
+    // =========================================
+    // OBTENER DETALLE FORMAS PAGO PRODUCTOS
+    // =========================================
+    public List<Map<String, Object>> obtenerDetalleFormasPagoProductos(
+            Integer invnum
+    ) {
+
+        return repository.obtenerDetalleFormasPagoProductos(
                 invnum
         );
     }
@@ -183,6 +227,66 @@ public class TransaccionService {
                 fechaInicio,
                 fechaFin,
                 invnumAper,
+                siscod
+        );
+    }
+
+    // =========================================
+    // LISTAR NOTAS DE CREDITO APLICADAS
+    // =========================================
+    public List<Map<String, Object>> listarNotaCreditoAplicadas(
+            String fechaInicio,
+            String fechaFin,
+            Integer invnumAper,
+            Integer siscod
+    ) {
+
+        return repository.listarNotaCreditoAplicadas(
+                fechaInicio,
+                fechaFin,
+                invnumAper,
+                siscod
+        );
+    }
+
+    // =========================================
+    // OBTENER CABECERA PINPAD ANULADO
+    // =========================================
+    public List<Map<String, Object>> obtenerCabeceraPinpadAnulado(
+            String referencia
+    ) {
+
+        return repository.obtenerCabeceraPinpadAnulado(
+                referencia
+        );
+    }
+
+    // =========================================
+    //  OBTENER DETALLE PINPAD ANULADO
+    // =========================================
+    public List<Map<String, Object>> obtenerDetallePinpadAnulado(
+            String referencia
+    ) {
+
+        return repository.obtenerDetallePinpadAnulado(
+                referencia
+        );
+    }
+
+    // =========================================
+    // TRANSACCIONES USUARIO
+    // =========================================
+    public List<Map<String, Object>> obtenerTransaccionesUsuario(
+            String fechaInicio,
+            String fechaFin,
+            Integer usecod,
+            Integer siscod
+    ) {
+
+        return repository.obtenerTransaccionesUsuario(
+                fechaInicio,
+                fechaFin,
+                usecod,
                 siscod
         );
     }

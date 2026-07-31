@@ -61,16 +61,18 @@ public class TransaccionRepository {
     public List<Map<String, Object>> listarAperturasCaja(
             String fechaInicio,
             String fechaFin,
-            Integer siscod
+            Integer siscod,
+            Integer usecod
     ) {
 
-        String sql = "EXEC sp_bart_comer_listar_aperturas_caja ?, ?, ?";
+        String sql = "EXEC sp_bart_comer_listar_aperturas_caja ?,?, ?, ?";
 
         return jdbcTemplate.queryForList(
                 sql,
                 fechaInicio,
                 fechaFin,
-                siscod
+                siscod,
+                usecod
         );
     }
 
@@ -134,6 +136,27 @@ public class TransaccionRepository {
     }
 
     // =========================================
+    // LISTAR NOTAS DE CREDITO APLICADAS
+    // =========================================
+    public List<Map<String, Object>> listarNotaCreditoAplicadas(
+            String fechaInicio,
+            String fechaFin,
+            Integer invnumAper,
+            Integer siscod
+    ) {
+
+        String sql = "EXEC sp_bart_comer_listar_nota_credito_aplicadas ?, ?, ?, ?";
+
+        return jdbcTemplate.queryForList(
+                sql,
+                siscod,
+                fechaInicio,
+                fechaFin,
+                invnumAper
+        );
+    }
+
+    // =========================================
     // LISTAR PINPADS ANULADOS
     // =========================================
     public List<Map<String, Object>> listarPinpadAnulado(
@@ -144,6 +167,27 @@ public class TransaccionRepository {
     ) {
 
         String sql = "EXEC sp_bart_comer_listar_anulaciones_pinpad ?, ?, ?, ?";
+
+        return jdbcTemplate.queryForList(
+                sql,
+                fechaInicio,
+                fechaFin,
+                invnumAper,
+                siscod
+        );
+    }
+
+    // =========================================
+    // LISTAR EMERGENCIAS PINPAD
+    // =========================================
+    public List<Map<String, Object>> listarEmergenciasPinpad(
+            String fechaInicio,
+            String fechaFin,
+            Integer invnumAper,
+            Integer siscod
+    ) {
+
+        String sql = "EXEC sp_bart_comer_listar_transacciones_emergencia_pinpad ?, ?, ?, ?";
 
         return jdbcTemplate.queryForList(
                 sql,
@@ -177,6 +221,36 @@ public class TransaccionRepository {
     ) {
 
         String sql = "EXEC sp_bart_comer_detalle_productos_nota_credito ?";
+
+        return jdbcTemplate.queryForList(
+                sql,
+                invnum
+        );
+    }
+
+    // =========================================
+    // OBTENER DETALLE PRODUCTOS VENTA CREDITO
+    // =========================================
+    public List<Map<String, Object>> obtenerDetalleProductosVentaCredito(
+            Integer invnum
+    ) {
+
+        String sql = "EXEC sp_bart_comer_detalle_productos_ventas_credito ?";
+
+        return jdbcTemplate.queryForList(
+                sql,
+                invnum
+        );
+    }
+
+    // =========================================
+    // OBTENER DETALLE FORMAS PAGO PRODUCTOS
+    // =========================================
+    public List<Map<String, Object>> obtenerDetalleFormasPagoProductos(
+            Integer invnum
+    ) {
+
+        String sql = "EXEC sp_bart_comer_detalle_productos_forma_pago_total ?";
 
         return jdbcTemplate.queryForList(
                 sql,
@@ -220,4 +294,55 @@ public class TransaccionRepository {
         );
     }
 
+    // =========================================
+    // OBTENER CABECERA PINPAD ANULADOS
+    // =========================================
+    public List<Map<String, Object>> obtenerCabeceraPinpadAnulado(
+            String referencia
+    ) {
+
+        String sql = "EXEC sp_bart_comer_cabecera_pinpad_anulado ?";
+
+        return jdbcTemplate.queryForList(
+                sql,
+                referencia
+        );
+    }
+
+    // =========================================
+    // OBTENER DETALLE PINPAD ANULADOS
+    // =========================================
+    public List<Map<String, Object>> obtenerDetallePinpadAnulado(
+            String referencia
+    ) {
+
+        String sql = "EXEC sp_bart_comer_detalle_pinpad_anulado ?";
+
+        return jdbcTemplate.queryForList(
+                sql,
+                referencia
+        );
+    }
+
+    // =========================================
+    // TRANSACCIONES USUARIO
+    // =========================================
+    public List<Map<String, Object>> obtenerTransaccionesUsuario(
+            String fechaInicio,
+            String fechaFin,
+            Integer usecod,
+            Integer siscod
+    ) {
+
+        String sql = "EXEC sp_bart_comer_listar_transacciones_usuario ?, ?, ?, ?";
+
+        return jdbcTemplate.queryForList(
+                sql,
+                fechaInicio,
+                fechaFin,
+                usecod,
+                siscod
+        );
+
+    }
 }
