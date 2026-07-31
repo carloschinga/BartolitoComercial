@@ -6,9 +6,12 @@ com\bartolito\comercial\service\TransaccionService.class
 com\bartolito\comercial\util\SecurityConfig.class
 com\bartolito\comercial\controller\LiquidacionCajaController.class
 com\bartolito\comercial\ComerApplication.class
+com\bartolito\comercial\controller\CorreccionController.class
 com\bartolito\comercial\controller\ComerController.class
+com\bartolito\comercial\repository\CorreccionRepository.class
 com\bartolito\comercial\repository\LiquidacionCajaRepository.class
 com\bartolito\comercial\service\ComerService.class
 com\bartolito\comercial\config\CorsConfig.class
+com\bartolito\comercial\service\CorreccionService.class
 com\bartolito\comercial\repository\TransaccionRepository.class
 com\bartolito\comercial\service\LiquidacionCajaService.class

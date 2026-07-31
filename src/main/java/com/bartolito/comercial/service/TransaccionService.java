@@ -55,13 +55,15 @@ public class TransaccionService {
     public List<Map<String, Object>> listarAperturasCaja(
             String fechaInicio,
             String fechaFin,
-            Integer siscod
+            Integer siscod,
+            Integer usecod
     ) {
 
         return repository.listarAperturasCaja(
                 fechaInicio,
                 fechaFin,
-                siscod
+                siscod,
+                usecod
         );
     }
 
@@ -268,6 +270,24 @@ public class TransaccionService {
 
         return repository.obtenerDetallePinpadAnulado(
                 referencia
+        );
+    }
+
+    // =========================================
+    // TRANSACCIONES USUARIO
+    // =========================================
+    public List<Map<String, Object>> obtenerTransaccionesUsuario(
+            String fechaInicio,
+            String fechaFin,
+            Integer usecod,
+            Integer siscod
+    ) {
+
+        return repository.obtenerTransaccionesUsuario(
+                fechaInicio,
+                fechaFin,
+                usecod,
+                siscod
         );
     }
 

@@ -103,33 +103,50 @@ public class LiquidacionCajaRepository {
     // =========================================
     public List<Map<String, Object>> obtenerLiquidacionCaja(
             Integer invnumAper,
-            Integer siscod
+            Integer siscod,
+            Integer usecod
     ) {
 
-        String sql = "EXEC sp_bart_comer_liquidacion_caja_obtener ?, ?";
+        String sql = "EXEC sp_bart_comer_liquidacion_caja_obtener ?, ?, ?";
 
         return jdbcTemplate.queryForList(
                 sql,
                 invnumAper,
-                siscod
+                siscod,
+                usecod
         );
     }
 
     // =========================================
-// GUARDAR / ACTUALIZAR LIQUIDACIÓN DE CAJA
-// =========================================
+    // VALIDAR CIERRE CAJA
+    // =========================================
+    public List<Map<String, Object>> validarCierreCaja(
+            Integer invnumAper
+    ) {
+
+        String sql = "EXEC sp_bart_comer_formato_liquidacion_validar_cierre ?";
+
+        return jdbcTemplate.queryForList(
+                sql,
+                invnumAper
+        );
+    }
+
+    // =========================================
+    // GUARDAR / ACTUALIZAR LIQUIDACIÓN DE CAJA
+    // =========================================
     public List<Map<String, Object>> guardarLiquidacionCaja(
             Map<String, Object> request
     ) {
         String sql =
                 "EXEC sp_bart_comer_liquidacion_caja_save_or_update " +
-                        String.join(",", Collections.nCopies(51, "?"));
+                        String.join(",", Collections.nCopies(68, "?"));
 
         System.out.println(sql);
         System.out.println(sql.chars().filter(c -> c == '?').count());
         return jdbcTemplate.queryForList(
                 sql,
-                // CABECERA
+                // CABECERA (8 parámetros)
                 request.get("invnumAper"),
                 request.get("fechaLiquidacion"),
                 request.get("establecimiento"),
@@ -139,7 +156,7 @@ public class LiquidacionCajaRepository {
                 request.get("siscod"),
                 request.get("usecod"),
 
-                // VENTAS
+                // VENTAS (12 parámetros)
                 request.get("ventasEfectivoCant"),
                 request.get("ventasEfectivoImporte"),
                 request.get("ventasPinpadCant"),
@@ -153,13 +170,13 @@ public class LiquidacionCajaRepository {
                 request.get("ventasCreditoCant"),
                 request.get("ventasCreditoImporte"),
 
-                // MAGISTRALES
+                // MAGISTRALES (4 parámetros)
                 request.get("ventasMagistralEfectivoCant"),
                 request.get("ventasMagistralEfectivoImporte"),
                 request.get("ventasMagistralPosCant"),
                 request.get("ventasMagistralPosImporte"),
 
-                // NOTAS DE CREDITO
+                // NOTAS DE CREDITO (6 parámetros)
                 request.get("notasCreditoEfectivoCant"),
                 request.get("notasCreditoEfectivoImporte"),
                 request.get("notasCreditoPinpadCant"),
@@ -167,17 +184,21 @@ public class LiquidacionCajaRepository {
                 request.get("notasCreditoCreditoCant"),
                 request.get("notasCreditoCreditoImporte"),
 
-                // VALES
+                // NOTAS DE CRÉDITO APLICADAS (2 parámetros)
+                request.get("notasCreditoAplicadaCant"),
+                request.get("notasCreditoAplicadaImporte"),
+
+                // VALES (2 parámetros)
                 request.get("valesSalidaCant"),
                 request.get("valesSalidaImporte"),
 
-                // COTIZADOS
+                // COTIZADOS (4 parámetros)
                 request.get("magistralEfectivoCotCant"),
                 request.get("magistralEfectivoCotImporte"),
                 request.get("magistralPosCotCant"),
                 request.get("magistralPosCotImporte"),
 
-                // IMPORTES ENTREGADOS
+                // IMPORTES ENTREGADOS (13 parámetros)
                 request.get("importeEntregadoEfectivo"),
                 request.get("importeEntregadoPinpad"),
                 request.get("importeEntregadoPos"),
@@ -190,10 +211,27 @@ public class LiquidacionCajaRepository {
                 request.get("importeEntregadoNotaPinpad"),
                 request.get("importeEntregadoNotaCredito"),
                 request.get("importeEntregadoVales"),
+                request.get("importeEntregadoNotaAplic"),
 
-                // ADICIONALES
+                // DIFERENCIAS (13 parámetros)
+                request.get("ventasEfectivoDif"),
+                request.get("ventasPinpadDif"),
+                request.get("ventasPosDif"),
+                request.get("ventasEmergenciaDif"),
+                request.get("ventasNotaDif"),
+                request.get("ventasCreditoDif"),
+                request.get("ventasEfectivoMagFacDif"),
+                request.get("ventasPosMagFacDif"),
+                request.get("notaEfectivoDif"),
+                request.get("notaPinpadDif"),
+                request.get("notaCreditoDif"),
+                request.get("notaAplicadaDif"),
+                request.get("valesSalidaDif"),
+
+                // ADICIONALES DE CABECERA (4 parámetros)
                 request.get("numeroGrabados"),
                 request.get("observaciones"),
+                request.get("subtotalDiferencia"),
                 request.get("usuarioModificacion")
         );
     }

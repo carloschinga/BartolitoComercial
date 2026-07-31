@@ -151,9 +151,14 @@ public class LiquidacionCajaController {
                 ? Integer.parseInt(request.get("siscod").toString())
                 : null;
 
+        Integer usecod = request.get("usecod") != null
+                ? Integer.parseInt(request.get("usecod").toString())
+                : null;
+
         List<Map<String, Object>> result = service.obtenerLiquidacionCaja(
                 invnumAper,
-                siscod
+                siscod,
+                usecod
         );
 
         return ResponseEntity.ok(result);
@@ -169,6 +174,25 @@ public class LiquidacionCajaController {
 
         List<Map<String, Object>> result =
                 service.guardarLiquidacionCaja(request);
+
+        return ResponseEntity.ok(result);
+    }
+
+    // =========================================
+    // OBTENER LIQUIDACIÓN DE CAJA
+    // =========================================
+    @PostMapping("/validarCierreCaja")
+    public ResponseEntity<?> validarCierreCaja(
+            @RequestBody Map<String, Object> request
+    ) {
+
+        Integer invnumAper = request.get("invnumAper") != null
+                ? Integer.parseInt(request.get("invnumAper").toString())
+                : null;
+
+        List<Map<String, Object>> result = service.validarCierreCaja(
+                invnumAper
+        );
 
         return ResponseEntity.ok(result);
     }

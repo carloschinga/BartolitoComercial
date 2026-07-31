@@ -86,10 +86,15 @@ public class TransaccionController {
                 ? Integer.parseInt(request.get("siscod").toString())
                 : null;
 
+        Integer usecod = request.get("usecod") != null
+                ? Integer.parseInt(request.get("usecod").toString())
+                : null;
+
         List<Map<String, Object>> result = service.listarAperturasCaja(
                 fechaInicio,
                 fechaFin,
-                siscod
+                siscod,
+                usecod
         );
 
         return ResponseEntity.ok(result);
@@ -406,6 +411,35 @@ public class TransaccionController {
 
         List<Map<String, Object>> result =
                 service.obtenerDetallePinpadAnulado(referencia);
+
+        return ResponseEntity.ok(result);
+    }
+
+    // =========================================
+    // TRANSACCIONES USUARIO
+    // =========================================
+    @PostMapping("/listarTransaccionesUsuario")
+    public ResponseEntity<?> obtenerTransaccionesUsuario(
+            @RequestBody Map<String, Object> request
+    ) {
+
+        String fechaInicio = request.get("fechaInicio").toString();
+        String fechaFin = request.get("fechaFin").toString();
+
+        Integer usecod = request.get("usecod") != null
+                ? Integer.parseInt(request.get("usecod").toString())
+                : null;
+
+        Integer siscod = request.get("siscod") != null
+                ? Integer.parseInt(request.get("siscod").toString())
+                : null;
+
+        List<Map<String, Object>> result = service.obtenerTransaccionesUsuario(
+                fechaInicio,
+                fechaFin,
+                usecod,
+                siscod
+        );
 
         return ResponseEntity.ok(result);
     }

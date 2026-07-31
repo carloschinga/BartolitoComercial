@@ -101,11 +101,24 @@ public class LiquidacionCajaService {
     // =========================================
     public List<Map<String, Object>> obtenerLiquidacionCaja(
             Integer invnumAper,
-            Integer siscod
+            Integer siscod,
+            Integer usecod
     ) {
         return repository.obtenerLiquidacionCaja(
                 invnumAper,
-                siscod
+                siscod,
+                usecod
+        );
+    }
+
+    // =========================================
+    // VALIDAR CIERRE DE CAJA
+    // =========================================
+    public List<Map<String, Object>> validarCierreCaja(
+            Integer invnumAper
+    ) {
+        return repository.validarCierreCaja(
+                invnumAper
         );
     }
 }

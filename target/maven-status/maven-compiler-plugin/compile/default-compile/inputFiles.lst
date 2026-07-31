@@ -2,11 +2,14 @@ D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\controller
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\ComerApplication.java
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\util\JwtComercialFilter.java
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\controller\ComerController.java
+D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\controller\CorreccionController.java
+D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\repository\CorreccionRepository.java
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\util\SecurityConfig.java
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\service\LiquidacionCajaService.java
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\config\CorsConfig.java
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\repository\TransaccionRepository.java
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\controller\LiquidacionCajaController.java
+D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\service\CorreccionService.java
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\service\ComerService.java
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\util\JwtUtil.java
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\repository\LiquidacionCajaRepository.java

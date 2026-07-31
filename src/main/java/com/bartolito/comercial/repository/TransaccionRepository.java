@@ -61,16 +61,18 @@ public class TransaccionRepository {
     public List<Map<String, Object>> listarAperturasCaja(
             String fechaInicio,
             String fechaFin,
-            Integer siscod
+            Integer siscod,
+            Integer usecod
     ) {
 
-        String sql = "EXEC sp_bart_comer_listar_aperturas_caja ?, ?, ?";
+        String sql = "EXEC sp_bart_comer_listar_aperturas_caja ?,?, ?, ?";
 
         return jdbcTemplate.queryForList(
                 sql,
                 fechaInicio,
                 fechaFin,
-                siscod
+                siscod,
+                usecod
         );
     }
 
@@ -322,4 +324,25 @@ public class TransaccionRepository {
         );
     }
 
+    // =========================================
+    // TRANSACCIONES USUARIO
+    // =========================================
+    public List<Map<String, Object>> obtenerTransaccionesUsuario(
+            String fechaInicio,
+            String fechaFin,
+            Integer usecod,
+            Integer siscod
+    ) {
+
+        String sql = "EXEC sp_bart_comer_listar_transacciones_usuario ?, ?, ?, ?";
+
+        return jdbcTemplate.queryForList(
+                sql,
+                fechaInicio,
+                fechaFin,
+                usecod,
+                siscod
+        );
+
+    }
 }
