@@ -4,6 +4,7 @@ import com.bartolito.comercial.repository.TransaccionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -291,4 +292,80 @@ public class TransaccionService {
         );
     }
 
+    // =========================================
+    // HISTORIAL SUMATORIAS
+    // =========================================
+    public List<Map<String, Object>> listarHistorialSumatorias(
+            String fechaInicio,
+            String  fechaFin
+    ) {
+
+        return repository.listarHistorialSumatorias(fechaInicio,fechaFin);
+    }
+
+    // =========================================
+    // LISTAR SUMATORIA
+    // =========================================
+    public List<Map<String, Object>> listarSumatoria(
+            Integer operacionId
+    ) {
+
+        return repository.listarSumatoria(
+                operacionId
+        );
+    }
+
+    // =========================================
+    // SUMATORIA FORMA PAGO - SAVE OR UPDATE
+    // =========================================
+    public List<Map<String, Object>> saveOrUpdateSumatoriaFormaPago(
+            Integer sumatoriaFormaPagoId,
+            Integer operacionId,
+            Integer siscod,
+            String fechaOperacion,
+            Integer invnumAper,
+            String docpag,
+            String docdes,
+            Integer cantidad,
+            BigDecimal importeTotal,
+            BigDecimal importeNC,
+            BigDecimal total,
+            Integer estado,
+            String usuario
+    ) {
+
+        return repository.saveOrUpdateSumatoriaFormaPago(
+                sumatoriaFormaPagoId,
+                operacionId,
+                siscod,
+                fechaOperacion,
+                invnumAper,
+                docpag,
+                docdes,
+                cantidad,
+                importeTotal,
+                importeNC,
+                total,
+                estado,
+                usuario
+        );
+    }
+
+    // =========================================
+    // SUMATORIA FORMA DE PAGO COMPLETA
+    // =========================================
+    public List<Map<String, Object>> sumatoriaFormaPagoCompleta(
+            String fechaInicio,
+            String fechaFin,
+            Integer siscod,
+            Integer invnumAper
+    ) {
+
+        return repository.sumatoriaFormaPagoCompleta(
+                fechaInicio,
+                fechaFin,
+                siscod,
+                invnumAper
+        );
+    }
 }

@@ -51,6 +51,20 @@ public class LiquidacionCajaService {
     }
 
     // =========================================
+    // LIQUIDACION CAJA - LISTAR EFECTIVOS RECIBIOS
+    // =========================================
+    public List<Map<String, Object>> obtenerEfectivoRecibido(
+            String fechaInicio,
+            String fechaFin
+    ) {
+
+        return repository.obtenerEfectivoRecibido(
+                fechaInicio,
+                fechaFin
+        );
+    }
+
+    // =========================================
     // LIQUIDACION CAJA - FORMAS DE PAGO
     // =========================================
     public List<Map<String, Object>> obtenerFormasPagoLiquidacionCaja(

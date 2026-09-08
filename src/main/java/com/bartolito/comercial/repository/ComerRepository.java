@@ -1,6 +1,7 @@
 package com.bartolito.comercial.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -17,6 +18,7 @@ import java.util.Map;
 public class ComerRepository {
 
     @Autowired
+    @Qualifier("lolfarJdbcTemplate")
     private JdbcTemplate jdbcTemplate;
 
     // METODO PARA EJECUTAR EL SP QUE AGREGA UN DESEMPEÑO DE VENTAS

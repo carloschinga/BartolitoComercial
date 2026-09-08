@@ -78,6 +78,25 @@ public class LiquidacionCajaController {
     }
 
     // =========================================
+    // LISTAR EFECTIVOS RECIBIDOS
+    // =========================================
+    @PostMapping("/listarEfectivosRecibidos")
+    public ResponseEntity<?> obtenerEfectivosRecibidos(
+            @RequestBody Map<String, Object> request
+    ) {
+
+        String fechaInicio = request.get("fechaInicio").toString();
+        String fechaFin = request.get("fechaFin").toString();
+
+        List<Map<String, Object>> result = service.obtenerEfectivoRecibido(
+                fechaInicio,
+                fechaFin
+        );
+
+        return ResponseEntity.ok(result);
+    }
+
+    // =========================================
     // FORMAS DE PAGO
     // =========================================
     @PostMapping("/formasPago")

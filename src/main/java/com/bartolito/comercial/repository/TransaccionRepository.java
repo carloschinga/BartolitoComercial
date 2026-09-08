@@ -1,9 +1,11 @@
 package com.bartolito.comercial.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +13,7 @@ import java.util.Map;
 public class TransaccionRepository {
 
     @Autowired
+    @Qualifier("lolfarJdbcTemplate")
     private JdbcTemplate jdbcTemplate;
 
     // =========================================
@@ -344,5 +347,94 @@ public class TransaccionRepository {
                 siscod
         );
 
+    }
+
+    // =========================================
+    // HISTORIAL SUMATORIAS
+    // =========================================
+    public List<Map<String, Object>> listarHistorialSumatorias(
+            String fechaInicio,
+            String  fechaFin
+    ) {
+
+        String sql = "EXEC sp_bart_comer_listar_historial_sumatorias ?,?";
+
+        return jdbcTemplate.queryForList(sql, fechaInicio, fechaFin);
+    }
+
+    // =========================================
+    // LISTAR SUMATORIA
+    // =========================================
+    public List<Map<String, Object>> listarSumatoria(
+            Integer operacionId
+    ) {
+
+        String sql = "EXEC sp_bart_comer_listar_sumatoria ?";
+
+        return jdbcTemplate.queryForList(
+                sql,
+                operacionId
+        );
+    }
+
+    // =========================================
+    // SUMATORIA FORMA PAGO - SAVE OR UPDATE
+    // =========================================
+    public List<Map<String, Object>> saveOrUpdateSumatoriaFormaPago(
+            Integer sumatoriaFormaPagoId,
+            Integer operacionId,
+            Integer siscod,
+            String fechaOperacion,
+            Integer invnumAper,
+            String docpag,
+            String docdes,
+            Integer cantidad,
+            BigDecimal importeTotal,
+            BigDecimal importeNC,
+            BigDecimal total,
+            Integer estado,
+            String usuario
+    ) {
+
+        String sql = "EXEC sp_bart_sumatoria_forma_pago_save_or_update "
+                + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
+
+        return jdbcTemplate.queryForList(
+                sql,
+                sumatoriaFormaPagoId,
+                operacionId,
+                siscod,
+                fechaOperacion,
+                invnumAper,
+                docpag,
+                docdes,
+                cantidad,
+                importeTotal,
+                importeNC,
+                total,
+                estado,
+                usuario
+        );
+    }
+
+    // =========================================
+    // SUMATORIA FORMA DE PAGO COMPLETA
+    // =========================================
+    public List<Map<String, Object>> sumatoriaFormaPagoCompleta(
+            String fechaInicio,
+            String fechaFin,
+            Integer siscod,
+            Integer invnumAper
+    ) {
+
+        String sql = "EXEC sp_bart_comer_sumatoria_forma_pago_completa ?, ?, ?, ?";
+
+        return jdbcTemplate.queryForList(
+                sql,
+                fechaInicio,
+                fechaFin,
+                siscod,
+                invnumAper
+        );
     }
 }
