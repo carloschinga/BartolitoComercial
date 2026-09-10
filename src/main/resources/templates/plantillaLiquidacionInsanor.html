@@ -256,7 +256,7 @@
                                  alt="Botica San Bartolomé" />
                         </td>
                         <td class="fecha-cell">
-                            FECHA: <span th:text="${#dates.format(fechaActual, 'dd/MM/yyyy HH:mm')}"></span>
+                            FECHA: <span th:text="${#dates.format(fechaActual, 'dd/MM/yyyy')}"></span>
                         </td>
                     </tr>
                 </table>
@@ -330,7 +330,7 @@
                     <td class="c2" th:text="${forma.qtydoc}"></td>
                     <td class="c3" th:text="${#numbers.formatDecimal(forma.totdoc, 0, 'COMMA', 2, 'POINT')}"></td>
                     <td class="c4" th:text="${#numbers.formatDecimal(forma.totcalc, 0, 'COMMA', 2, 'POINT')}"></td>
-                    <td class="c5" th:text="${#numbers.formatDecimal(forma.diferencia, 0, 'COMMA', 2, 'POINT')}"></td>
+                    <td class="c5" th:text="${#numbers.formatDecimal(forma.diferencia, 1, 'COMMA', 2, 'POINT')}"></td>
                 </tr>
 
                 <!-- ===== SUBTOTAL ===== -->
