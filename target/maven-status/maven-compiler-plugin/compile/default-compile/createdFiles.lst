@@ -18,11 +18,14 @@ com\bartolito\comercial\controller\LiquidacionClinicaController.class
 com\bartolito\comercial\service\CorreccionService.class
 com\bartolito\comercial\service\LiquidacionCajaService.class
 com\bartolito\comercial\config\MultiDataSourceConfig.class
+com\bartolito\comercial\repository\CorreccionInsanorRepository.class
 com\bartolito\comercial\util\dto\consolidadoCaja\ConsolidadoCajaBatchResponse.class
 com\bartolito\comercial\service\TransaccionService.class
 com\bartolito\comercial\util\SecurityConfig.class
 com\bartolito\comercial\controller\LiquidacionCajaController.class
 com\bartolito\comercial\service\LiquidacionPDFService.class
+com\bartolito\comercial\service\CorreccionInsanorService.class
+com\bartolito\comercial\controller\CorreccionInsanorController.class
 com\bartolito\comercial\util\dto\liquidacionClinica\FormaPagoResponse.class
 com\bartolito\comercial\repository\LiquidacionCajaRepository.class
 com\bartolito\comercial\service\ComerService.class

@@ -14,8 +14,11 @@ D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\controller
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\config\MultiDataSourceConfig.java
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\service\CorreccionService.java
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\util\dto\liquidacionClinica\LiquidacionItemResponse.java
+D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\repository\CorreccionInsanorRepository.java
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\service\ComerService.java
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\util\dto\consolidadoCaja\ConsolidadoCajaResponse.java
+D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\service\CorreccionInsanorService.java
+D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\controller\CorreccionInsanorController.java
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\util\dto\consolidadoCaja\ConsolidadoCajaBatchResponse.java
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\repository\LiquidacionClinicaRepository.java
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\service\LiquidacionClinicaService.java

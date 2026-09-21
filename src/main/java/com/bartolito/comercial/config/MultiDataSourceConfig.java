@@ -40,4 +40,17 @@ public class MultiDataSourceConfig {
             @Qualifier("lolcliDataSource") DataSource ds) {
         return new JdbcTemplate(ds);
     }
+
+    // ========== LOLCLI_PRUEBA ==========
+    @Bean(name = "lolcli2DataSource")
+    @ConfigurationProperties(prefix = "spring.datasource.lolcli2")
+    public DataSource lolcli2DataSource() {
+        return DataSourceBuilder.create().build();
+    }
+
+    @Bean(name = "lolcli2JdbcTemplate")
+    public JdbcTemplate lolcli2JdbcTemplate(
+            @Qualifier("lolcli2DataSource") DataSource ds) {
+        return new JdbcTemplate(ds);
+    }
 }
