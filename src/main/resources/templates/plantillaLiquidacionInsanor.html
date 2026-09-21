@@ -78,7 +78,7 @@
 
         /* ===== TÍTULO ===== */
         .r-titulo {
-            background: #bfd0a6;
+            background: #a6d0e8;
             text-align: center;
             font-weight: bold;
             font-size: 11pt;
@@ -144,7 +144,7 @@
             font-size: 8.6pt;
         }
         .tbl th {
-            background: #bfd0a6;
+            background: #a6d0e8;
             border: 1px solid #444;
             padding: 1.6mm 2.5mm;
             font-weight: bold;
@@ -166,7 +166,7 @@
         .tbl .c5 { width: 15%; text-align: center; }
 
         .tbl .r-sub td {
-            background: #bfd0a6 !important;
+            background: #a6d0e8 !important;
             font-weight: bold;
         }
         .tbl .forma-der {
@@ -182,11 +182,11 @@
             padding: 0 !important;
             border-top: 1.5px solid #222;
             border-bottom: 1.5px solid #222;
-            background: #bfd0a6 !important;
+            background: #a6d0e8 !important;
         }
 
         .tbl .r-otros-hdr td {
-            background: #bfd0a6 !important;
+            background: #a6d0e8 !important;
             border: 1px solid #444;
             padding: 1.6mm 2.5mm;
             font-weight: bold;
@@ -256,7 +256,7 @@
                                  alt="Botica San Bartolomé" />
                         </td>
                         <td class="fecha-cell">
-                            FECHA: <span th:text="${#dates.format(fechaActual, 'dd/MM/yyyy')}"></span>
+                            FECHA: <span th:text="${datos.fechaCierre}"></span>
                         </td>
                     </tr>
                 </table>
@@ -340,30 +340,6 @@
                     <td class="c3" th:text="${#numbers.formatDecimal(datos.subtotal.totdoc, 0, 'COMMA', 2, 'POINT')}"></td>
                     <td class="c4" th:text="${#numbers.formatDecimal(datos.subtotal.totcalc, 0, 'COMMA', 2, 'POINT')}"></td>
                     <td class="c5" th:text="${#numbers.formatDecimal(datos.subtotal.diferencia, 0, 'COMMA', 2, 'POINT')}"></td>
-                </tr>
-
-                <!-- ===== SEPARADOR ===== -->
-                <tr class="r-gap">
-                    <td colspan="5"></td>
-                </tr>
-
-                <!-- ===== OTROS IMPORTES (por ahora con datos de prueba) ===== -->
-                <tr class="r-otros-hdr">
-                    <td class="c1">OTROS IMPORTES DECLARADOS</td>
-                    <td class="c2">CANTIDAD</td>
-                    <td class="c3" colspan="3">IMPORTE DECLARADO</td>
-                </tr>
-
-                <tr>
-                    <td class="c1 forma-ind">Productos en Efectivo (cotizados)</td>
-                    <td class="c2">0</td>
-                    <td class="c3" colspan="3">0.00</td>
-                </tr>
-
-                <tr>
-                    <td class="c1 forma-ind">Productos en Pos (cotizados)</td>
-                    <td class="c2">0</td>
-                    <td class="c3" colspan="3">0.00</td>
                 </tr>
 
                 </tbody>

@@ -16,6 +16,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -50,7 +52,7 @@ public class LiquidacionPDFService {
             LiquidacionDataResponse datos = new LiquidacionDataResponse();
 
             // Datos de cabecera
-            datos.setEstablecimiento("Insanor");
+            datos.setEstablecimiento("INSANOR");
             datos.setInvnumAper(invnumAper);
             datos.setInvnum(invnum);
             datos.setCajero((String) cabecera.get("cajero"));
@@ -62,10 +64,13 @@ public class LiquidacionPDFService {
             // Formatear fecha
             if (cabecera.get("fecha") != null) {
                 Date fecha = (Date) cabecera.get("fecha");
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                datos.setFechaCierre(sdf.format(fecha));
-            }
 
+                LocalDate fechaPeru = fecha.toInstant()
+                        .atZone(ZoneId.of("America/Lima"))
+                        .toLocalDate();
+
+                datos.setFechaCierre(fechaPeru.toString());
+            }
             // 6. Mapear formas de pago
             List<FormaPagoResponse> formasPago = new ArrayList<>();
 
@@ -162,7 +167,7 @@ public class LiquidacionPDFService {
 
     private String getLogoBase64() {
         try {
-            ClassPathResource resource = new ClassPathResource("static/images/logo.png");
+            ClassPathResource resource = new ClassPathResource("static/images/logo-insanor.png");
             byte[] imageBytes = FileCopyUtils.copyToByteArray(resource.getInputStream());
             return Base64.getEncoder().encodeToString(imageBytes);
         } catch (Exception e) {
