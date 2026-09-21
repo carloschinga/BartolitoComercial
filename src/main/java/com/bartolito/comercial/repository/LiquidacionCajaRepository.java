@@ -1,6 +1,7 @@
 package com.bartolito.comercial.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +13,7 @@ import java.util.Map;
 public class LiquidacionCajaRepository {
 
     @Autowired
+    @Qualifier("lolfarJdbcTemplate")
     private JdbcTemplate jdbcTemplate;
 
     // =========================================
@@ -95,6 +97,23 @@ public class LiquidacionCajaRepository {
                 fechaFin,
                 siscod,
                 invnumAper
+        );
+    }
+
+    // =========================================
+    // LIQUIDACION CAJA - LISTAR EFECTIVOS RECIBIDOS
+    // =========================================
+    public List<Map<String, Object>> obtenerEfectivoRecibido(
+            String fechaInicio,
+            String fechaFin
+    ) {
+
+        String sql = "EXEC sp_bart_comer_liquidacion_listar_efectivo_recibido ?, ?";
+
+        return jdbcTemplate.queryForList(
+                sql,
+                fechaInicio,
+                fechaFin
         );
     }
 

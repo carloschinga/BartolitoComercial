@@ -4,6 +4,8 @@ import com.bartolito.comercial.service.TransaccionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 import java.util.*;
 
 @RestController
@@ -440,6 +442,190 @@ public class TransaccionController {
                 usecod,
                 siscod
         );
+
+        return ResponseEntity.ok(result);
+    }
+
+    // =========================================
+    // HISTORIAL SUMATORIAS
+    // =========================================
+    @PostMapping("/listarHistorialSumatorias")
+    public ResponseEntity<?> listarHistorialSumatorias(
+            @RequestBody Map<String, Object> request
+    ) {
+
+        String fechaInicio = request.get("fechaInicio").toString();
+        String fechaFin = request.get("fechaFin").toString();
+
+        List<Map<String, Object>> result =
+                service.listarHistorialSumatorias(fechaInicio,
+                        fechaFin);
+
+        return ResponseEntity.ok(result);
+    }
+
+    // =========================================
+    // LISTAR SUMATORIA
+    // =========================================
+    @PostMapping("/listarSumatoria")
+    public ResponseEntity<?> listarSumatoria(
+            @RequestBody Map<String, Object> request
+    ) {
+
+        Integer operacionId = request.get("operacionId") != null
+                ? Integer.parseInt(request.get("operacionId").toString())
+                : null;
+
+        List<Map<String, Object>> result =
+                service.listarSumatoria(
+                        operacionId
+                );
+
+        return ResponseEntity.ok(result);
+    }
+
+    // =========================================
+    // SUMATORIA FORMA PAGO - SAVE OR UPDATE
+    // =========================================
+    @PostMapping("/saveOrUpdateSumatoriaFormaPago")
+    public ResponseEntity<?> saveOrUpdateSumatoriaFormaPago(
+            @RequestBody Map<String, Object> request
+    ) {
+
+        Integer sumatoriaFormaPagoId =
+                request.get("sumatoriaFormaPagoId") != null
+                        ? Integer.parseInt(
+                        request.get("sumatoriaFormaPagoId").toString()
+                )
+                        : null;
+
+        Integer operacionId =
+                request.get("operacionId") != null
+                        ? Integer.parseInt(
+                        request.get("operacionId").toString()
+                )
+                        : null;
+
+        Integer siscod =
+                request.get("siscod") != null
+                        ? Integer.parseInt(
+                        request.get("siscod").toString()
+                )
+                        : null;
+
+        String fechaOperacion =
+                request.get("fechaOperacion") != null
+                        ? request.get("fechaOperacion").toString()
+                        : null;
+
+        Integer invnumAper =
+                request.get("invnumAper") != null
+                        ? Integer.parseInt(
+                        request.get("invnumAper").toString()
+                )
+                        : null;
+
+        String docpag =
+                request.get("docpag") != null
+                        ? request.get("docpag").toString()
+                        : null;
+
+        String docdes =
+                request.get("docdes") != null
+                        ? request.get("docdes").toString()
+                        : null;
+
+        Integer cantidad =
+                request.get("cantidad") != null
+                        ? Integer.parseInt(
+                        request.get("cantidad").toString()
+                )
+                        : null;
+
+        BigDecimal importeTotal =
+                request.get("importeTotal") != null
+                        ? new BigDecimal(
+                        request.get("importeTotal").toString()
+                )
+                        : null;
+
+        BigDecimal importeNC =
+                request.get("importeNC") != null
+                        ? new BigDecimal(
+                        request.get("importeNC").toString()
+                )
+                        : null;
+
+        BigDecimal total =
+                request.get("total") != null
+                        ? new BigDecimal(
+                        request.get("total").toString()
+                )
+                        : null;
+
+        Integer estado =
+                request.get("estado") != null
+                        ? Integer.parseInt(
+                        request.get("estado").toString()
+                )
+                        : null;
+
+        String usuario =
+                request.get("usuario") != null
+                        ? request.get("usuario").toString()
+                        : null;
+
+        List<Map<String, Object>> result =
+                service.saveOrUpdateSumatoriaFormaPago(
+                        sumatoriaFormaPagoId,
+                        operacionId,
+                        siscod,
+                        fechaOperacion,
+                        invnumAper,
+                        docpag,
+                        docdes,
+                        cantidad,
+                        importeTotal,
+                        importeNC,
+                        total,
+                        estado,
+                        usuario
+                );
+
+        return ResponseEntity.ok(result);
+    }
+
+    // =========================================
+    // SUMATORIA FORMA DE PAGO COMPLETA
+    // =========================================
+    @PostMapping("/sumatoriaFormaPagoCompleta")
+    public ResponseEntity<?> sumatoriaFormaPagoCompleta(
+            @RequestBody Map<String, Object> request
+    ) {
+
+        String fechaInicio = request.get("fechaInicio") != null
+                ? request.get("fechaInicio").toString()
+                : null;
+
+        String fechaFin = request.get("fechaFin") != null
+                ? request.get("fechaFin").toString()
+                : null;
+
+        Integer siscod = request.get("siscod") != null
+                ? Integer.parseInt(request.get("siscod").toString())
+                : null;
+
+        Integer invnumAper = request.get("invnumAper") != null
+                ? Integer.parseInt(request.get("invnumAper").toString())
+                : null;
+
+        List<Map<String, Object>> result =
+                service.sumatoriaFormaPagoCompleta(
+                        fechaInicio,
+                        fechaFin,
+                        siscod,
+                        invnumAper
+                );
 
         return ResponseEntity.ok(result);
     }
