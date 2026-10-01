@@ -13,7 +13,7 @@ import java.util.Map;
 public class CorreccionInsanorRepository {
 
     @Autowired
-    @Qualifier("lolcli2JdbcTemplate")
+    @Qualifier("lolcliJdbcTemplate")
     private JdbcTemplate jdbcTemplate;
 
     // =========================================

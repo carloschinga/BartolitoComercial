@@ -38,6 +38,27 @@ public class TransaccionRepository {
     }
 
     // =========================================
+    // LISTAR VENTAS NO CAJA
+    // =========================================
+    public List<Map<String, Object>> listarVentasNoCaja(
+            String fechaInicio,
+            String fechaFin,
+            Integer invnumAper,
+            Integer siscod
+    ) {
+
+        String sql = "EXEC sp_bart_comer_listar_ventas_no_caja ?, ?, ?, ?";
+
+        return jdbcTemplate.queryForList(
+                sql,
+                fechaInicio,
+                fechaFin,
+                invnumAper,
+                siscod
+        );
+    }
+
+    // =========================================
     // LISTAR VENTAS AL CREDITO
     // =========================================
     public List<Map<String, Object>> listarVentasCredito(

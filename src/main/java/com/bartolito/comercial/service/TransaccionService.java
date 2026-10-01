@@ -32,6 +32,25 @@ public class TransaccionService {
         );
     }
 
+
+    // =========================================
+    // LISTAR VENTAS NO CAJA
+    // =========================================
+    public List<Map<String, Object>> listarVentasNoCaja(
+            String fechaInicio,
+            String fechaFin,
+            Integer invnumAper,
+            Integer siscod
+    ) {
+
+        return repository.listarVentasNoCaja(
+                fechaInicio,
+                fechaFin,
+                invnumAper,
+                siscod
+        );
+    }
+
     // =========================================
     // LISTAR VENTAS AL CREDITO
     // =========================================
