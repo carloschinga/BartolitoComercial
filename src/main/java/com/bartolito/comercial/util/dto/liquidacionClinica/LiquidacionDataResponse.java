@@ -4,6 +4,7 @@ package com.bartolito.comercial.util.dto.liquidacionClinica;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class LiquidacionDataResponse {
@@ -21,6 +22,10 @@ public class LiquidacionDataResponse {
 
     // Lista de formas de pago con montos
     private List<FormaPagoResponse> formasPago;
+
+    private Map<String, Object> ingresos;
+    private Map<String, Object> egresos;
+    private Map<String, Object> notasCredito;
 
     // Subtotal calculado
     private FormaPagoResponse subtotal;

@@ -82,6 +82,41 @@ public class LiquidacionClinicaRepository {
         );
     }
 
+    // =========================================
+    // LIQUIDACIÓN - LISTAR INGRESOS
+    // =========================================
+    public Map<String, Object> listarIngresos(Integer invnumAper) {
 
+        String sql = "EXEC sp_bart_ins_comer_liquidacion_listar_ingresos ?";
 
+        List<Map<String, Object>> result = lolclijdbcTemplate.queryForList(sql, invnumAper);
+
+        return result.isEmpty() ? null : result.get(0);
+    }
+
+    // =========================================
+    // LIQUIDACIÓN - LISTAR EGRESOS
+    // =========================================
+    public Map<String, Object> listarEgresos(
+            Integer invnumAper
+    ) {
+
+        String sql = "EXEC sp_bart_ins_comer_liquidacion_listar_egresos ?";
+
+        List<Map<String, Object>> result = lolclijdbcTemplate.queryForList(sql, invnumAper);
+
+        return result.isEmpty() ? null : result.get(0);
+    }
+
+    // =========================================
+    // LIQUIDACIÓN - LISTAR NOTAS DE CREDITO
+    // =========================================
+    public Map<String, Object> listarNotasCredito(Integer invnumAper) {
+
+        String sql = "EXEC sp_bart_ins_comer_liquidacion_listar_notas_credito ?";
+
+        List<Map<String, Object>> result = lolclijdbcTemplate.queryForList(sql, invnumAper);
+
+        return result.isEmpty() ? null : result.get(0);
+    }
 }
