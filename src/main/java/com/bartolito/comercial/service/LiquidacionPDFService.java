@@ -48,6 +48,11 @@ public class LiquidacionPDFService {
             // 4. Obtener las formas de pago con montos del cierre
             List<Map<String, Object>> formasPagoData = repository.listarFormasPago(invnum);
 
+            // 5. Obtener ingresos, egresos y notas de crédito
+            Map<String, Object> ingresos = repository.listarIngresos(invnumAper);
+            Map<String, Object> egresos = repository.listarEgresos(invnumAper);
+            Map<String, Object> notasCredito = repository.listarNotasCredito(invnumAper);
+
             // 5. Construir el DTO de respuesta
             LiquidacionDataResponse datos = new LiquidacionDataResponse();
 
@@ -60,6 +65,10 @@ public class LiquidacionPDFService {
             datos.setTurno((String) cabecera.get("turno"));
             datos.setFechaInicio(fechaInicio);
             datos.setFechaFin(fechaFin);
+
+            datos.setIngresos(ingresos);
+            datos.setEgresos(egresos);
+            datos.setNotasCredito(notasCredito);
 
             // Formatear fecha
             if (cabecera.get("fecha") != null) {
