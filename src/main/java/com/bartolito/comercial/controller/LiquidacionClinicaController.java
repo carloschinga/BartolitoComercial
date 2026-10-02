@@ -2,8 +2,12 @@ package com.bartolito.comercial.controller;
 
 import com.bartolito.comercial.service.LiquidacionClinicaService;
 import com.bartolito.comercial.service.LiquidacionPDFService;
+import com.bartolito.comercial.util.dto.liquidacionClinica.LiquidacionRequest;
+import com.bartolito.comercial.util.dto.liquidacionClinica.LiquidacionResponse;
+import com.bartolito.comercial.util.dto.liquidacionClinica.LiquidacionSaveRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -141,6 +145,38 @@ public class LiquidacionClinicaController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PostMapping("/obtenerLiquidacion")
+    public ResponseEntity<LiquidacionResponse> obtenerLiquidacion(
+            @RequestBody LiquidacionRequest t){
+
+        LiquidacionResponse response =
+                service.obtenerDatosLiquidacion(t);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/saveLiquidacion")
+    public ResponseEntity<?> saveOrUpdate(
+            @RequestBody LiquidacionSaveRequest request) {
+
+        try {
+
+            Map<String, Object> response =
+                    service.saveOrUpdate(request);
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of(
+                            "estado", "ERROR",
+                            "mensaje", e.getMessage()
+                    ));
         }
     }
 }

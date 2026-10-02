@@ -1,10 +1,12 @@
 package com.bartolito.comercial.repository;
 
+import com.bartolito.comercial.util.dto.liquidacionClinica.LiquidacionSaveRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -118,5 +120,71 @@ public class LiquidacionClinicaRepository {
         List<Map<String, Object>> result = lolclijdbcTemplate.queryForList(sql, invnumAper);
 
         return result.isEmpty() ? null : result.get(0);
+    }
+
+    public Map<String, Object> obtenerLiquidacion(Integer invnumAper) {
+
+        String sql = "EXEC sp_bart_comer_liquidacion_obtener ?";
+
+        List<Map<String, Object>> resultado =
+                lolclijdbcTemplate.queryForList(sql, invnumAper);
+
+        if (resultado == null || resultado.isEmpty()) {
+            return null;
+        }
+
+        return resultado.get(0);
+    }
+
+    public Map<String, Object> saveOrUpdate(LiquidacionSaveRequest request) {
+
+        String sql = "EXEC sp_bart_comer_liquidacion_save ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
+
+        return lolclijdbcTemplate.queryForMap(
+                sql,
+
+                request.getLiquidacionId(),
+                request.getInvnumAper(),
+                Timestamp.valueOf(request.getFechaLiquidacion()),
+
+                request.getEstablecimiento(),
+                request.getUsenam(),
+                request.getUsedoc(),
+                request.getTurno(),
+
+                request.getSiscod(),
+                request.getUsecod(),
+
+                request.getCantidadSubtotal(),
+                request.getSubtotalCalculado(),
+                request.getSubtotalImporte(),
+                request.getSubtotalDiferencia(),
+
+                request.getNotaEfectivoImporte(),
+                request.getNotaPinpadImporte(),
+                request.getNotaCreditoImporte(),
+
+                request.getNotaEfectivoCantidad(),
+                request.getNotaPinpadCantidad(),
+                request.getNotaCreditoCantidad(),
+
+                request.getIngresosImporte(),
+                request.getEgresosImporte(),
+
+                request.getIngresosCantidad(),
+                request.getEgresosCantidad(),
+
+                request.getEstado(),
+                request.getValidadoPor(),
+
+                request.getFechaValidacion() != null
+                        ? Timestamp.valueOf(request.getFechaValidacion())
+                        : null,
+
+                request.getNumeroGrabados(),
+
+                request.getObservacion(),
+                request.getUsuario()
+        );
     }
 }
