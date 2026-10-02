@@ -179,4 +179,14 @@ public class LiquidacionClinicaController {
                     ));
         }
     }
+
+    @PostMapping("/prepararLiquidacion")
+    public ResponseEntity<LiquidacionSaveRequest> prepararLiquidacion(
+            @RequestBody LiquidacionRequest request) {
+
+        LiquidacionSaveRequest response =
+                service.prepararLiquidacion(request);
+
+        return ResponseEntity.ok(response);
+    }
 }
