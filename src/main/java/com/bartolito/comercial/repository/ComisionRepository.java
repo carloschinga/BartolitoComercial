@@ -37,8 +37,8 @@ public class ComisionRepository {
 
         return jdbcTemplate.queryForList(
                 sql,
-                siscod,
-                cuotVtaId
+                cuotVtaId,
+                siscod
         );
     }
 }

@@ -28,6 +28,7 @@ D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\util\dto\c
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\service\NotaCreditoInsanorService.java
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\repository\LiquidacionClinicaRepository.java
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\service\LiquidacionClinicaService.java
+D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\controller\ComisionController.java
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\util\JwtComercialFilter.java
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\controller\ComerController.java
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\repository\ConsolidadoCajaRepository.java
@@ -35,6 +36,8 @@ D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\repository
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\repository\TransaccionRepository.java
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\repository\ConsolidadoInsanorRepository.java
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\controller\LiquidacionCajaController.java
+D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\repository\ComisionRepository.java
+D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\service\ComisionService.java
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\util\JwtUtil.java
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\controller\TransaccionInsanorController.java
 D:\Bartolito\BartolitoComercial\src\main\java\com\bartolito\comercial\repository\LiquidacionCajaRepository.java

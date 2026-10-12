@@ -33,6 +33,7 @@ com\bartolito\comercial\service\ConsolidadoCajaService.class
 com\bartolito\comercial\controller\CorreccionController.class
 com\bartolito\comercial\util\dto\liquidacionClinica\LiquidacionItemResponse.class
 com\bartolito\comercial\controller\NotaCreditoInsanorController.class
+com\bartolito\comercial\controller\ComisionController.class
 com\bartolito\comercial\repository\NotaCreditoInsanorRepository.class
 com\bartolito\comercial\repository\ConsolidadoInsanorRepository.class
 com\bartolito\comercial\service\TransaccionService.class
@@ -42,4 +43,6 @@ com\bartolito\comercial\controller\CorreccionInsanorController.class
 com\bartolito\comercial\util\dto\liquidacionClinica\FormaPagoResponse.class
 com\bartolito\comercial\service\ComerService.class
 com\bartolito\comercial\config\CorsConfig.class
+com\bartolito\comercial\repository\ComisionRepository.class
 com\bartolito\comercial\repository\TransaccionRepository.class
+com\bartolito\comercial\service\ComisionService.class
