@@ -106,6 +106,52 @@ public class CorreccionInsanorController {
         return ResponseEntity.ok(result);
     }
 
+    // =========================================
+    // DESVINCULAR PINPAD
+    // =========================================
+    @PostMapping("/desvincularPinpad")
+    public ResponseEntity<?> desvincularPinpad(
+            @RequestBody Map<String, Object> request
+    ) {
+
+        Integer invnumRef = Integer.parseInt(request.get("invnumRef").toString());
+
+        List<Map<String, Object>> result = service.desvincularPinpad(
+                invnumRef
+        );
+
+        return ResponseEntity.ok(result);
+    }
+
+    // =========================================
+    // DESVINCULAR TRANSACCIONES PINPAD
+    // =========================================
+    @PostMapping("/listarTransaccionesPinpadDesvincular")
+    public ResponseEntity<?> obtenerTransaccionesPinpadDesvincular(
+            @RequestBody Map<String, Object> request
+    ) {
+
+        String fechaInicio = request.get("fechaInicio") != null
+                ? request.get("fechaInicio").toString()
+                : null;
+
+        String fechaFin = request.get("fechaFin") != null
+                ? request.get("fechaFin").toString()
+                : null;
+
+        String operacion = request.get("operacion") != null
+                ? request.get("operacion").toString()
+                : null;
+
+        List<Map<String, Object>> result = service.obtenerTransaccionesPinpadDesvincular(
+                fechaInicio,
+                fechaFin,
+                operacion
+        );
+
+        return ResponseEntity.ok(result);
+    }
+
 
 // =========================================
 // GUARDAR SOLICITUD
