@@ -57,15 +57,17 @@ public class ConsolidadoInsanorRepository {
     public List<Map<String, Object>> listarFormaPagoCompleto(
             String fechaInicio,
             String fechaFin,
+            Integer siscod,
             Integer invnumAper
     ) {
 
-        String sql = "EXEC sp_bart_ins_comer_consolidado_forma_pago_completa ?,?, ?";
+        String sql = "EXEC sp_bart_ins_comer_consolidado_forma_pago_completa ?,?,?,?";
 
         return jdbcTemplate.queryForList(
                 sql,
                 fechaInicio,
                 fechaFin,
+                siscod,
                 invnumAper
         );
     }

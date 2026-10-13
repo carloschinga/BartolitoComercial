@@ -119,4 +119,46 @@ public class TransaccionInsanorRepository {
                 invnumAper
         );
     }
+
+    // =========================================
+    // COMERCIAL - LISTAR INGRESOS
+    // =========================================
+    public List<Map<String, Object>> listarIngresos(
+            String fechaInicio,
+            String fechaFin,
+            Integer siscod,
+            Integer invnumAper
+    ) {
+
+        String sql = "EXEC sp_bart_ins_comer_listar_ingresos ?, ?, ?, ?";
+
+        return jdbcTemplate.queryForList(
+                sql,
+                fechaInicio,
+                fechaFin,
+                siscod,
+                invnumAper
+        );
+    }
+
+    // =========================================
+// COMERCIAL - LISTAR EGRESOS
+// =========================================
+    public List<Map<String, Object>> listarEgresos(
+            String fechaInicio,
+            String fechaFin,
+            Integer siscod,
+            Integer invnumAper
+    ) {
+
+        String sql = "EXEC sp_bart_ins_comer_listar_egresos ?, ?, ?, ?";
+
+        return jdbcTemplate.queryForList(
+                sql,
+                fechaInicio,
+                fechaFin,
+                siscod,
+                invnumAper
+        );
+    }
 }

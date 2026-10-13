@@ -125,12 +125,14 @@ public class ConsolidadoInsanorService {
     public List<Map<String, Object>> listarFormaPagoCompleto(
             String fechaInicio,
             String fechaFin,
+            Integer siscod,
             Integer invnumAper
     ) {
 
         return repository.listarFormaPagoCompleto(
                 fechaInicio,
                 fechaFin,
+                siscod,
                 invnumAper
         );
     }

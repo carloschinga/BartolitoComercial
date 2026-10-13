@@ -187,4 +187,72 @@ public class TransaccionInsanorController {
 
         return ResponseEntity.ok(result);
     }
+
+    // =========================================
+    // COMERCIAL - LISTAR INGRESOS
+    // =========================================
+    @PostMapping("/listarIngresos")
+    public ResponseEntity<?> listarIngresos(
+            @RequestBody Map<String, Object> request
+    ) {
+
+        String fechaInicio = request.get("fechaInicio") != null
+                ? request.get("fechaInicio").toString()
+                : null;
+
+        String fechaFin = request.get("fechaFin") != null
+                ? request.get("fechaFin").toString()
+                : null;
+
+        Integer siscod = request.get("siscod") != null
+                ? Integer.parseInt(request.get("siscod").toString())
+                : null;
+
+        Integer invnumAper = request.get("invnumAper") != null
+                ? Integer.parseInt(request.get("invnumAper").toString())
+                : null;
+
+        List<Map<String, Object>> result = service.listarIngresos(
+                fechaInicio,
+                fechaFin,
+                siscod,
+                invnumAper
+        );
+
+        return ResponseEntity.ok(result);
+    }
+
+    // =========================================
+    // COMERCIAL - LISTAR EGRESOS
+    // =========================================
+    @PostMapping("/listarEgresos")
+    public ResponseEntity<?> listarEgresos(
+            @RequestBody Map<String, Object> request
+    ) {
+
+        String fechaInicio = request.get("fechaInicio") != null
+                ? request.get("fechaInicio").toString()
+                : null;
+
+        String fechaFin = request.get("fechaFin") != null
+                ? request.get("fechaFin").toString()
+                : null;
+
+        Integer siscod = request.get("siscod") != null
+                ? Integer.parseInt(request.get("siscod").toString())
+                : null;
+
+        Integer invnumAper = request.get("invnumAper") != null
+                ? Integer.parseInt(request.get("invnumAper").toString())
+                : null;
+
+        List<Map<String, Object>> result = service.listarEgresos(
+                fechaInicio,
+                fechaFin,
+                siscod,
+                invnumAper
+        );
+
+        return ResponseEntity.ok(result);
+    }
 }
