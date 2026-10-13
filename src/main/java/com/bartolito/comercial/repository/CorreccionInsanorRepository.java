@@ -82,6 +82,40 @@ public class CorreccionInsanorRepository {
         );
     }
 
+    // =========================================
+    // DESVINCULAR - TRANSACCIONES PINPAD
+    // =========================================
+    public List<Map<String, Object>> obtenerTransaccionesPinpadDesvincular(
+            String fechaInicio,
+            String fechaFin,
+            String operacion
+    ) {
+
+        String sql = "EXEC sp_bart_ins_comer_desvincular_listar_transacciones_pinpad ?, ?, ?";
+
+        return jdbcTemplate.queryForList(
+                sql,
+                fechaInicio,
+                fechaFin,
+                operacion
+        );
+    }
+
+    // =========================================
+    // DESVINCULAR - TRANSACCIONES PINPAD
+    // =========================================
+    public List<Map<String, Object>> desvincularPinpad(
+            Integer invnumRef
+    ) {
+
+        String sql = "EXEC sp_bart_ins_comer_desvincular_pinpad ?";
+
+        return jdbcTemplate.queryForList(
+                sql,
+                invnumRef
+        );
+    }
+
 
     // =========================================
     // GUARDAR SOLICITUD
