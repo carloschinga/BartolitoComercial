@@ -1,0 +1,390 @@
+package com.bartolito.comercial.service.redsalud;
+
+import com.bartolito.comercial.repository.redsalud.TransaccionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+
+@Service
+public class TransaccionService {
+
+    @Autowired
+    private TransaccionRepository repository;
+
+    // =========================================
+    // LISTAR TRANSACCIONES
+    // =========================================
+    public List<Map<String, Object>> listarTransacciones(
+            String fechaInicio,
+            String fechaFin,
+            Integer invnumAper,
+            Integer siscod
+    ) {
+
+        return repository.listarTransacciones(
+                fechaInicio,
+                fechaFin,
+                invnumAper,
+                siscod
+        );
+    }
+
+
+    // =========================================
+    // LISTAR VENTAS NO CAJA
+    // =========================================
+    public List<Map<String, Object>> listarVentasNoCaja(
+            String fechaInicio,
+            String fechaFin,
+            Integer invnumAper,
+            Integer siscod
+    ) {
+
+        return repository.listarVentasNoCaja(
+                fechaInicio,
+                fechaFin,
+                invnumAper,
+                siscod
+        );
+    }
+
+    // =========================================
+    // LISTAR VENTAS AL CREDITO
+    // =========================================
+    public List<Map<String, Object>> listarVentasCredito(
+            String fechaInicio,
+            String fechaFin,
+            Integer invnumAper,
+            Integer siscod
+    ) {
+
+        return repository.listarVentasCredito(
+                fechaInicio,
+                fechaFin,
+                invnumAper,
+                siscod
+        );
+    }
+
+    // =========================================
+    // LISTAR APERTURAS DE CAJA
+    // =========================================
+    public List<Map<String, Object>> listarAperturasCaja(
+            String fechaInicio,
+            String fechaFin,
+            Integer siscod,
+            Integer usecod
+    ) {
+
+        return repository.listarAperturasCaja(
+                fechaInicio,
+                fechaFin,
+                siscod,
+                usecod
+        );
+    }
+
+    // =========================================
+    // LISTAR METODOS DE PAGO
+    // =========================================
+    public List<Map<String, Object>> listarMetodosPago(
+            String fechaInicio,
+            String fechaFin
+    ) {
+
+        return repository.listarMetodosPago(
+                fechaInicio,
+                fechaFin
+        );
+    }
+
+    // =========================================
+    // LISTAR SUMATORIA FORMA PAGO
+    // =========================================
+    public List<Map<String, Object>> listarSumatoriaFormaPago(
+            String fechaInicio,
+            String fechaFin,
+            Integer invnumAper,
+            Integer siscod
+    ) {
+
+        return repository.listarSumatoriaFormaPago(
+                fechaInicio,
+                fechaFin,
+                invnumAper,
+                siscod
+        );
+    }
+
+    // =========================================
+    // LISTAR NOTAS DE CREDITO
+    // =========================================
+    public List<Map<String, Object>> listarNotaCredito(
+            String fechaInicio,
+            String fechaFin,
+            Integer invnumAper,
+            Integer siscod
+    ) {
+
+        return repository.listarNotaCredito(
+                fechaInicio,
+                fechaFin,
+                invnumAper,
+                siscod
+        );
+    }
+
+    // =========================================
+    // LISTAR PINPAD ANULADOS
+    // =========================================
+    public List<Map<String, Object>> listarPinpadAnulado(
+            String fechaInicio,
+            String fechaFin,
+            Integer invnumAper,
+            Integer siscod
+    ) {
+
+        return repository.listarPinpadAnulado(
+                fechaInicio,
+                fechaFin,
+                invnumAper,
+                siscod
+        );
+    }
+
+    // =========================================
+    // LISTAR EMERGENCIAS PINPAD
+    // =========================================
+    public List<Map<String, Object>> listarEmergenciasPinpad(
+            String fechaInicio,
+            String fechaFin,
+            Integer invnumAper,
+            Integer siscod
+    ) {
+
+        return repository.listarEmergenciasPinpad(
+                fechaInicio,
+                fechaFin,
+                invnumAper,
+                siscod
+        );
+    }
+
+    // =========================================
+    // OBTENER CABECERA NOTA CREDITO
+    // =========================================
+    public List<Map<String, Object>> obtenerCabeceraNotaCredito(
+            Integer invnum
+    ) {
+
+        return repository.obtenerCabeceraNotaCredito(
+                invnum
+        );
+    }
+
+    // =========================================
+    // OBTENER DETALLE PRODUCTOS NOTA CREDITO
+    // =========================================
+    public List<Map<String, Object>> obtenerDetalleProductosNotaCredito(
+            Integer invnum
+    ) {
+
+        return repository.obtenerDetalleProductosNotaCredito(
+                invnum
+        );
+    }
+
+    // =========================================
+    // OBTENER DETALLE PRODUCTOS VENTA CREDITO
+    // =========================================
+    public List<Map<String, Object>> obtenerDetalleProductosVentaCredito(
+            Integer invnum
+    ) {
+
+        return repository.obtenerDetalleProductosVentaCredito(
+                invnum
+        );
+    }
+
+    // =========================================
+    // OBTENER DETALLE FORMAS PAGO PRODUCTOS
+    // =========================================
+    public List<Map<String, Object>> obtenerDetalleFormasPagoProductos(
+            Integer invnum
+    ) {
+
+        return repository.obtenerDetalleFormasPagoProductos(
+                invnum
+        );
+    }
+
+    // =========================================
+    //  OBTENER DETALLE APLICADO
+    // =========================================
+    public List<Map<String, Object>> obtenerDetalleAplicado(
+            Integer invnum
+    ) {
+
+        return repository.obtenerDetalleAplicado(
+                invnum
+        );
+    }
+
+    // =========================================
+    // LISTAR HUERFANOS
+    // =========================================
+    public List<Map<String, Object>> listarHuerfanos(
+            String fechaInicio,
+            String fechaFin,
+            Integer invnumAper,
+            Integer siscod
+    ) {
+
+        return repository.listarHuerfanos(
+                fechaInicio,
+                fechaFin,
+                invnumAper,
+                siscod
+        );
+    }
+
+    // =========================================
+    // LISTAR NOTAS DE CREDITO APLICADAS
+    // =========================================
+    public List<Map<String, Object>> listarNotaCreditoAplicadas(
+            String fechaInicio,
+            String fechaFin,
+            Integer invnumAper,
+            Integer siscod
+    ) {
+
+        return repository.listarNotaCreditoAplicadas(
+                fechaInicio,
+                fechaFin,
+                invnumAper,
+                siscod
+        );
+    }
+
+    // =========================================
+    // OBTENER CABECERA PINPAD ANULADO
+    // =========================================
+    public List<Map<String, Object>> obtenerCabeceraPinpadAnulado(
+            String referencia
+    ) {
+
+        return repository.obtenerCabeceraPinpadAnulado(
+                referencia
+        );
+    }
+
+    // =========================================
+    //  OBTENER DETALLE PINPAD ANULADO
+    // =========================================
+    public List<Map<String, Object>> obtenerDetallePinpadAnulado(
+            String referencia
+    ) {
+
+        return repository.obtenerDetallePinpadAnulado(
+                referencia
+        );
+    }
+
+    // =========================================
+    // TRANSACCIONES USUARIO
+    // =========================================
+    public List<Map<String, Object>> obtenerTransaccionesUsuario(
+            String fechaInicio,
+            String fechaFin,
+            Integer usecod,
+            Integer siscod
+    ) {
+
+        return repository.obtenerTransaccionesUsuario(
+                fechaInicio,
+                fechaFin,
+                usecod,
+                siscod
+        );
+    }
+
+    // =========================================
+    // HISTORIAL SUMATORIAS
+    // =========================================
+    public List<Map<String, Object>> listarHistorialSumatorias(
+            String fechaInicio,
+            String  fechaFin
+    ) {
+
+        return repository.listarHistorialSumatorias(fechaInicio,fechaFin);
+    }
+
+    // =========================================
+    // LISTAR SUMATORIA
+    // =========================================
+    public List<Map<String, Object>> listarSumatoria(
+            Integer operacionId
+    ) {
+
+        return repository.listarSumatoria(
+                operacionId
+        );
+    }
+
+    // =========================================
+    // SUMATORIA FORMA PAGO - SAVE OR UPDATE
+    // =========================================
+    public List<Map<String, Object>> saveOrUpdateSumatoriaFormaPago(
+            Integer sumatoriaFormaPagoId,
+            Integer operacionId,
+            Integer siscod,
+            String fechaOperacion,
+            Integer invnumAper,
+            String docpag,
+            String docdes,
+            Integer cantidad,
+            BigDecimal importeTotal,
+            BigDecimal importeNC,
+            BigDecimal total,
+            Integer estado,
+            String usuario
+    ) {
+
+        return repository.saveOrUpdateSumatoriaFormaPago(
+                sumatoriaFormaPagoId,
+                operacionId,
+                siscod,
+                fechaOperacion,
+                invnumAper,
+                docpag,
+                docdes,
+                cantidad,
+                importeTotal,
+                importeNC,
+                total,
+                estado,
+                usuario
+        );
+    }
+
+    // =========================================
+    // SUMATORIA FORMA DE PAGO COMPLETA
+    // =========================================
+    public List<Map<String, Object>> sumatoriaFormaPagoCompleta(
+            String fechaInicio,
+            String fechaFin,
+            Integer siscod,
+            Integer invnumAper
+    ) {
+
+        return repository.sumatoriaFormaPagoCompleta(
+                fechaInicio,
+                fechaFin,
+                siscod,
+                invnumAper
+        );
+    }
+}

@@ -1,18 +1,17 @@
 package com.bartolito.comercial.util;
 
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
@@ -28,8 +27,8 @@ public class JwtComercialFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+            HttpServletResponse response,
+            FilterChain filterChain) throws ServletException, IOException {
 
         // 1) Preflight CORS: dejar pasar sin validar token
         if (HttpMethod.OPTIONS.matches(request.getMethod())) {
@@ -63,8 +62,8 @@ public class JwtComercialFilter extends OncePerRequestFilter {
 
         // 5) Autenticar (authorities vacías por ahora; ver nota abajo)
         List<GrantedAuthority> authorities = List.of();
-        UsernamePasswordAuthenticationToken authToken =
-                new UsernamePasswordAuthenticationToken(username, null, authorities);
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, null,
+                authorities);
 
         SecurityContextHolder.getContext().setAuthentication(authToken);
 
@@ -72,7 +71,7 @@ public class JwtComercialFilter extends OncePerRequestFilter {
     }
 
     private void writeError(HttpServletResponse response, int status,
-                            String code, String message) throws IOException {
+            String code, String message) throws IOException {
         response.setStatus(status);
         response.setContentType("application/json");
         response.getWriter().write(
