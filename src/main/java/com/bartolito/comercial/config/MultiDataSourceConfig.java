@@ -53,4 +53,17 @@ public class MultiDataSourceConfig {
             @Qualifier("lolcli2DataSource") DataSource ds) {
         return new JdbcTemplate(ds);
     }
+
+    // ========== LOLCLI_PRUEBA ==========
+    @Bean(name = "sigolhDataSource")
+    @ConfigurationProperties(prefix = "spring.datasource.sigolh")
+    public DataSource sigolhDataSource() {
+        return DataSourceBuilder.create().build();
+    }
+
+    @Bean(name = "sigolhJdbcTemplate")
+    public JdbcTemplate sigolhJdbcTemplate(
+            @Qualifier("sigolhDataSource") DataSource ds) {
+        return new JdbcTemplate(ds);
+    }
 }

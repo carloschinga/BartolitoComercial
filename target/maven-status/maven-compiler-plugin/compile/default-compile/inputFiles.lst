@@ -1,6 +1,7 @@
 C:\Users\Aaron\Documents\WS-AARON\WS-SB\BARTOLITO\BartolitoComercial\src\main\java\com\bartolito\comercial\ComerApplication.java
 C:\Users\Aaron\Documents\WS-AARON\WS-SB\BARTOLITO\BartolitoComercial\src\main\java\com\bartolito\comercial\config\CorsConfig.java
 C:\Users\Aaron\Documents\WS-AARON\WS-SB\BARTOLITO\BartolitoComercial\src\main\java\com\bartolito\comercial\config\MultiDataSourceConfig.java
+C:\Users\Aaron\Documents\WS-AARON\WS-SB\BARTOLITO\BartolitoComercial\src\main\java\com\bartolito\comercial\controller\insanor\ConciliacionController.java
 C:\Users\Aaron\Documents\WS-AARON\WS-SB\BARTOLITO\BartolitoComercial\src\main\java\com\bartolito\comercial\controller\insanor\ConsolidadoInsanorController.java
 C:\Users\Aaron\Documents\WS-AARON\WS-SB\BARTOLITO\BartolitoComercial\src\main\java\com\bartolito\comercial\controller\insanor\CorreccionInsanorController.java
 C:\Users\Aaron\Documents\WS-AARON\WS-SB\BARTOLITO\BartolitoComercial\src\main\java\com\bartolito\comercial\controller\insanor\LiquidacionClinicaController.java
@@ -12,6 +13,7 @@ C:\Users\Aaron\Documents\WS-AARON\WS-SB\BARTOLITO\BartolitoComercial\src\main\ja
 C:\Users\Aaron\Documents\WS-AARON\WS-SB\BARTOLITO\BartolitoComercial\src\main\java\com\bartolito\comercial\controller\redsalud\CorreccionController.java
 C:\Users\Aaron\Documents\WS-AARON\WS-SB\BARTOLITO\BartolitoComercial\src\main\java\com\bartolito\comercial\controller\redsalud\LiquidacionCajaController.java
 C:\Users\Aaron\Documents\WS-AARON\WS-SB\BARTOLITO\BartolitoComercial\src\main\java\com\bartolito\comercial\controller\redsalud\TransaccionController.java
+C:\Users\Aaron\Documents\WS-AARON\WS-SB\BARTOLITO\BartolitoComercial\src\main\java\com\bartolito\comercial\repository\insanor\ConciliacionRepository.java
 C:\Users\Aaron\Documents\WS-AARON\WS-SB\BARTOLITO\BartolitoComercial\src\main\java\com\bartolito\comercial\repository\insanor\ConsolidadoInsanorRepository.java
 C:\Users\Aaron\Documents\WS-AARON\WS-SB\BARTOLITO\BartolitoComercial\src\main\java\com\bartolito\comercial\repository\insanor\CorreccionInsanorRepository.java
 C:\Users\Aaron\Documents\WS-AARON\WS-SB\BARTOLITO\BartolitoComercial\src\main\java\com\bartolito\comercial\repository\insanor\LiquidacionClinicaRepository.java
@@ -23,6 +25,7 @@ C:\Users\Aaron\Documents\WS-AARON\WS-SB\BARTOLITO\BartolitoComercial\src\main\ja
 C:\Users\Aaron\Documents\WS-AARON\WS-SB\BARTOLITO\BartolitoComercial\src\main\java\com\bartolito\comercial\repository\redsalud\CorreccionRepository.java
 C:\Users\Aaron\Documents\WS-AARON\WS-SB\BARTOLITO\BartolitoComercial\src\main\java\com\bartolito\comercial\repository\redsalud\LiquidacionCajaRepository.java
 C:\Users\Aaron\Documents\WS-AARON\WS-SB\BARTOLITO\BartolitoComercial\src\main\java\com\bartolito\comercial\repository\redsalud\TransaccionRepository.java
+C:\Users\Aaron\Documents\WS-AARON\WS-SB\BARTOLITO\BartolitoComercial\src\main\java\com\bartolito\comercial\service\insanor\ConciliacionService.java
 C:\Users\Aaron\Documents\WS-AARON\WS-SB\BARTOLITO\BartolitoComercial\src\main\java\com\bartolito\comercial\service\insanor\ConsolidadoInsanorService.java
 C:\Users\Aaron\Documents\WS-AARON\WS-SB\BARTOLITO\BartolitoComercial\src\main\java\com\bartolito\comercial\service\insanor\CorreccionInsanorService.java
 C:\Users\Aaron\Documents\WS-AARON\WS-SB\BARTOLITO\BartolitoComercial\src\main\java\com\bartolito\comercial\service\insanor\LiquidacionClinicaService.java
