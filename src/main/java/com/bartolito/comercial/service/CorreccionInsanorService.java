@@ -69,6 +69,34 @@ public class CorreccionInsanorService {
     }
 
     // =========================================
+    // DESVINCULAR - TRANSACCIONES PINPAD
+    // =========================================
+    public List<Map<String, Object>> desvincularPinpad(
+            Integer invnumRef
+    ) {
+
+        return repository.desvincularPinpad(
+                invnumRef
+        );
+    }
+
+    // =========================================
+    // DESVINCULAR - TRANSACCIONES PINPAD
+    // =========================================
+    public List<Map<String, Object>> obtenerTransaccionesPinpadDesvincular(
+            String fechaInicio,
+            String fechaFin,
+            String operacion
+    ) {
+
+        return repository.obtenerTransaccionesPinpadDesvincular(
+                fechaInicio,
+                fechaFin,
+                operacion
+        );
+    }
+
+    // =========================================
     // SAVE SOLICITUD
     // =========================================
     public List<Map<String, Object>> guardarSolicitudCorreccion(

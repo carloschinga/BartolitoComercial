@@ -76,6 +76,10 @@ public class ConsolidadoInsanorController {
                 ? request.get("fechaFin").toString()
                 : null;
 
+        Integer siscod = request.get("siscod") != null
+                ? Integer.parseInt(request.get("siscod").toString())
+                : null;
+
         Integer invnumAper = request.get("invnumAper") != null
                 ? Integer.parseInt(request.get("invnumAper").toString())
                 : null;
@@ -84,6 +88,7 @@ public class ConsolidadoInsanorController {
                 service.listarFormaPagoCompleto(
                         fechaInicio,
                         fechaFin,
+                        siscod,
                         invnumAper
                 );
 

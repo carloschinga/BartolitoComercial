@@ -342,6 +342,115 @@
                     <td class="c5" th:text="${#numbers.formatDecimal(datos.subtotal.diferencia, 0, 'COMMA', 2, 'POINT')}"></td>
                 </tr>
 
+                <!-- ===== NOTAS DE CREDITO ===== -->
+
+                <tr>
+                    <td class="c1">
+                        NOTAS DE CREDITO - Efectivo
+                    </td>
+
+                    <td class="c2"
+                        th:text="${datos.notasCredito != null
+            ? datos.notasCredito['cantidad_registros']
+            : 0}">
+                        0
+                    </td>
+
+                    <td class="c3"
+                        th:text="${datos.notasCredito != null
+            ? #numbers.formatDecimal(datos.notasCredito['total_nconet'], 0, 'COMMA', 2, 'POINT')
+            : '0.00'}">
+                        0.00
+                    </td>
+
+                    <td class="c4"></td>
+
+                    <td class="c5"></td>
+                </tr>
+
+                <tr>
+                    <td class="c1">NOTAS DE CREDITO - Pinpad/Pos</td>
+                    <td class="c2">0</td>
+                    <td class="c3">0.00</td>
+                    <td class="c4"></td>
+                    <td class="c5"></td>
+                </tr>
+
+                <tr>
+                    <td class="c1">NOTAS DE CREDITO - Credito</td>
+                    <td class="c2">0</td>
+                    <td class="c3">0.00</td>
+                    <td class="c4"></td>
+                    <td class="c5"></td>
+                </tr>
+
+                <!-- ===== SEPARADOR ===== -->
+                <tr class="r-gap">
+                    <td colspan="5"></td>
+                </tr>
+
+                <!-- ===== OTROS IMPORTES ===== -->
+
+                <tr class="r-otros-hdr">
+                    <th class="c1" style="background: var(--verde-claro) !important;">
+                        OTROS IMPORTES DECLARADOS
+                    </th>
+
+                    <th class="c2" style="background: var(--verde-claro) !important;">
+                        CANTIDAD
+                    </th>
+
+                    <th class="c3"
+                        colspan="3"
+                        style="background: var(--verde-claro) !important;">
+                        IMPORTE DECLARADO
+                    </th>
+                </tr>
+
+                <!-- ===== INGRESOS ===== -->
+                <tr>
+                    <td class="c1 forma-ind">
+                        INGRESOS
+                    </td>
+
+                    <td class="c2"
+                        th:text="${datos.ingresos != null ? datos.ingresos['cantidad_registros'] : 0}">
+                        0
+                    </td>
+
+                    <td class="c3"
+                        colspan="3"
+                        th:text="${datos.ingresos != null
+            ? #numbers.formatDecimal(datos.ingresos['total_invnet'], 0, 'COMMA', 2, 'POINT')
+            : '0.00'}">
+                        0.00
+                    </td>
+                </tr>
+
+                <!-- ===== EGRESOS ===== -->
+                <tr>
+                    <td class="c1 forma-ind">
+                        EGRESOS
+                    </td>
+
+                    <td class="c2"
+                        th:text="${datos.egresos != null ? datos.egresos['cantidad_registros'] : 0}">
+                        0
+                    </td>
+
+                    <td class="c3"
+                        colspan="3"
+                        th:text="${datos.egresos != null
+            ? #numbers.formatDecimal(datos.egresos['total_invnet'], 0, 'COMMA', 2, 'POINT')
+            : '0.00'}">
+                        0.00
+                    </td>
+                </tr>
+
+                <!-- ===== SEPARADOR ===== -->
+                <tr class="r-gap">
+                    <td colspan="5"></td>
+                </tr>
                 </tbody>
             </table>
 
